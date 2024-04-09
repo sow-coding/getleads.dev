@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
+import { Dashboard } from '@/components/pages/dashboard';
 
 export default async function PrivatePage() {
   const supabase = createClient()
@@ -20,5 +21,5 @@ export default async function PrivatePage() {
     }
   }
 
-  return <p>Hello {data.user.email}</p>
+  return <Dashboard />
 }

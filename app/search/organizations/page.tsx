@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
+import { SearchPage } from '@/components/pages/search'
 
 export default async function OrganizationSearch() {
   const supabase = createClient()
@@ -10,10 +11,5 @@ export default async function OrganizationSearch() {
     redirect('/')
   }
 
-  return (
-    <>
-        <h1>Organizations</h1>
-        <p>Search for organizations</p>
-    </>
-  )
+  return <SearchPage />
 }

@@ -1,5 +1,5 @@
-export default function Home() {
+export default function LandingPage() {
   return (
-    <h1>Voici la presentation</h1>
+    <h1>getleads.dev is coming</h1>
   );
 }
