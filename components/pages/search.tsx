@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { SelectScrollable } from "../ui/scrollableSelect"
 
 export function SearchPage () {
   return (
@@ -51,7 +52,7 @@ export function SearchPage () {
             href="#"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Orders
+            Search
           </Link>
           <Link
             href="#"
@@ -176,25 +177,20 @@ export function SearchPage () {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="flex">
+                <form className="flex max-lg:flex-col items-start">
+                  {/* changer ici pour prblm de responsive, ptt grid au lieu de flex */}
+                  <SelectScrollable />
+                  
                   <Select>
-                    <SelectTrigger className="w-[180px] flex-1">
-                      <SelectValue placeholder="Location" />
+                    <SelectTrigger className="w-[180px]  lg:mx-4 max-lg:my-4">
+                      <SelectValue placeholder="Employees" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="light">Brussels</SelectItem>
-                      <SelectItem value="dark">Paris</SelectItem>
-                      <SelectItem value="system">Barcelona</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Select>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Size" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="light">Brussels</SelectItem>
-                      <SelectItem value="dark">Paris</SelectItem>
-                      <SelectItem value="system">Barcelona</SelectItem>
+                      <SelectItem value="1,10">1-10</SelectItem>
+                      <SelectItem value="11,50">11-50</SelectItem>
+                      <SelectItem value="51,200">51-200</SelectItem>
+                      <SelectItem value="201,1000">201-1000</SelectItem>
+                      <SelectItem value="1000+">1000+</SelectItem>
                     </SelectContent>
                   </Select>
                   <Select>
@@ -213,6 +209,7 @@ export function SearchPage () {
                 <Button>Save</Button>
               </CardFooter>
             </Card>
+            
             <Card x-chunk="dashboard-04-chunk-2">
               <CardHeader>
                 <CardTitle>Category</CardTitle>
