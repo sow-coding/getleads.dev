@@ -28,7 +28,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { SelectScrollable } from "../ui/scrollableSelect"
+import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
+import EmployeesMultipleSelect from "../nextui/employeesMultipleSelect"
+import IndustryAutoComplete from "../nextui/industryAutoComplete"
+import KeywordsInput from "../nextui/keywordsInput"
 
 export function SearchPage () {
   return (
@@ -171,38 +174,17 @@ export function SearchPage () {
           <div className="grid gap-6">
             <Card x-chunk="dashboard-04-chunk-1">
               <CardHeader>
-                <CardTitle>Organizations search</CardTitle>
+                <CardTitle>Companies filters</CardTitle>
                 <CardDescription>
                 Filter your search: by location, by size, by industry...
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form className="flex max-lg:flex-col items-start">
-                  {/* changer ici pour prblm de responsive, ptt grid au lieu de flex */}
-                  <SelectScrollable />
-                  
-                  <Select>
-                    <SelectTrigger className="w-[180px]  lg:mx-4 max-lg:my-4">
-                      <SelectValue placeholder="Employees" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1,10">1-10</SelectItem>
-                      <SelectItem value="11,50">11-50</SelectItem>
-                      <SelectItem value="51,200">51-200</SelectItem>
-                      <SelectItem value="201,1000">201-1000</SelectItem>
-                      <SelectItem value="1000+">1000+</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Select>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Size" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="light">Brussels</SelectItem>
-                      <SelectItem value="dark">Paris</SelectItem>
-                      <SelectItem value="system">Barcelona</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <CountriesMultipleSelect />
+                  {/* trouver moyen de rajouter city */}
+                  <EmployeesMultipleSelect />
+
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
@@ -212,27 +194,15 @@ export function SearchPage () {
             
             <Card x-chunk="dashboard-04-chunk-2">
               <CardHeader>
-                <CardTitle>Category</CardTitle>
+                <CardTitle>Industry</CardTitle>
                 <CardDescription>
-                  The directory within your project, in which your plugins are
-                  located.
+                Write down some keywords and industry names searched for for the company.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="flex flex-col gap-4">
-                  <Input
-                    placeholder="Project Name"
-                    defaultValue="/content/plugins"
-                  />
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="include" defaultChecked />
-                    <label
-                      htmlFor="include"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Allow administrators to change the directory.
-                    </label>
-                  </div>
+                <form className="flex max-lg:flex-col">
+                  <IndustryAutoComplete />
+                  <KeywordsInput />
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">

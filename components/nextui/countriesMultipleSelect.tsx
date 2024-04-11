@@ -1,27 +1,27 @@
+"use client"
 import React from "react";
 import {Select, SelectItem, Selection} from "@nextui-org/react";
 import {countries} from "./countriesData";
 
-export default function MultipleSelect() {
-  const [values, setValues] = React.useState<Selection>(new Set(["cat", "dog"]));
+export default function CountriesMultipleSelect() {
+  const [values, setValues] = React.useState<Selection>(new Set([]));
 
   return (
     <div className="flex w-full max-w-xs flex-col gap-2">
       <Select
-        label="Favorite Animal"
+        label="Location"
         selectionMode="multiple"
-        placeholder="Select an animal"
+        placeholder="Select countries"
         selectedKeys={values}
         className="max-w-xs"
         onSelectionChange={setValues}
       >
-        {animals.map((animal) => (
-          <SelectItem key={animal.value} value={animal.value}>
-            {animal.label}
+        {countries.map((country, index:number) => (
+          <SelectItem key={country.name} value={country.name}>
+            {country.name}
           </SelectItem>
         ))}
       </Select>
-      <p className="text-small text-default-500">Selected: {Array.from(values).join(", ")}</p>
     </div>
   );
 }
