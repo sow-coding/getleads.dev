@@ -1,14 +1,9 @@
+"use client"
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
-
+import { verifyOrganizationsWithNextJs } from "../../app/api/actions"
+import { crunchbaseResponse } from "../../app/api/test"
 import { Button } from "@/components/ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import {
   Card,
   CardContent,
@@ -17,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,9 +25,19 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import EmployeesMultipleSelect from "../nextui/employeesMultipleSelect"
 import IndustryAutoComplete from "../nextui/industryAutoComplete"
-import KeywordsInput from "../nextui/keywordsInput"
+import CitiesAutoComplete from "../nextui/CitiesAutoComplete"
+import { useState } from "react"
 
 export function SearchPage () {
+  const [organizations, setOrganizations] = useState([])
+
+  const handleVerifyOrganizations = () => {
+    verifyOrganizationsWithNextJs(crunchbaseResponse).then(verifiedEntities => {
+        console.log(verifiedEntities);
+        setOrganizations(verifiedEntities);
+    });
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -182,9 +186,8 @@ export function SearchPage () {
               <CardContent>
                 <form className="flex max-lg:flex-col items-start">
                   <CountriesMultipleSelect />
-                  {/* trouver moyen de rajouter city */}
+                  <CitiesAutoComplete />
                   <EmployeesMultipleSelect />
-
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
@@ -202,11 +205,12 @@ export function SearchPage () {
               <CardContent>
                 <form className="flex max-lg:flex-col">
                   <IndustryAutoComplete />
-                  <KeywordsInput />
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
+                <Button onClick={() => {
+                  handleVerifyOrganizations()
+                }}>Save</Button>
               </CardFooter>
             </Card>
           </div>

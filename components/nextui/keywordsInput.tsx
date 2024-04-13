@@ -7,7 +7,7 @@ export default function KeywordsInput() {
     <Input
       type="text"
       label="Keywords"
-      placeholder="Sales, SaaS, SEO, Branding..."
+      placeholder="Sales SaaS Marketing"
       description="Separate keywords with spaces"
       className="max-w-xs mx-4 max-lg:mx-0 max-lg:my-4"
     />

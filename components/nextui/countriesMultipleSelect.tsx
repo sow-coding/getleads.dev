@@ -9,7 +9,7 @@ export default function CountriesMultipleSelect() {
   return (
     <div className="flex w-full max-w-xs flex-col gap-2">
       <Select
-        label="Location"
+        label="Countries"
         selectionMode="multiple"
         placeholder="Select countries"
         selectedKeys={values}

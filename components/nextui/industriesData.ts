@@ -1,7 +1,7 @@
 interface Industry {
     name: string;
 }
-
+//remplacer par vrai industrie de Crunchbase
 export const industries: Industry[] = [
     { name: "Technology" },
     { name: "Healthcare" },

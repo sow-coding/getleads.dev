@@ -6,7 +6,7 @@ export default function EmployeesMultipleSelect() {
   const [values, setValues] = React.useState<Selection>(new Set([]));
 
   return (
-    <div className="flex w-48 max-w-xs flex-col gap-2 mx-4 max-lg:my-4">
+    <div className="flex w-48 max-w-xs flex-col gap-2">
       <Select
         label="Size"
         selectionMode="multiple"
