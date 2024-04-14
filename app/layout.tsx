@@ -3,6 +3,8 @@ import "../app/globals.css"
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import Providers from "./providers";
+import OrganizationsContextProvider from "@/contexts/organizations.context";
+import StackContextProvider from "@/contexts/stack.context";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,6 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <OrganizationsContextProvider>
+    <StackContextProvider>
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
@@ -33,6 +37,8 @@ export default function RootLayout({
         </Providers>
       </body>
     </html>
+    </StackContextProvider>
+    </OrganizationsContextProvider>
   )
 }
 

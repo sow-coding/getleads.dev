@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
-import { verifyOrganizationsWithNextJs } from "../../app/api/actions"
+import { verifyOrganizationsWithStack } from "../../app/api/actions"
 import { crunchbaseResponse } from "../../app/api/test"
 import { Button } from "@/components/ui/button"
 
@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,14 +23,16 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useState } from "react"
 import StackAutocomplete from "../nextui/stackAutocomplete"
+import { useOrganizationsContext } from "@/contexts/organizations.context"
+import { useStackContext } from "@/contexts/stack.context"
 
 export default function StackPage () {
-  const [organizations, setOrganizations] = useState([])
+  const {setOrganizations} = useOrganizationsContext()
+  const { stack, setStack } = useStackContext()
 
   const handleVerifyOrganizations = () => {
-    verifyOrganizationsWithNextJs(crunchbaseResponse).then(verifiedEntities => {
+    verifyOrganizationsWithStack(crunchbaseResponse, stack).then(verifiedEntities => {
         console.log(verifiedEntities);
         setOrganizations(verifiedEntities);
     });
@@ -188,7 +189,9 @@ export default function StackPage () {
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
+                <Button onClick={() => {
+                  handleVerifyOrganizations();
+                }}>Save</Button>
                 <Button style={{backgroundColor: "#FF0000"}} className="mx-4">Clean</Button>
               </CardFooter>
             </Card>

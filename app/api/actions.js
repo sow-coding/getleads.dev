@@ -1,36 +1,4 @@
 "use server"
-export async function lookupBuiltWith(urls) {
-    // Clé API stockée de manière sécurisée, montrée ici à titre d'exemple
-    const apiKey = process.env.BUILTWITH_API_KEY;
-    // Joindre toutes les URLs avec des virgules
-    const urlList = urls.join(',');
-
-    const builtWithUrl = `https://api.builtwith.com/v21/api.json?KEY=${apiKey}&LIVEONLY=yes&HIDETEXT=yes&NOMETA=yes&NOPII=yes&NOLIVE=yes&NOATTR=yes&LOOKUP=${urlList}`;
-
-    try {
-        const response = await fetch(builtWithUrl);
-        if (!response.ok) throw new Error('Réponse non valide de BuiltWith');
-
-        const data = await response.json();
-        // Analyser la réponse pour vérifier l'utilisation de Next.js
-        const results = data.Results.map((result, index) => {
-            // Vérifier si Next.js est utilisé dans l'un des chemins de technologie
-            const isNextJsUsed = result.Result.Paths.some(path => 
-                path.Technologies.some(tech => tech.Name === 'Next.js') 
-            );
-            return {
-                url: urls[index],  // Assurez-vous que l'ordre des URLs correspond à celui des résultats
-                isNextJsUsed
-            };
-        });
-        
-        return results;
-    } catch (error) {
-        console.error('Erreur lors de l’appel à API BuiltWith:', error);
-        throw error; // Propager l'erreur pour traitement ultérieur
-    }
-}
-
 
 function chunkArray(array, chunkSize) {
     const chunks = [];
@@ -40,23 +8,55 @@ function chunkArray(array, chunkSize) {
     return chunks;
 }
 
+function normalizeUrl(url) {
+    return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+}
 
-export async function verifyOrganizationsWithNextJs(entities) {
+async function lookupBuiltWith(urls, stack) {
+    const apiKey = process.env.BUILTWITH_API_KEY;
+    // Normaliser et joindre toutes les URLs pour la requête API
+    const urlList = urls.map(url => normalizeUrl(url)).join(',');
+    const builtWithUrl = `https://api.builtwith.com/v21/api.json?KEY=${apiKey}&LIVEONLY=yes&HIDETEXT=yes&NOMETA=yes&NOPII=yes&NOLIVE=yes&NOATTR=yes&LOOKUP=${urlList}`;
+
+    try {
+        const response = await fetch(builtWithUrl);
+        if (!response.ok) throw new Error('Réponse non valide de BuiltWith');
+
+        const data = await response.json();
+        const results = {};
+        data.Results.forEach((result) => {
+            const isStackUsed = result.Result.Paths.some(path => 
+                path.Technologies.some(tech => tech.Name === 'Next.js')
+            );
+            // Stocker les résultats avec l'URL normalisée comme clé
+            results[normalizeUrl(result.Lookup)] = isStackUsed;
+        });
+        
+        return results;
+    } catch (error) {
+        console.error('Erreur lors de l’appel à API BuiltWith:', error);
+        throw error;
+    }
+}
+
+export async function verifyOrganizationsWithStack(entities, stack) {
     const websiteUrls = entities.map(entity => entity.properties.website_url);
-    const urlChunks = chunkArray(websiteUrls, 16); // Crée des lots de 16 URLs
+    const urlChunks = chunkArray(websiteUrls, 16);
 
-    const results = [];
+    let results = {};
 
     for (const urls of urlChunks) {
-        const partialResults = await lookupBuiltWith(urls);
-        results.push(...partialResults); // Vous devez adapter lookupBuiltWith pour qu'elle retourne les résultats dans un format que vous pouvez regrouper ici
+        const partialResults = await lookupBuiltWith(urls.map(url => normalizeUrl(url)));
+        results = { ...results, ...partialResults };
     }
 
-    // Recombiner les résultats avec les entités originales pour ajouter le flag 'isNextJsUsed'
-    const verifiedEntities = entities.map(entity => {
-        const result = results.find(r => r.url === entity.properties.website_url);
-        return { ...entity, isNextJsUsed: result ? result.isNextJsUsed : false };
+    const verifiedEntities = entities.filter(entity => {
+        // Utiliser l'URL normalisée pour vérifier si Next.js est utilisé
+        const isStackUsed = results[normalizeUrl(entity.properties.website_url)];
+        return isStackUsed;
     });
 
     return verifiedEntities;
 }
+
+

@@ -1,8 +1,6 @@
 "use client"
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
-import { verifyOrganizationsWithNextJs } from "../../app/api/actions"
-import { crunchbaseResponse } from "../../app/api/test"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -26,18 +24,10 @@ import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import EmployeesMultipleSelect from "../nextui/employeesMultipleSelect"
 import IndustryAutoComplete from "../nextui/industryAutoComplete"
 import CitiesAutoComplete from "../nextui/CitiesAutoComplete"
-import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function SearchPage () {
-  const [organizations, setOrganizations] = useState([])//mettre en context et afficher en tab
-
-  const handleVerifyOrganizations = () => {
-    verifyOrganizationsWithNextJs(crunchbaseResponse).then(verifiedEntities => {
-        console.log(verifiedEntities);
-        setOrganizations(verifiedEntities);
-    });
-  };
-
+  const router = useRouter()
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -209,7 +199,7 @@ export default function SearchPage () {
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
                 <Button onClick={() => {
-                  handleVerifyOrganizations()
+                  router.push("/search/stack")
                 }}>Save</Button>
               </CardFooter>
             </Card>
