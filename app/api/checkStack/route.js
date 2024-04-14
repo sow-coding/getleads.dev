@@ -5,7 +5,7 @@ export async function POST (request) {
     const requestBody = await req
 
     try {
-        const isNextJsUsed = await lookupBuiltWith(requestBody.url)
+        const isNextJsUsed = await lookupBuiltWith(["https://nextjs.org", "https://vercel.com"])
 
         return new Response(JSON.stringify(isNextJsUsed), {
             status: 200,

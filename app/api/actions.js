@@ -1,47 +1,62 @@
-export async function lookupBuiltWith(websiteUrl) {
-
+"use server"
+export async function lookupBuiltWith(urls) {
+    // Clé API stockée de manière sécurisée, montrée ici à titre d'exemple
     const apiKey = process.env.BUILTWITH_API_KEY;
-    console.log(websiteUrl)
-    const builtWithUrl = `https://api.builtwith.com/v21/api.json?KEY=${apiKey}&LIVEONLY=yes&LOOKUP=${websiteUrl}`;
+    // Joindre toutes les URLs avec des virgules
+    const urlList = urls.join(',');
+
+    const builtWithUrl = `https://api.builtwith.com/v21/api.json?KEY=${apiKey}&LIVEONLY=yes&HIDETEXT=yes&NOMETA=yes&NOPII=yes&NOLIVE=yes&NOATTR=yes&LOOKUP=${urlList}`;
 
     try {
         const response = await fetch(builtWithUrl);
         if (!response.ok) throw new Error('Réponse non valide de BuiltWith');
-        
+
         const data = await response.json();
-        console.log('Réponse de BuiltWith:', data.Results[0].Result.Paths);
         // Analyser la réponse pour vérifier l'utilisation de Next.js
-        const isNextJsUsed = data.Results[0].Result.Paths.some(path => 
-            path.Technologies.some(tech => tech.Name === 'Next.js')
-        );
-        console.log('Next.js utilisé:', isNextJsUsed)
-        return isNextJsUsed;
+        const results = data.Results.map((result, index) => {
+            // Vérifier si Next.js est utilisé dans l'un des chemins de technologie
+            const isNextJsUsed = result.Result.Paths.some(path => 
+                path.Technologies.some(tech => tech.Name === 'Next.js') 
+            );
+            return {
+                url: urls[index],  // Assurez-vous que l'ordre des URLs correspond à celui des résultats
+                isNextJsUsed
+            };
+        });
+        
+        return results;
     } catch (error) {
-        console.error('Erreur lors de lappel à API BuiltWith:', error);
+        console.error('Erreur lors de l’appel à API BuiltWith:', error);
         throw error; // Propager l'erreur pour traitement ultérieur
     }
 }
 
-export async function verifyOrganizationsWithNextJs(entities) {
-    const checks = entities.map(async entity => {
-        const websiteUrl = entity.properties.website_url;
-        // Faire l'appel à votre endpoint API intermédiaire qui vérifie l'utilisation de Next.js
-        const response = await fetch('/api/checkStack', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ url: websiteUrl })
-        });
 
-        if (!response.ok) {
-            console.error("Erreur lors de la vérification de l'utilisation de Next.js");
-            return null;
-        }
-        
-        const { isNextJsUsed } = await response.json();
-        return { ...entity, isNextJsUsed };
+function chunkArray(array, chunkSize) {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+        chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+}
+
+
+export async function verifyOrganizationsWithNextJs(entities) {
+    const websiteUrls = entities.map(entity => entity.properties.website_url);
+    const urlChunks = chunkArray(websiteUrls, 16); // Crée des lots de 16 URLs
+
+    const results = [];
+
+    for (const urls of urlChunks) {
+        const partialResults = await lookupBuiltWith(urls);
+        results.push(...partialResults); // Vous devez adapter lookupBuiltWith pour qu'elle retourne les résultats dans un format que vous pouvez regrouper ici
+    }
+
+    // Recombiner les résultats avec les entités originales pour ajouter le flag 'isNextJsUsed'
+    const verifiedEntities = entities.map(entity => {
+        const result = results.find(r => r.url === entity.properties.website_url);
+        return { ...entity, isNextJsUsed: result ? result.isNextJsUsed : false };
     });
 
-    return Promise.all(checks);
+    return verifiedEntities;
 }

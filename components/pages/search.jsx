@@ -28,8 +28,8 @@ import IndustryAutoComplete from "../nextui/industryAutoComplete"
 import CitiesAutoComplete from "../nextui/CitiesAutoComplete"
 import { useState } from "react"
 
-export function SearchPage () {
-  const [organizations, setOrganizations] = useState([])
+export default function SearchPage () {
+  const [organizations, setOrganizations] = useState([])//mettre en context et afficher en tab
 
   const handleVerifyOrganizations = () => {
     verifyOrganizationsWithNextJs(crunchbaseResponse).then(verifiedEntities => {
