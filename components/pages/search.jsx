@@ -26,7 +26,6 @@ import CitiesSelect from "../nextui/citiesSelect"
 import { useRouter } from "next/navigation"
 import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import IndustryAutoComplete from "../nextui/industryAutoComplete"
-import { useOrganizationsContext } from "@/contexts/organizations.context"
 
 export default function SearchPage () {
   const router = useRouter()

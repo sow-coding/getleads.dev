@@ -188,7 +188,7 @@ export const countries: Country[] = [
     { name: "Ukraine" },
     { name: "United Arab Emirates" },
     { name: "United Kingdom" },
-    { name: "United States of America" },
+    { name: "United States" },
     { name: "Uruguay" },
     { name: "Uzbekistan" },
     { name: "Vanuatu" },

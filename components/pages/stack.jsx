@@ -1,8 +1,7 @@
 "use client"
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
-import { verifyOrganizationsWithStack } from "../../app/api/actions"
-import { crunchbaseResponse } from "../../app/api/test"
+import { saveSearchResults, verifyOrganizationsWithStack } from "../../app/api/actions"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -29,10 +28,10 @@ import { useState } from "react"
 import { useFiltersContext } from "@/contexts/filters.context"
 
 export default function StackPage () {
-  const {organizations, setOrganizations} = useOrganizationsContext()
-  console.log(organizations)
+  const {setOrganizations} = useOrganizationsContext()
   const { stack } = useStackContext()
   const {countries, cities, sizes, industries} = useFiltersContext()
+  console.log(countries, cities, sizes, industries)
   const [stackHere, setStackHere] = useState([]);
 
   const handleVerifyOrganizations = async () => {
@@ -55,8 +54,11 @@ export default function StackPage () {
       }
   
       const crunchbaseResponse = await response.json();
-      const verifiedEntities = await verifyOrganizationsWithStack(crunchbaseResponse, stack);
-      setOrganizations(verifiedEntities);
+      const result = await verifyOrganizationsWithStack(crunchbaseResponse, stack);
+      const { id, entities } = result;  // Déstructuration pour obtenir l'ID et les entités
+  
+      setOrganizations(entities);  // Mettre à jour l'état avec les entités vérifiées
+      entities?.length > 0 && await saveSearchResults(id, entities);  // Sauvegarder les résultats avec l'ID pour référence future
     } catch (error) {
       console.error("Failed to verify organizations:", error);
       // Gérer l'erreur ici, par exemple en affichant un message d'erreur à l'utilisateur

@@ -34,6 +34,7 @@ export async function POST(request: Request) {
   }
 
   const data = await response.json(); // Convertir la réponse en JSON
+  console.log(data);
   // Renvoyer uniquement le tableau 'entities' au client
   return new Response(JSON.stringify(data.entities), {
       status: 200,
