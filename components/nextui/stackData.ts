@@ -1,6 +1,6 @@
 //rajouter tech de hunter lookup, car d'abord je fetch et verifie techos dans lookup de hunter et si ya pas builthwith
 export const stackData = [
-    'Python', 'TypeScript', 'Perl', 'Ruby on Rails', 'Laravel',
+    'Python', 'Perl', 'Ruby on Rails', 'Laravel',
     'ASP.NET Core', 'Meteor', 'Backbone.js', 'CakePHP', 'CodeIgniter',
     'Struts', 'Play Framework', 'Svelte', 'Aurelia', 'Polymer', 'Alpine.js',
     'Mithril', 'Stimulus', 'Dojo Toolkit', 'Flutter', 'Ionic', 'PhoneGap',
@@ -15,5 +15,5 @@ export const stackData = [
     'Kibana', 'Tableau', 'Looker', 'Mode', 'Istio', 'Envoy', 'Jetty', 'JBoss',
     'Vue', 'Handlebars', 'Riot', 'Gatsby', 'Ember', "Java EE", "ASP.NET Ajax", "Apollo GraphQL",
     "Django CSRF", "Gatsby JS", "Vite", "Tailwind CSS", "PHP", "Django Language",
-    "jQuery", "Moment JS", "lodash", "Sentry", "GSAP", "Babel", "Emotion"
+    "jQuery", "Moment JS", "lodash", "Sentry", "GSAP", "Babel", "Emotion", "React"
 ].map(name => ({ name }));

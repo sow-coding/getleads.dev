@@ -1,10 +1,19 @@
 "use client"
-import React from "react";
-import {Select, SelectItem, Selection} from "@nextui-org/react";
+import React, { useEffect } from "react";
+import {Select, SelectItem} from "@nextui-org/react";
 import {countries} from "./countriesData";
+import { useFiltersContext } from "@/contexts/filters.context";
 
 export default function CountriesMultipleSelect() {
-  const [values, setValues] = React.useState<Selection>(new Set([]));
+  const [values, setValues] = React.useState(new Set([]));
+  const {setCountries} = useFiltersContext()
+
+  useEffect(() => {
+    // Convertir le Set en tableau
+    const selectedCountries = Array.from(values);
+    // Mettre à jour le contexte avec ce tableau
+    setCountries(selectedCountries);
+  }, [values, setCountries]);
 
   return (
     <div className="flex w-full max-w-xs flex-col gap-2">
@@ -16,7 +25,7 @@ export default function CountriesMultipleSelect() {
         className="max-w-xs"
         onSelectionChange={setValues}
       >
-        {countries.map((country, index:number) => (
+        {countries.map((country, index) => (
           <SelectItem key={country.name} value={country.name}>
             {country.name}
           </SelectItem>

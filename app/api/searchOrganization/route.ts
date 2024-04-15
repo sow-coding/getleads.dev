@@ -1,16 +1,16 @@
 export async function POST(request: Request) {
 
-  //choper les données de la requête pour les utiliser dans la requête à l'API
+  const inputRequestBody = await request.json();
 
   const requestBody = {
     field_ids: ["identifier", "location_identifiers", "short_description", "website_url", "categories"],
     order: [{ field_id: "rank_org", sort: "asc"}],
     query: [
-      { type: "predicate", field_id: "num_employees_enum", operator_id: "includes", values: ["c_00101_00250"] },
-      { type: "predicate", field_id: "categories", operator_id: "includes", values: ["software"] },
-      { type: "predicate", field_id: "location_identifiers", operator_id: "includes", values: ["France"]}
+      { type: "predicate", field_id: "num_employees_enum", operator_id: "includes", values: inputRequestBody?.sizes },
+      { type: "predicate", field_id: "categories", operator_id: "includes", values: inputRequestBody?.industries },
+      { type: "predicate", field_id: "location_identifiers", operator_id: "includes", values: inputRequestBody?.countries}
     ],
-    limit: 1
+    limit: 2
   };
 
   const response = await fetch("https://api.crunchbase.com/api/v4/searches/organizations", {

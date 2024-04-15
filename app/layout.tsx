@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import Providers from "./providers";
 import OrganizationsContextProvider from "@/contexts/organizations.context";
 import StackContextProvider from "@/contexts/stack.context";
+import FiltersContextProvider from "@/contexts/filters.context";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -24,6 +25,7 @@ export default function RootLayout({
   return (
     <OrganizationsContextProvider>
     <StackContextProvider>
+    <FiltersContextProvider>
     <html lang="en" suppressHydrationWarning>
       <head />
       <body
@@ -37,6 +39,7 @@ export default function RootLayout({
         </Providers>
       </body>
     </html>
+    </FiltersContextProvider>
     </StackContextProvider>
     </OrganizationsContextProvider>
   )

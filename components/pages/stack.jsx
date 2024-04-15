@@ -4,7 +4,6 @@ import { CircleUser, Menu, Package2, Search } from "lucide-react"
 import { verifyOrganizationsWithStack } from "../../app/api/actions"
 import { crunchbaseResponse } from "../../app/api/test"
 import { Button } from "@/components/ui/button"
-
 import {
   Card,
   CardContent,
@@ -26,18 +25,44 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import StackAutocomplete from "../nextui/stackAutocomplete"
 import { useOrganizationsContext } from "@/contexts/organizations.context"
 import { useStackContext } from "@/contexts/stack.context"
+import { useState } from "react"
+import { useFiltersContext } from "@/contexts/filters.context"
 
 export default function StackPage () {
-  const {setOrganizations} = useOrganizationsContext()
-  const { stack, setStack } = useStackContext()
+  const {organizations, setOrganizations} = useOrganizationsContext()
+  console.log(organizations)
+  const { stack } = useStackContext()
+  const {countries, cities, sizes, industries} = useFiltersContext()
+  const [stackHere, setStackHere] = useState([]);
 
-  const handleVerifyOrganizations = () => {
-    verifyOrganizationsWithStack(crunchbaseResponse, stack).then(verifiedEntities => {
-        console.log(verifiedEntities);
-        setOrganizations(verifiedEntities);
-    });
+  const handleVerifyOrganizations = async () => {
+    try {
+      const response = await fetch('/api/searchOrganization', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          countries: countries,
+          cities: cities,
+          sizes: sizes,
+          industries: industries
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch organizations: ${response.statusText}`);
+      }
+  
+      const crunchbaseResponse = await response.json();
+      const verifiedEntities = await verifyOrganizationsWithStack(crunchbaseResponse, stack);
+      setOrganizations(verifiedEntities);
+    } catch (error) {
+      console.error("Failed to verify organizations:", error);
+      // Gérer l'erreur ici, par exemple en affichant un message d'erreur à l'utilisateur
+    }
   };
-
+  
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -185,14 +210,16 @@ export default function StackPage () {
               </CardHeader>
               <CardContent>
                 <form className="flex max-lg:flex-col items-start">
-                  <StackAutocomplete />
+                  <StackAutocomplete stackHere={stackHere} setStackHere={setStackHere} />
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
                 <Button onClick={() => {
-                  handleVerifyOrganizations();
+                  stack.length > 0 && handleVerifyOrganizations()
                 }}>Save</Button>
-                <Button style={{backgroundColor: "#FF0000"}} className="mx-4">Clean</Button>
+                <Button style={{backgroundColor: "#FF0000"}} className="mx-4" onClick={() => {
+                  setStackHere([])
+                }}>Clean</Button>
               </CardFooter>
             </Card>
           </div>

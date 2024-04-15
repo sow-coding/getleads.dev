@@ -20,14 +20,17 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import EmployeesMultipleSelect from "../nextui/employeesMultipleSelect"
-import IndustryAutoComplete from "../nextui/industryAutoComplete"
 import CitiesAutoComplete from "../nextui/CitiesAutoComplete"
+import CitiesSelect from "../nextui/citiesSelect"
 import { useRouter } from "next/navigation"
+import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
+import IndustryAutoComplete from "../nextui/industryAutoComplete"
+import { useOrganizationsContext } from "@/contexts/organizations.context"
 
 export default function SearchPage () {
   const router = useRouter()
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -176,7 +179,7 @@ export default function SearchPage () {
               <CardContent>
                 <form className="flex max-lg:flex-col items-start">
                   <CountriesMultipleSelect />
-                  <CitiesAutoComplete />
+                  <CitiesSelect /> {/* A la place ce citiesAutoComplete */}
                   <EmployeesMultipleSelect />
                 </form>
               </CardContent>
