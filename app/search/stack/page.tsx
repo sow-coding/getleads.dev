@@ -1,5 +1,5 @@
 import React from 'react'
-import StackPage from "../../../components/pages/stack"
+import {StackPage} from "../../../components/pages/stack"
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 

@@ -27,7 +27,7 @@ import { useRouter } from "next/navigation"
 import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import IndustryAutoComplete from "../nextui/industryAutoComplete"
 
-export default function SearchPage () {
+export function SearchPage () {
   const router = useRouter()
 
   return (

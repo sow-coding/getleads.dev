@@ -27,7 +27,7 @@ import { useStackContext } from "@/contexts/stack.context"
 import { useState } from "react"
 import { useFiltersContext } from "@/contexts/filters.context"
 
-export default function StackPage () {
+export function StackPage () {
   const {setOrganizations} = useOrganizationsContext()
   const { stack } = useStackContext()
   const {countries, cities, sizes, industries} = useFiltersContext()
@@ -59,6 +59,8 @@ export default function StackPage () {
   
       setOrganizations(entities);  // Mettre à jour l'état avec les entités vérifiées
       entities?.length > 0 && await saveSearchResults(id, entities);  // Sauvegarder les résultats avec l'ID pour référence future
+      //renvoyer vers results/id avec comme id le searchId renvoyé par l'api dans l'url query searchId
+      //exemple url: http://localhost:3000/search/results/search?id=d8474bfa-abc6-4de6-b3e8-d336b0ecd715
     } catch (error) {
       console.error("Failed to verify organizations:", error);
       // Gérer l'erreur ici, par exemple en affichant un message d'erreur à l'utilisateur
