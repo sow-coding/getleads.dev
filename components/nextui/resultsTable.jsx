@@ -4,7 +4,7 @@ import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip
 import {columns} from "./resultsTableData";
 import { useRouter } from "next/navigation";
 
-export function ResultsTable ({ organizations }) {
+export function ResultsTable ({ organizations, searchId }) {
   const router = useRouter()
   const renderCell = React.useCallback((organization, columnKey) => {
   const cellValue = organization[columnKey];  
@@ -23,7 +23,7 @@ export function ResultsTable ({ organizations }) {
         return (
           <div className="relative flex items-center gap-2">
             <Button shadow color="success" auto onPress={() => {
-              router.push(`/search/organization?uuid=${organization.uuid}`)
+              router.push(`/search/organization?searchId=${searchId}&uuid=${organization.uuid}`)
             }}>
               Details
             </Button>
@@ -32,7 +32,7 @@ export function ResultsTable ({ organizations }) {
       default:
         return cellValue;
     }
-  }, [router]);
+  }, [searchId, router]);
 
   return (
   <Table aria-label="Example table with custom cells">

@@ -200,7 +200,7 @@ function Result() {
           {loading ? (
             <p>Loading...</p> // Affiche un indicateur de chargement pendant le chargement des données
           ) : (
-            <ResultsTable organizations={searchResult} /> // Passer les données chargées au tableau des résultats
+            <ResultsTable organizations={searchResult} searchId={searchId} /> // Passer les données chargées au tableau des résultats
           )}
         </div>
       </div>
