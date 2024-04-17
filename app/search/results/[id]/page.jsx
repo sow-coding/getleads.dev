@@ -6,15 +6,6 @@ import { CircleUser, Menu, Package2, Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -24,15 +15,22 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { DataTableResult } from '@/components/ui/organizationsTable'
+import { ResultsTable } from "@/components/nextui/resultsTable"
 
 function Result() {
   const searchparams = useSearchParams()
   const searchId = searchparams.get('id')
   const [searchResult, setSearchResult] = React.useState(null)
+  const [loading, setLoading] = React.useState(true)
 
   useEffect(() => {
     const getSearchResult = async () => {
+      if (!searchId) {
+        // Si aucun searchId n'est fourni, rediriger ou gérer l'erreur
+        redirect("/search");
+        return;
+      }
+
       const response = await fetch('/api/getSearchResult', {
         method: 'POST',
         headers: {
@@ -40,15 +38,20 @@ function Result() {
         },
         body: JSON.stringify({ searchId })
       });
+
+      if (!response.ok) {
+        console.error(`Failed to fetch search results: ${response.statusText}`);
+        // Gérer l'erreur ici, par exemple en affichant un message d'erreur à l'utilisateur
+        setLoading(false);
+        return;
+      }
+
       const data = await response.json();
-      setSearchResult(data);
+      setSearchResult(data.organizations_searched);
+      setLoading(false);
     };
 
-    if (searchId) {
-      getSearchResult();
-    } else {
-      redirect("/search")
-    }
+    getSearchResult();
   }, [searchId]);
 
   return (
@@ -180,6 +183,9 @@ function Result() {
         <nav
           className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0"
         >
+          {/* Recuperer infos de la recherche, les filters pour cette recherche a enregistrer dans db du coup
+            mais ici on va juste les afficher, size, stack etc pour cette recherche
+          */}
           <Link href="#" className="font-semibold text-primary">
             General
           </Link>
@@ -191,8 +197,11 @@ function Result() {
         </nav>
         <div className="grid gap-6">
           {/* passer searchResult en props au table */}
-          {/* mettre celui de nextui sayait pas le temps de se casser la tete */}
-          <DataTableResult />
+          {loading ? (
+            <p>Loading...</p> // Affiche un indicateur de chargement pendant le chargement des données
+          ) : (
+            <ResultsTable organizations={searchResult} /> // Passer les données chargées au tableau des résultats
+          )}
         </div>
       </div>
     </main>
