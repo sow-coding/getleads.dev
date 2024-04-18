@@ -21,7 +21,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import EmployeesMultipleSelect from "../nextui/employeesMultipleSelect"
-import CitiesAutoComplete from "../nextui/CitiesAutoComplete"
 import CitiesSelect from "../nextui/citiesSelect"
 import { useRouter } from "next/navigation"
 import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
@@ -178,7 +177,7 @@ export function SearchPage () {
               <CardContent>
                 <form className="flex max-lg:flex-col items-start">
                   <CountriesMultipleSelect />
-                  <CitiesSelect /> {/* A la place ce citiesAutoComplete */}
+                  <CitiesSelect /> {/* Mettre un async autocomplete*/}
                   <EmployeesMultipleSelect />
                 </form>
               </CardContent>

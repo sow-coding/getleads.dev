@@ -12,7 +12,7 @@ export default function IndustryAutoComplete() {
     const newIndustry = String(key);
 
     // Vérifier si la ville est déjà incluse pour éviter les doublons
-    if (newIndustry !== null && !industries.includes(newIndustry)) {
+    if ((newIndustry !== null && !industries.includes(newIndustry))) {
       setIndustries(prevCities => [...prevCities, newIndustry]);
     }
   };

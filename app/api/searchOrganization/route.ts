@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       { type: "predicate", field_id: "categories", operator_id: "includes", values: inputRequestBody?.industries },
       { type: "predicate", field_id: "location_identifiers", operator_id: "includes", values: inputRequestBody?.countries}
     ],
-    limit: 2
+    limit: 9
   };
 
   const response = await fetch("https://api.crunchbase.com/api/v4/searches/organizations", {

@@ -22,7 +22,7 @@ export function ResultsTable ({ organizations, searchId }) {
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <Button shadow color="success" auto onPress={() => {
+            <Button shadow color="primary" auto onPress={() => {
               router.push(`/search/organization?searchId=${searchId}&uuid=${organization.uuid}`)
             }}>
               Details

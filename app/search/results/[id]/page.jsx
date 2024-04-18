@@ -20,9 +20,9 @@ import { ResultsTable } from "@/components/nextui/resultsTable"
 function Result() {
   const searchparams = useSearchParams()
   const searchId = searchparams.get('id')
-  const [searchResult, setSearchResult] = React.useState(null)
+  const [searchResult, setSearchResult] = React.useState([])
   const [loading, setLoading] = React.useState(true)
-
+  
   useEffect(() => {
     const getSearchResult = async () => {
       if (!searchId) {
@@ -183,8 +183,7 @@ function Result() {
         <nav
           className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0"
         >
-          {/* Recuperer infos de la recherche, les filters pour cette recherche a enregistrer dans db du coup
-            mais ici on va juste les afficher, size, stack etc pour cette recherche
+          {/* Afficher filtres de recherche ici
           */}
           <Link href="#" className="font-semibold text-primary">
             General
@@ -196,11 +195,10 @@ function Result() {
           <Link href="#">Advanced</Link>
         </nav>
         <div className="grid gap-6">
-          {/* passer searchResult en props au table */}
           {loading ? (
-            <p>Loading...</p> // Affiche un indicateur de chargement pendant le chargement des données
+            <p>Loading...</p> // mettre progress spinner ici
           ) : (
-            <ResultsTable organizations={searchResult} searchId={searchId} /> // Passer les données chargées au tableau des résultats
+            <ResultsTable organizations={searchResult} searchId={searchId} />
           )}
         </div>
       </div>

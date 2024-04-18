@@ -26,13 +26,13 @@ import { useOrganizationsContext } from "@/contexts/organizations.context"
 import { useStackContext } from "@/contexts/stack.context"
 import { useState } from "react"
 import { useFiltersContext } from "@/contexts/filters.context"
+import { useRouter } from "next/navigation"
 
 export function StackPage () {
-  const {setOrganizations} = useOrganizationsContext()
   const { stack } = useStackContext()
   const {countries, cities, sizes, industries} = useFiltersContext()
-  console.log(countries, cities, sizes, industries)
   const [stackHere, setStackHere] = useState([]);
+  const router = useRouter()
 
   const handleVerifyOrganizations = async () => {
     try {
@@ -56,14 +56,12 @@ export function StackPage () {
       const crunchbaseResponse = await response.json();
       const result = await verifyOrganizationsWithStack(crunchbaseResponse, stack);
       const { id, entities } = result;  // Déstructuration pour obtenir l'ID et les entités
-  
-      setOrganizations(entities);  // Mettre à jour l'état avec les entités vérifiées
-      entities?.length > 0 && await saveSearchResults(id, entities);  // Sauvegarder les résultats avec l'ID pour référence future
-      //renvoyer vers results/id avec comme id le searchId renvoyé par l'api dans l'url query searchId
-      //exemple url: http://localhost:3000/search/results/search?id=d8474bfa-abc6-4de6-b3e8-d336b0ecd715
+      const searchFilters = { countries, cities, sizes, industries, stack };  // Créer un objet de filtres de recherche
+      entities?.length > 0 ? await saveSearchResults(id, entities, searchFilters) : router.push("/search?empty=yes") // Sauvegarder les résultats avec l'ID pour référence future
+      router.push(`/search/results/search?id=${id}`);
     } catch (error) {
       console.error("Failed to verify organizations:", error);
-      // Gérer l'erreur ici, par exemple en affichant un message d'erreur à l'utilisateur
+      router.push("/error")
     }
   };
   

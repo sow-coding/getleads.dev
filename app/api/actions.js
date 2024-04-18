@@ -55,7 +55,7 @@ async function lookupWithHunter(url, stack) {
         const detectedTechs = data.data.technologies;
 
         // Vérifier si toutes les technologies dans la stack sont présentes dans les technologies détectées
-        const isStackFullyUsed = stack.every(tech => detectedTechs.includes(tech));
+        const isStackFullyUsed = stack.map(tech => tech.toLowerCase()).every(tech => detectedTechs.includes(tech));
 
         return isStackFullyUsed;
     } catch (error) {
@@ -106,13 +106,12 @@ export async function verifyOrganizationsWithStack(entities, stack) {
         id: uuidv4(),
         entities: verifiedEntities
     };
-
     return entitiesWithId;
 }
 
 
 
-export async function saveSearchResults(searchId, organizations) {
+export async function saveSearchResults(searchId, organizations, searchFilters) {
     let userId = null;
 
     const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -124,7 +123,7 @@ export async function saveSearchResults(searchId, organizations) {
     const { data, error } = await supabase
     .from('searches')
     .insert([
-      { user_id: userId, searchId: searchId, organizations_searched: JSON.stringify(organizations) }
+      { user_id: userId, searchId: searchId, organizations_searched: organizations, filters: searchFilters }
     ]);
 
     if (error) {
