@@ -1,5 +1,5 @@
 "use client"
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Image from "next/image"
         import Link from "next/link"
@@ -62,11 +62,6 @@ import Image from "next/image"
           TabsList,
           TabsTrigger,
         } from "@/components/ui/tabs"
-        import {
-          Tooltip,
-          TooltipContent,
-          TooltipTrigger,
-        } from "@/components/ui/tooltip"
 
 function DecisionMakers() {
     const searchParams = useSearchParams()
@@ -74,9 +69,9 @@ function DecisionMakers() {
     const name = searchParams.get("name")
     const [loading, setLoading] = useState(true)
     const [decisionMakers, setDecisionMakers] = useState([])
+    const router = useRouter()
 
     useEffect(() => {
-        console.log("async called")
         async function getDecisionMakers() {
             const response = await fetch(`/api/getDecisionMakers`, {
                 method: "POST",
@@ -285,7 +280,9 @@ return (
                     <TableBody>
                         
                         {decisionMakers.map((decisionMaker) => (
-                            <TableRow key={decisionMaker?.id}>
+                            <TableRow key={decisionMaker?.id} onClick={() => {
+                                router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
+                            }}>
                                 <TableCell className="font-medium">
                                     {decisionMaker?.name}
                                 </TableCell>
@@ -315,7 +312,10 @@ return (
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end">
                                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                        <DropdownMenuItem>Contact</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={(e) => {
+                                            e.stopPropagation()
+                                            router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
+                                        }}>Contact</DropdownMenuItem>
                                         <DropdownMenuItem>Delete</DropdownMenuItem>
                                     </DropdownMenuContent>
                                     </DropdownMenu>
