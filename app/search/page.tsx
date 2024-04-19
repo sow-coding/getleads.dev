@@ -1,14 +1,6 @@
-"use client"
-import { useSearchParams } from 'next/navigation'
 import React from 'react'
 
 function Search() {
-  const searchParams = useSearchParams()
-  const empty = searchParams.get('empty')
-  
-  if (empty === "yes") {
-    alert("Aucun résultat trouvé")
-  }
   //recupere dans db tous les historiques de recherche avec userId et donc
   //afficher tous les organizations_searched du moins quelques infos sous card que tu clique sa tamene vers page
   // de la recherche avec searchId

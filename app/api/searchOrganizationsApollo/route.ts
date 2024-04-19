@@ -1,12 +1,16 @@
-export async function POST(request) {
+export async function POST(request: Request) {
     const inputRequestBody = await request.json();
 
     const requestBody = {
         api_key: process.env.APOLLO_API_KEY,
-        organization_ids: [inputRequestBody.id],
+        organization_num_employees_ranges: inputRequestBody.sizes,
+        organization_locations: inputRequestBody.countries,
+        q_organization_keyword_tags: inputRequestBody.industries, // en minuscle ici chaque element du tableau
+        per_page: 2,
+        page: 1
     };
 
-    const response = await fetch('https://api.apollo.io/v1/mixed_people/search', {
+    const response = await fetch('https://api.apollo.io/api/v1/mixed_companies/search', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -16,7 +20,7 @@ export async function POST(request) {
     });
 
     if (!response.ok) {
-        return new Response('Error from Apollo API' + response.text());
+        return new Response('Error from Apollo API' + response.text);
     }
 
     const data = await response.json();

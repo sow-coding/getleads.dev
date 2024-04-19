@@ -196,5 +196,13 @@ export const countries: Country[] = [
     { name: "Vietnam" },
     { name: "Yemen" },
     { name: "Zambia" },
-    { name: "Zimbabwe" }
+    { name: "Zimbabwe" },
+    { name: "Europe"},
+    { name: "Asia"},
+    { name: "Africa"},
+    { name: "North America"},
+    { name: "South America"},
+    { name: "Oceania"},
+    { name: "Antarctica"},
+    { name: "Worldwide"}
 ];

@@ -1,11 +1,11 @@
 export async function POST (request) {
 
     const inputRequestBody = await request.json();
-    const { id } = inputRequestBody;
+    const { name } = inputRequestBody;
     const requestBody = {
       field_ids: ["gender", "name", "linkedin", "primary_job_title", "primary_organization"],
       query: [
-        { type: "predicate", field_id: "primary_organization", operator_id: "contains", values: [id] },
+        { type: "predicate", field_id: "primary_organization", operator_id: "contains", values: [name] },
       ]
     };
   

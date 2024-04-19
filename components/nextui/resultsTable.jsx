@@ -11,19 +11,19 @@ export function ResultsTable ({ organizations, searchId }) {
     switch (columnKey) {
       case "name":
         return (
-          <h3>{organization.properties.identifier.value}</h3>
+          <h3>{organization.name}</h3>
         );
       case "description":
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-sm capitalize text-default-400">{organization.properties.short_description}</p>
+            <p className="text-bold text-sm capitalize text-default-400">{organization.name}</p>
           </div>
         );
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
             <Button shadow color="primary" auto onPress={() => {
-              router.push(`/search/organization?searchId=${searchId}&uuid=${organization.uuid}`)
+              router.push(`/search/organization?searchId=${searchId}&id=${organization.id}`)
             }}>
               Details
             </Button>
@@ -46,7 +46,7 @@ export function ResultsTable ({ organizations, searchId }) {
 
       <TableBody items={organizations}>
         {(item) => (
-          <TableRow key={item.uuid}>
+          <TableRow key={item.id}>
             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
           </TableRow>
         )}

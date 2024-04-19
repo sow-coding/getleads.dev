@@ -2,7 +2,7 @@ import { supabase } from "@/utils/supabase/auth";
 
 export async function POST (request) {
     // Extraire le searchId et l'UUID de l'entité spécifique de la requête
-    const { searchId, entityUuid } = await request.json();
+    const { searchId, id } = await request.json();
 
     // Requête à la base de données pour récupérer le tableau des entités
     const { data, error } = await supabase
@@ -31,7 +31,7 @@ export async function POST (request) {
     }
 
     // Trouver l'entité spécifique par UUID
-    const specificEntity = data.organizations_searched.find(entity => entity.uuid == entityUuid);
+    const specificEntity = data.organizations_searched.find(entity => entity.id == id);
 
     if (!specificEntity) {
         return new Response(JSON.stringify({ error: "Entity not found" }), {

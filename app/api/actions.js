@@ -18,8 +18,9 @@ function normalizeUrl(url) {
 }
 
 async function lookupBuiltWith(urls, stack) {
+    // remettre les 3 normalizeUrl
     const apiKey = process.env.BUILTWITH_API_KEY;
-    const urlList = urls.map(url => normalizeUrl(url)).join(',');
+    const urlList = urls.map(url => url).join(',');
     const builtWithUrl = `https://api.builtwith.com/v21/api.json?KEY=${apiKey}&LIVEONLY=yes&HIDETEXT=yes&NOMETA=yes&NOPII=yes&NOLIVE=yes&NOATTR=yes&LOOKUP=${urlList}`;
 
     try {
@@ -45,7 +46,6 @@ async function lookupBuiltWith(urls, stack) {
 async function lookupWithHunter(url, stack) {
     const apiKey = process.env.HUNTER_API_KEY;
     const hunterUrl = `https://api.hunter.io/v2/domain-search?domain=${url}&api_key=${apiKey}`;
-
     try {
         const response = await fetch(hunterUrl);
         if (!response.ok) throw new Error('Réponse non valide de Hunter');
@@ -53,10 +53,9 @@ async function lookupWithHunter(url, stack) {
         const data = await response.json();
         // Ici, nous supposons que 'technologies' est un tableau de noms de technologies sous 'data.data.technologies'
         const detectedTechs = data.data.technologies;
-
+        console.log('Technologies détectées par Hunter:', detectedTechs);
         // Vérifier si toutes les technologies dans la stack sont présentes dans les technologies détectées
         const isStackFullyUsed = stack.map(tech => tech.toLowerCase()).every(tech => detectedTechs.includes(tech));
-
         return isStackFullyUsed;
     } catch (error) {
         console.error('Erreur lors de l’appel à API Hunter:', error);
@@ -109,6 +108,52 @@ export async function verifyOrganizationsWithStack(entities, stack) {
     return entitiesWithId;
 }
 
+export async function verifyOrganizationsWithStackApollo(entities, stack) {
+    const websiteDomains = entities.map(entity => entity.primary_domain);
+    const urlChunks = chunkArray(websiteDomains, 16);
+    let results = {};
+
+    const specificTechs = ["PHP", "React", "AngularJS", "Angular", "Next.js", "Ember.js", "Node.js", "Meteor"];
+
+    for (const urls of urlChunks) {
+        const hunterResults = await Promise.all(urls.map(url => {
+            if (stack.length === 1 && specificTechs.includes(stack[0])) {
+                return lookupWithHunter(url, stack);  // Assurez-vous que cette fonction renvoie `true` ou `false`
+            }
+            return Promise.resolve(null);  // Utiliser `null` pour indiquer qu'aucun résultat n'a été obtenu
+        }));
+
+        // Filtrer uniquement les URLs qui n'ont pas de résultat valide (null indique qu'Hunter n'a pas été utilisé ou a échoué)
+        const builtWithNeeded = urls.filter((url, index) => hunterResults[index] === null);
+
+        if (builtWithNeeded.length > 0) {
+            const builtWithResults = await lookupBuiltWith(builtWithNeeded, stack);
+            builtWithNeeded.forEach((url) => {
+                results[url] = builtWithResults[url];
+            });
+        }
+
+        // Mettre à jour les résultats avec les réponses de Hunter quand elles sont valides
+        urls.forEach((url, index) => {
+            if (hunterResults[index] !== null) { // Utilise les résultats de Hunter si disponibles
+                results[url] = hunterResults[index];
+            }
+        });
+    }
+
+    const verifiedEntities = entities.filter(entity => {
+        return results[entity.primary_domain]; // Vérifier que les entités répondent à la condition de stack
+    });
+
+    // Créer un objet contenant l'ID du tableau et le tableau lui-même
+    const entitiesWithId = {
+        id: uuidv4(),
+        entities: verifiedEntities
+    };
+    return entitiesWithId;
+}
+
+
 
 
 export async function saveSearchResults(searchId, organizations, searchFilters) {
@@ -132,3 +177,4 @@ export async function saveSearchResults(searchId, organizations, searchFilters) 
         console.log('Résultats de recherche sauvegardés avec succès:', data);
     }
 }
+

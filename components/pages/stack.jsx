@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
-import { saveSearchResults, verifyOrganizationsWithStack } from "../../app/api/actions"
+import { saveSearchResults, verifyOrganizationsWithStack, verifyOrganizationsWithStackApollo } from "../../app/api/actions"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -22,7 +22,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import StackAutocomplete from "../nextui/stackAutocomplete"
-import { useOrganizationsContext } from "@/contexts/organizations.context"
 import { useStackContext } from "@/contexts/stack.context"
 import { useState } from "react"
 import { useFiltersContext } from "@/contexts/filters.context"
@@ -34,9 +33,10 @@ export function StackPage () {
   const [stackHere, setStackHere] = useState([]);
   const router = useRouter()
 
+  //integrer pour API Apollo
   const handleVerifyOrganizations = async () => {
     try {
-      const response = await fetch('/api/searchOrganization', {
+      /*const response = await fetch('/api/searchOrganizations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,15 +47,31 @@ export function StackPage () {
           sizes: sizes,
           industries: industries
         })
-      });
+      });*/
+      const response = await fetch("/api/searchOrganizationsApollo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          countries: countries,
+          sizes: sizes,
+          industries: industries
+        }),
+      
+      })
   
       if (!response.ok) {
         throw new Error(`Failed to fetch organizations: ${response.statusText}`);
       }
   
-      const crunchbaseResponse = await response.json();
-      const result = await verifyOrganizationsWithStack(crunchbaseResponse, stack);
+      //const crunchbaseResponse = await response.json();
+      const apolloResponse = await response.json();
+      const apolloOrganizations = apolloResponse.organizations;
+      //const result = await verifyOrganizationsWithStack(crunchbaseResponse, stack);
+      const result = await verifyOrganizationsWithStackApollo(apolloOrganizations, stack);
       const { id, entities } = result;  // Déstructuration pour obtenir l'ID et les entités
+      console.log("Entities:", entities);
       const searchFilters = { countries, cities, sizes, industries, stack };  // Créer un objet de filtres de recherche
       entities?.length > 0 ? await saveSearchResults(id, entities, searchFilters) : router.push("/search?empty=yes") // Sauvegarder les résultats avec l'ID pour référence future
       router.push(`/search/results/search?id=${id}`);

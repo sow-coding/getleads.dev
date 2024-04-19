@@ -15,12 +15,11 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import {Chip} from "@nextui-org/react";
 
 function Organization() {
   const searchParams = useSearchParams()
   const searchId = searchParams.get("searchId")
-  const uuid = searchParams.get("uuid")
+  const id = searchParams.get("id")
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [entity, setEntity] = useState({})
@@ -37,7 +36,7 @@ function Organization() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ searchId: searchId, entityUuid: uuid})
+          body: JSON.stringify({ searchId: searchId, id: id})
         });
   
         if (!response.ok) {
@@ -58,7 +57,7 @@ function Organization() {
         });       
     }
     getOrganization()
-  }, [searchId, uuid, router])
+  }, [searchId, id, router])
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -190,38 +189,11 @@ function Organization() {
         </div>
         </main> : <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
         <div className="mx-auto flex justify-between w-full max-w-6xl gap-2">
-            <h1 className="text-3xl font-semibold">{entity?.properties?.identifier?.value}</h1>
+            <h1 className="text-3xl font-semibold">{entity?.name}</h1>
             <Button onClick={() => {
-              router.push(`/search/${entity?.properties?.identifier?.value}/decisionMakers?domain=${entity?.properties?.website_url}&id=${entity?.uuid}`)
+              router.push(`/search/${entity?.name}/decisionMakers?id=${entity?.id}&name=${entity?.name}`)
             }}>See the decision-makers</Button>
         </div>
-
-        <div className="mx-auto flex flex-col">
-
-            <div className="description flex w-full">
-              <p className="w-full font-semibold">{entity?.properties?.short_description}</p>
-            </div>
-
-            <div style={{margin: "10px 0"}}>
-              <h1 style={{fontSize: "20px", fontWeight: "bold"}}>Industries</h1>
-              <div style={{display: "flex", width: "100%"}} className="industries">
-              {entity?.properties?.categories.map((industry, index) => (
-                <Chip style={{margin: "10px 5px"}} key={index}>{industry.value}</Chip>
-              ))}
-              </div>
-            </div>
-
-            <div style={{margin: "10px 0"}}>
-              <h1 style={{fontSize: "20px", fontWeight: "bold"}}>Locations</h1>
-              <div style={{display: "flex", width: "100%"}} className="locations">
-              {entity?.properties?.location_identifiers.map((location, index) => (
-                <Chip style={{margin: "10px 5px"}} key={index}>{location.value}</Chip>
-              ))}
-              </div>
-            </div>
-
-        </div>
-
         </main>
         }
     </div>

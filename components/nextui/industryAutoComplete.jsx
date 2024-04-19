@@ -9,13 +9,13 @@ export default function IndustryAutoComplete() {
 
   const onSelectionChange = (key) => {
     // Assurer que la clé est une chaîne avant de l'ajouter
-    const newIndustry = String(key);
-
+    const newIndustry = String(key).toLowerCase(); // Convertir en minuscules
+  
     // Vérifier si la ville est déjà incluse pour éviter les doublons
     if ((newIndustry !== null && !industries.includes(newIndustry))) {
-      setIndustries(prevCities => [...prevCities, newIndustry]);
+      setIndustries(prevIndustries => [...prevIndustries, newIndustry]);
     }
-  };
+  };  
 
   return (
     <div className="flex flex-col gap-4">

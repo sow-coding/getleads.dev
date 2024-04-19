@@ -12,6 +12,7 @@ export async function POST (request: Request) {
         
     if (error) {
         console.error(error)
+        return new Response('Error from Supabase API' + error.message)
     } else {
         return new Response(JSON.stringify(data), {
             status: 200, 
