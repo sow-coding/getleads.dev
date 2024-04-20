@@ -1,12 +1,16 @@
-import React from 'react'
+import SearchHistory from "@/components/pages/searchHistory";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
-function Search() {
-  //recupere dans db tous les historiques de recherche avec userId et donc
-  //afficher tous les organizations_searched du moins quelques infos sous card que tu clique sa tamene vers page
-  // de la recherche avec searchId
-  return (
-    <div>Voici votre historique de recherche</div>
-  )
+export default async function SearchHistoryPage () {
+  const supabase = createClient()
+  
+  const { data, error } = await supabase.auth.getUser()
+  const userId = data.user?.id
+
+  if (error || !data?.user) {
+    redirect("/login")
+  } 
+  
+  return <SearchHistory userId={userId} />
 }
-
-export default Search

@@ -230,41 +230,6 @@ return (
                 <TabsTrigger value="decision-makers">Decision-makers</TabsTrigger>
                 <TabsTrigger value="all">All</TabsTrigger>
                 </TabsList>
-                <div className="ml-auto flex items-center gap-2">
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-7 gap-1">
-                        <ListFilter className="h-3.5 w-3.5" />
-                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                        Filter
-                        </span>
-                    </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuCheckboxItem checked>
-                        Active
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>
-                        Archived
-                    </DropdownMenuCheckboxItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-                <Button size="sm" variant="outline" className="h-7 gap-1">
-                    <File className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Export
-                    </span>
-                </Button>
-                <Button size="sm" className="h-7 gap-1">
-                    <PlusCircle className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Add Product
-                    </span>
-                </Button>
-                </div>
             </div>
 
             {loading ? <h1>Loading...</h1> : 
@@ -398,7 +363,9 @@ return (
                                     {decisionMaker?.seniority}
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                    <a target='_blank' href={`${decisionMaker?.linkedin_url}`}>
+                                    <a onClick={(e) => {
+                                        e.stopPropagation()
+                                    }} target='_blank' href={`${decisionMaker?.linkedin_url}`}>
                                         <Button color='primary'>Linkedin</Button>
                                     </a>
                                 </TableCell>

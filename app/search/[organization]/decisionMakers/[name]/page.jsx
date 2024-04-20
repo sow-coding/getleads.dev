@@ -1,7 +1,6 @@
 "use client"
 import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import {
     File,
@@ -57,11 +56,30 @@ function DecisionMaker () {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
+                id: id,
                 email: decisionMaker?.person?.email
             })
         })
         if (!response.ok) {
             throw new Error("Failed to verify email" + response.text())
+        }
+        const data = await response.json()
+        setEmail(data)    
+    }
+
+    async function emailVerificationByDb() {
+        const response = await fetch(`/api/emailVerificationByDb`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id,
+                email: decisionMaker?.person?.email
+            })
+        })
+        if (!response.ok) {
+            emailVerification()
         }
         const data = await response.json()
         setEmail(data)    
@@ -85,10 +103,44 @@ function DecisionMaker () {
         const data = await response.json()
         setDeliverableEmail(data)   
     }
+
+    async function getEmailByDb () {
+        const response = await fetch(`/api/getDeliverableEmailByDb`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id
+            })
+        })
+        if (!response.ok) {
+            getEmail()
+        }
+        const data = await response.json()
+        setDeliverableEmail(data)
+    }
     
     useEffect(() => {
-        async function getDecisionMakers() {
+        async function getDecisionMaker() {
             const response = await fetch(`/api/getSoloDecisionMaker`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: id
+                })
+            })
+            if (!response.ok) {
+                throw new Error("Failed to verify email" + response.text())
+            }
+            const data = await response.json()
+            setDecisionMaker(data)
+            setLoading(false)
+        }
+        async function getDecisionMakerByDb() {
+            const response = await fetch(`/api/getSoloDecisionMakerByDb`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -98,14 +150,17 @@ function DecisionMaker () {
                 })
             
             })
+            if (!response.ok) {
+                getDecisionMaker()
+            }
             const data = await response.json()
             setDecisionMaker(data)
             setLoading(false)
         }
-        getDecisionMakers()
+        getDecisionMakerByDb()
     }, [id])
 
-return (
+    return (
     <div className="flex min-h-screen w-full flex-col">
         <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -255,7 +310,7 @@ return (
                     </CardContent>
                     <CardFooter className="border-t px-6 py-4">
                     <Button onClick={() => {
-                        emailVerification()
+                        emailVerificationByDb()
                     }}>Verify</Button>
                     </CardFooter>
                 </Card>
@@ -283,7 +338,7 @@ return (
                     { email?.data?.result == "undeliverable" && 
                     <CardFooter className="border-t px-6 py-4">
                     <Button onClick={() => {
-                        getEmail()
+                        getEmailByDb()
                     }}>Get a deliverable email</Button>
                     </CardFooter>
                     }

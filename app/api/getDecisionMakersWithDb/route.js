@@ -9,7 +9,7 @@ export async function POST (request) {
     .single()
     
     if (error) {
-        return new Response('Error from Supabase API' + error);
+        return new Response('Error from Supabase API' + error.message);
     }
     return new Response(JSON.stringify(decisionMakers), {
         status: 200,
