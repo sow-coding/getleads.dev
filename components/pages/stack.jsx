@@ -71,7 +71,6 @@ export function StackPage () {
       //const result = await verifyOrganizationsWithStack(crunchbaseResponse, stack);
       const result = await verifyOrganizationsWithStackApollo(apolloOrganizations, stack);
       const { id, entities } = result;  // Déstructuration pour obtenir l'ID et les entités
-      console.log("Entities:", entities);
       const searchFilters = { countries, cities, sizes, industries, stack };  // Créer un objet de filtres de recherche
       entities?.length > 0 ? await saveSearchResults(id, entities, searchFilters) : router.push("/search?empty=yes") // Sauvegarder les résultats avec l'ID pour référence future
       router.push(`/search/results/search?id=${id}`);

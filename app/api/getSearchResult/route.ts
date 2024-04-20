@@ -6,7 +6,7 @@ export async function POST (request: Request) {
 
     const { data, error } = await supabase
         .from('searches')
-        .select('organizations_searched')
+        .select('organizations_searched, filters')
         .eq('searchId', searchId)
         .single()
         

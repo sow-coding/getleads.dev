@@ -67,6 +67,7 @@ function DecisionMakers() {
     const searchParams = useSearchParams()
     const id = searchParams.get("id")
     const name = searchParams.get("name")
+    const searchId = searchParams.get("searchId")
     const [loading, setLoading] = useState(true)
     const [decisionMakers, setDecisionMakers] = useState([])
     const router = useRouter()
@@ -79,7 +80,8 @@ function DecisionMakers() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    id: id
+                    id: id,
+                    searchId: searchId
                 })
             
             })
@@ -87,8 +89,27 @@ function DecisionMakers() {
             setDecisionMakers(data?.people)
             setLoading(false)
         }
-        getDecisionMakers()
-    }, [id])
+        async function getDecisionMakersWithDb() {
+            const response = await fetch(`/api/getDecisionMakersWithDb`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    searchId: searchId
+                })
+            
+            })
+            const data = await response.json()
+            if(!data.decisionMakers) {
+                getDecisionMakers()
+                return
+            }
+            setDecisionMakers(data.decisionMakers)
+            setLoading(false)   
+        }
+        getDecisionMakersWithDb()
+    }, [id, searchId])
 
 return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -206,9 +227,8 @@ return (
 
             <div className="flex items-center">
                 <TabsList>
+                <TabsTrigger value="decision-makers">Decision-makers</TabsTrigger>
                 <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="active">Decision-makers</TabsTrigger>
-                {/* RAJOUTER LE FILTRAGE */}
                 </TabsList>
                 <div className="ml-auto flex items-center gap-2">
                 <DropdownMenu>
@@ -248,12 +268,96 @@ return (
             </div>
 
             {loading ? <h1>Loading...</h1> : 
-                <TabsContent value="all">
+            <>
+            <TabsContent value="decision-makers">
+            <Card x-chunk="dashboard-06-chunk-0">
+            <CardHeader>
+                <CardTitle>People - {name}</CardTitle>
+                <CardDescription>
+                    {` Don't `}waste your time and contact the right people directly, the decision makers.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="hidden w-[100px] sm:table-cell">
+                                <span className="sr-only">Image</span>
+                            </TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Title</TableHead>
+                            <TableHead className="hidden md:table-cell">
+                                Seniority
+                            </TableHead>
+                            <TableHead className="hidden md:table-cell">
+                                Linkedin
+                            </TableHead>
+                            <TableHead>
+                                <span className="sr-only">Actions</span>
+                            </TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {decisionMakers
+                            .filter(decisionMaker => decisionMaker?.departments[0] === "c_suite")
+                            .map((decisionMaker) => (
+                                <TableRow key={decisionMaker?.id} onClick={() => {
+                                    router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
+                                }}>
+                                    <TableCell className="font-medium">
+                                        {decisionMaker?.name}
+                                    </TableCell>
+                                    <TableCell>
+                                        <Badge variant="outline">{decisionMaker?.departments[0]}</Badge>
+                                    </TableCell>
+                                    <TableCell>{decisionMaker?.title}</TableCell>
+                                    <TableCell className="hidden md:table-cell">
+                                        {decisionMaker?.seniority}
+                                    </TableCell>
+                                    <TableCell className="hidden md:table-cell">
+                                        <a target='_blank' href={`${decisionMaker?.linkedin_url}`}>
+                                            <Button color='primary'>Linkedin</Button>
+                                        </a>
+                                    </TableCell>
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    aria-haspopup="true"
+                                                    size="icon"
+                                                    variant="ghost"
+                                                >
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                    <span className="sr-only">Toggle menu</span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                <DropdownMenuItem onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
+                                                }}>Contact</DropdownMenuItem>
+                                                <DropdownMenuItem>Delete</DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                    </TableBody>
+                </Table>
+            </CardContent>
+            <CardFooter>
+            </CardFooter>
+        </Card>
+            </TabsContent>
+
+            <TabsContent value="all">
                 <Card x-chunk="dashboard-06-chunk-0">
                 <CardHeader>
                     <CardTitle>People - {name}</CardTitle>
                     <CardDescription>
-                   {` Don't `}waste your time and contact the right people directly, the decision makers.
+                    Someone other than the decision makers ?
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -279,7 +383,7 @@ return (
                     </TableHeader>
                     <TableBody>
                         
-                        {decisionMakers.map((decisionMaker) => (
+                        {decisionMakers?.map((decisionMaker) => (
                             <TableRow key={decisionMaker?.id} onClick={() => {
                                 router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
                             }}>
@@ -329,6 +433,9 @@ return (
                 </CardFooter>
                 </Card>
             </TabsContent>
+
+            </>
+            
             }
             </Tabs>
         </main>

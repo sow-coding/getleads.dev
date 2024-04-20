@@ -1,5 +1,5 @@
 "use client"
-import { redirect, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
@@ -22,12 +22,14 @@ function Result() {
   const searchId = searchparams.get('id')
   const [searchResult, setSearchResult] = React.useState([])
   const [loading, setLoading] = React.useState(true)
+  const [filters, setFilters] = React.useState({})
+  const router = useRouter()
   
   useEffect(() => {
     const getSearchResult = async () => {
       if (!searchId) {
         // Si aucun searchId n'est fourni, rediriger ou gérer l'erreur
-        redirect("/search");
+        router.push("/search")
         return;
       }
 
@@ -48,11 +50,12 @@ function Result() {
 
       const data = await response.json();
       setSearchResult(data.organizations_searched);
+      setFilters(data.filters);
       setLoading(false);
     };
 
     getSearchResult();
-  }, [searchId]);
+  }, [searchId, router]);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -177,7 +180,7 @@ function Result() {
     </header>
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
       <div className="mx-auto grid w-full max-w-6xl gap-2">
-        <h1 className="text-3xl font-semibold">Settings</h1>
+        <h1 className="text-3xl font-semibold">Filters</h1>
       </div>
       <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
         <nav
@@ -185,14 +188,31 @@ function Result() {
         >
           {/* Afficher filtres de recherche ici
           */}
-          <Link href="#" className="font-semibold text-primary">
-            General
+          <Link href="#">
+            {filters?.sizes?.map((size) => (
+              <span key={size}>{size}</span>
+            ))}
           </Link>
-          <Link href="#">Security</Link>
-          <Link href="#">Integrations</Link>
-          <Link href="#">Support</Link>
-          <Link href="#">Organizations</Link>
-          <Link href="#">Advanced</Link>
+          <Link href="#">
+            {filters?.stack?.map((stack) => (
+              <span key={stack}>{stack}</span>
+            ))}
+          </Link>
+          <Link href="#">
+            {filters?.industries?.map((industry) => (
+              <span key={industry}>{industry}</span>
+            ))}
+          </Link>
+          <Link href="#">
+            {filters?.cities?.map((city) => (
+              <span key={city}>{city}</span>
+            ))}
+          </Link>
+          <Link href="#">
+            {filters?.countries?.map((country) => (
+              <span key={country}>{country}</span>
+            ))}
+          </Link>
         </nav>
         <div className="grid gap-6">
           {loading ? (

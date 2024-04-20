@@ -191,7 +191,7 @@ function Organization() {
         <div className="mx-auto flex justify-between w-full max-w-6xl gap-2">
             <h1 className="text-3xl font-semibold">{entity?.name}</h1>
             <Button onClick={() => {
-              router.push(`/search/${entity?.name}/decisionMakers?id=${entity?.id}&name=${entity?.name}`)
+              router.push(`/search/${entity?.name}/decisionMakers?id=${entity?.id}&name=${entity?.name}&searchId=${searchId}`)
             }}>See the decision-makers</Button>
         </div>
         </main>
