@@ -2,7 +2,9 @@
 import Image from "next/image"
 import Link from "next/link"
 import {
+  CircleUser,
   File,
+  History,
   Home,
   LineChart,
   ListFilter,
@@ -14,6 +16,7 @@ import {
   Search,
   Settings,
   ShoppingCart,
+  Star,
   Users2,
 } from "lucide-react"
 
@@ -62,6 +65,7 @@ import {
 } from "@/components/ui/tabs"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { logout } from "@/app/login/actions"
 
 
 export default function SearchHistory({userId}) {
@@ -96,7 +100,8 @@ export default function SearchHistory({userId}) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 justify-between">
+          <div className="flex items-center">
           <Sheet>
             <SheetTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
@@ -111,96 +116,87 @@ export default function SearchHistory({userId}) {
                   className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
                 >
                   <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-                  <span className="sr-only">Acme Inc</span>
+                  <span className="sr-only">getleads.dev</span>
                 </Link>
                 <Link
-                  href="#"
+                  href="/dashboard"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
                   <Home className="h-5 w-5" />
                   Dashboard
                 </Link>
                 <Link
-                  href="#"
+                  href="/search/organizations"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
-                  <ShoppingCart className="h-5 w-5" />
-                  Orders
+                  <Search className="h-5 w-5" />
+                  Search
                 </Link>
                 <Link
                   href="#"
                   className="flex items-center gap-4 px-2.5 text-foreground"
                 >
-                  <Package className="h-5 w-5" />
-                  Products
+                  <History className="h5 w-5" />
+                  History
                 </Link>
                 <Link
-                  href="#"
+                  href="/favorites"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
-                  <Users2 className="h-5 w-5" />
-                  Customers
+                  <Star className="h-5 w-5" />
+                  Favorites
                 </Link>
                 <Link
-                  href="#"
+                  href="/settings"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
-                  <LineChart className="h-5 w-5" />
+                  <Settings className="h-5 w-5" />
                   Settings
                 </Link>
               </nav>
             </SheetContent>
           </Sheet>
-          <Breadcrumb className="hidden md:flex">
+          <Breadcrumb className="hidden md:flex" style={{marginLeft: "10px"}}>
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="#">Dashboard</Link>
+                  <Link href="/dashboard">Dashboard</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="#">Products</Link>
+                  <Link href="/search/organizations">Search</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>All Products</BreadcrumbPage>
+                <BreadcrumbPage>History</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <div className="relative ml-auto flex-1 md:grow-0">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]"
-            />
           </div>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="overflow-hidden rounded-full"
-              >
-                <Image
-                  src="/placeholder-user.jpg"
-                  width={36}
-                  height={36}
-                  alt="Avatar"
-                  className="overflow-hidden rounded-full"
-                />
+              <Button variant="secondary" size="icon" className="rounded-full">
+                <CircleUser className="h-5 w-5" />
+                <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                router.push("/settings")
+              }}>Settings</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                router.push("/support")
+              }}>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                logout()
+              }}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
@@ -242,11 +238,15 @@ export default function SearchHistory({userId}) {
                     <TableBody>
                     {searchHistory.map((search, index) => (
                         <TableRow key={index}>
-                          <TableCell>{search.filters.sizes.join(', ')}</TableCell>
-                          <TableCell>{search.filters.stack.join(', ')}</TableCell>
+                          <TableCell>{search.filters.sizes.map(size => size.replace(',', '-')).join(', ')|| 'N/A'}</TableCell>
+                          <TableCell>{search.filters.stack.join(', ') || 'N/A'}</TableCell>
                           <TableCell>{search.filters.cities.join(', ') || 'N/A'}</TableCell>
-                          <TableCell>{search.filters.countries.join(', ')}</TableCell>
-                          <TableCell>{search.filters.industries.join(', ')}</TableCell>
+                          <TableCell>{search.filters.countries.join(', ') || 'N/A'}</TableCell>
+                          <TableCell>
+                            {search.filters.industries.map(industry => 
+                              industry.charAt(0).toUpperCase() + industry.slice(1)
+                            ).join(', ') || 'N/A'}
+                          </TableCell>
                           <TableCell>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>

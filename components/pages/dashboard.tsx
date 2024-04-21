@@ -44,8 +44,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useRouter } from "next/navigation"
+import { logout } from "@/app/login/actions"
 
 export function Dashboard() {
+  const router = useRouter()
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -70,24 +73,25 @@ export function Dashboard() {
             Search
           </Link>
           <Link
-            href="#"
+            href="/search"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Products
+            History
           </Link>
           <Link
-            href="#"
+            href="/favorites"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Customers
+            Favorites
           </Link>
           <Link
-            href="#"
+            href="/feedback"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Analytics
+            Feedback
           </Link>
         </nav>
+
         <Sheet>
           <SheetTrigger asChild>
             <Button
@@ -106,49 +110,39 @@ export function Dashboard() {
                 className="flex items-center gap-2 text-lg font-semibold"
               >
                 <Package2 className="h-6 w-6" />
-                <span className="sr-only">Acme Inc</span>
+                <span className="sr-only">getleads.dev</span>
               </Link>
               <Link href="#" className="hover:text-foreground">
                 Dashboard
               </Link>
               <Link
-                href="#"
+                href="/search/organizations"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Orders
+                Search
               </Link>
               <Link
-                href="#"
+                href="/search"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Products
+                History
               </Link>
               <Link
-                href="#"
+                href="/favorites"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Customers
+                Favorites
               </Link>
               <Link
-                href="#"
+                href="/feedback"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Analytics
+                Feedback
               </Link>
             </nav>
           </SheetContent>
         </Sheet>
-        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <form className="ml-auto flex-1 sm:flex-initial">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search products..."
-                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-              />
-            </div>
-          </form>
+        <div className="flex justify-end w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
@@ -159,14 +153,23 @@ export function Dashboard() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                router.push("/settings")
+              }}>Settings</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                router.push("/support")
+              }}>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                logout()
+              }}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </header>
+      {/* maybe mettre les 4 dernieres recherches en card, tableau transac devient tableau de decisionsMakers 
+      avec le vieuwAll qui amene vers la page de decisionMakers, recent sales devient tableau de recent leads (companies)
+      */}
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           <Card x-chunk="dashboard-01-chunk-0">

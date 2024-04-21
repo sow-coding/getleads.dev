@@ -1,4 +1,3 @@
-import { login, signup } from './actions'
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
@@ -11,45 +10,41 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { signup } from "../login/actions"
 
-export default function LoginPage() {
+export default function SignUpForm() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardTitle className="text-xl">Sign Up</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your information to create an account
         </CardDescription>
       </CardHeader>
-      <form className='mx-4 my-4'>
+      <form className="mx-4 my-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
-              name='email'
+              name="email"
               placeholder="m@example.com"
               required
             />
           </div>
           <div className="grid gap-2">
-            <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              <Link href="#" className="ml-auto inline-block text-sm underline">
-                Forgot your password?
-              </Link>
-            </div>
-            <Input id="password" name='password' type="password" required />
+            <Label htmlFor="password">Password</Label>
+            <Input id="password" name="password" type="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$" placeholder='Password' title="The password must contain at least one uppercase letter, one lowercase letter, one digit, one symbol and must be at least 8 characters long."/>
           </div>
-          <Button formAction={login} className="w-full">
-            Login
+          <Button formAction={signup} className="w-full">
+            Create an account
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link href="/signup" className="underline">
-            Sign up
+          Already have an account?{" "}
+          <Link href="/login" className="underline">
+            Login
           </Link>
         </div>
       </form>

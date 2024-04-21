@@ -38,37 +38,37 @@ export function SearchPage () {
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
             <Package2 className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
+            <span className="sr-only">getleads.dev</span>
           </Link>
           <Link
-            href="#"
+            href="/dashboard"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Dashboard
           </Link>
           <Link
             href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
+            className="text-foreground transition-colors hover:text-foreground"
           >
             Search
           </Link>
           <Link
-            href="#"
+            href="/search"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Products
+            History
           </Link>
           <Link
-            href="#"
+            href="/favorites"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Customers
+            Favorites
           </Link>
           <Link
-            href="#"
-            className="text-foreground transition-colors hover:text-foreground"
+            href="/feedback"
+            className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Settings
+            Feedback
           </Link>
         </nav>
         <Sheet>
@@ -89,49 +89,39 @@ export function SearchPage () {
                 className="flex items-center gap-2 text-lg font-semibold"
               >
                 <Package2 className="h-6 w-6" />
-                <span className="sr-only">Acme Inc</span>
+                <span className="sr-only">getleads.dev</span>
               </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
+              <Link href="/dashboard" className="text-muted-foreground hover:text-foreground">
                 Dashboard
               </Link>
               <Link
                 href="#"
-                className="text-muted-foreground hover:text-foreground"
+                className="hover:text-foreground"
               >
-                Orders
+                Search
               </Link>
               <Link
-                href="#"
+                href="/search"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Products
+                History
               </Link>
               <Link
-                href="#"
+                href="/favorites"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Customers
+                Favorites
               </Link>
-              <Link href="#" className="hover:text-foreground">
-                Settings
+              <Link
+                href="/feedback"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Feedback
               </Link>
             </nav>
           </SheetContent>
         </Sheet>
-        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <form className="ml-auto flex-1 sm:flex-initial">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search products..."
-                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-              />
-            </div>
-          </form>
+        <div className="flex justify-end w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
@@ -142,10 +132,16 @@ export function SearchPage () {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                router.push("/settings")
+              }}>Settings</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                router.push("/support")
+              }}>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                logout()
+              }}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -159,11 +155,11 @@ export function SearchPage () {
             className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0"
           >
             <Link href="#" className="font-semibold text-primary">
-              Organizations
+              1.Organizations
             </Link>
-            <Link href="#">Stack</Link>
-            <Link href="#">People</Link>
-            <Link href="#">Contact</Link>
+            <Link href="#">2.Stack</Link>
+            <Link href="#">3.People</Link>
+            <Link href="#">4.Contact</Link>
           </nav>
 
           <div className="grid gap-6">
@@ -181,9 +177,6 @@ export function SearchPage () {
                   <EmployeesMultipleSelect />
                 </form>
               </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
-              </CardFooter>
             </Card>
             
             <Card x-chunk="dashboard-04-chunk-2">

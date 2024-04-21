@@ -8,7 +8,7 @@ export default async function PrivatePage() {
   
   const { data, error } = await supabase.auth.getUser()
 
-  const createdAt = new Date(data.user.created_at);
+  const createdAt = new Date(data?.user?.created_at);
   const today = new Date();
   const diffTime = Math.abs(today - createdAt);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

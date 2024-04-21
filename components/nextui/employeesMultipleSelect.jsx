@@ -15,7 +15,7 @@ export default function EmployeesMultipleSelect() {
   }, [values, setSizes]);
 
   return (
-    <div className="flex w-48 max-w-xs flex-col gap-2">
+    <div className="flex w-full max-w-xs flex-col gap-2">
       <Select
         label="Size"
         selectionMode="multiple"

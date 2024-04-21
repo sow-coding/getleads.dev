@@ -18,7 +18,7 @@ export default function IndustryAutoComplete() {
   };  
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       <Autocomplete
         label="Company's Industry"
         placeholder="Search an industry"
