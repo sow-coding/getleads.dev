@@ -57,15 +57,39 @@ function Organization() {
         
         setLoading(false);
         const data = await response.json();
-        setEntity(data);
-        return new Response(JSON.stringify(data), {
-            status: 200,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });       
+        return data;    
     }
-    getOrganization()
+    const enrichOrganization = async () => {
+      const domain = await getOrganization()
+      const response = await fetch('/api/enrichOrganizationByDb', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id})
+      });
+      if (!response.ok) {
+        const response = await fetch('/api/enrichOrganization', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ domain: domain})
+        });
+        if (!response.ok) {
+          console.error(`Failed to fetch search results: ${response.statusText}`);
+          // Gérer l'erreur ici, par exemple en affichant un message d'erreur à l'utilisateur
+        }
+        const data = await response.json();
+        setEntity(data?.organization);
+        setLoading(false);
+        return;
+      }
+      setLoading(false);
+      const data = await response.json();
+      setEntity(data?.organization);
+    }
+    enrichOrganization()
   }, [searchId, id, router])
 
   return (
@@ -202,6 +226,47 @@ function Organization() {
         </div>
         <div className="grid gap-6">
             <Card x-chunk="dashboard-04-chunk-1">
+              <CardHeader>
+                <CardTitle>Informations</CardTitle>
+                <CardDescription>
+                Some general information about {`${entity?.name}`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-6">
+
+                  {entity?.short_description && <div className="description">
+                    <p>{entity?.short_description}</p>
+                  </div>}
+
+                  {entity?.raw_address && <div className="locations flex items-center">
+                    <p>{entity?.raw_address}</p>
+                  </div>}
+                  {entity?.industries?.length > 0 && <div className="industries flex items-center">
+                    {entity?.industries?.map((industry, index) => (
+                      <span key={index} className="inline-block px-2 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
+                        {industry}
+                      </span>
+                    ))}
+                  </div>}
+                  {entity?.estimated_num_employees && <div className="employees flex items-center">
+                    <p>Estimated number of employees: </p>
+                    <span className="ml-3 inline-block px-2 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
+                          {entity?.estimated_num_employees}
+                    </span>
+                  </div>}
+                  {entity?.primary_domain && <div className="domain">
+                    <Button size="sm" onClick={() => {
+                      window.open(`https://${entity?.primary_domain}`, '_blank')
+                    } }>
+                      {entity?.primary_domain}
+                    </Button>
+                  </div>}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card x-chunk="dashboard-04-chunk-2">
               <CardHeader>
                 <CardTitle>Social networks</CardTitle>
                 <CardDescription>

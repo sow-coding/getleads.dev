@@ -43,7 +43,7 @@ export async function POST (request) {
     }
 
     // Retourner l'entité trouvée
-    return new Response(JSON.stringify(specificEntity), {
+    return new Response(JSON.stringify(specificEntity?.primary_domain), {
         status: 200,
         headers: {
             'Content-Type': 'application/json'

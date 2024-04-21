@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label"
 
 export default function LoginPage() {
   return (
-    <Card className="mx-auto max-w-sm">
+    <Card className="mx-auto max-w-sm mt-6">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>

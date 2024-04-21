@@ -15,6 +15,10 @@ export async function POST (requets: Request) {
     .update({ emailVerification: data })
     .eq('id', req.id)
     .select()
+
+    if (error) {
+        console.log(error)
+    }
             
     return new Response(JSON.stringify(data), {status: 200})
 }

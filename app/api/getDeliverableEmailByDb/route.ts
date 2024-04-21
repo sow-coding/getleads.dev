@@ -10,6 +10,7 @@ export async function POST (requets: Request) {
     .single()
         
     if (error) {
+        console.log(error)
         return new Response(JSON.stringify({message: 'Invalid email'}), {status: 400})
     } else if (data === null) {
         return new Response(JSON.stringify({message: 'Email not found'}), {status: 400})

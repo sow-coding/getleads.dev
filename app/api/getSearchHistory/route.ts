@@ -9,6 +9,7 @@ export async function POST (request: Request) {
     .eq("user_id", req.userId)
 
     if (error) {
+        console.log(error)
         return new Response(JSON.stringify({ error: error.message }), { status: 500 })
     }
     return new Response(JSON.stringify(searches), { status: 200 })

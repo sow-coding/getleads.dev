@@ -28,6 +28,7 @@ export async function POST(request) {
     .select()
 
     if  (error) {
+        console.error('Error from Supabase API', error);
         return new Response('Error from Supabase API' + error);
     }
 
