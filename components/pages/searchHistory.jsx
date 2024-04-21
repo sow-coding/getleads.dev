@@ -104,7 +104,7 @@ export default function SearchHistory({userId}) {
           <div className="flex items-center">
           <Sheet>
             <SheetTrigger asChild>
-              <Button size="icon" variant="outline" className="sm:hidden">
+              <Button size="icon" variant="outline">
                 <PanelLeft className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
@@ -156,7 +156,7 @@ export default function SearchHistory({userId}) {
               </nav>
             </SheetContent>
           </Sheet>
-          <Breadcrumb className="hidden md:flex" style={{marginLeft: "10px"}}>
+          <Breadcrumb className="hidden ml-4 md:flex">
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>

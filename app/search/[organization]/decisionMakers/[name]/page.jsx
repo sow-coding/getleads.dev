@@ -311,10 +311,8 @@ function DecisionMaker () {
                     }}>Verify</Button>
                     </CardFooter>
                 </Card>
-                </div>
-            </div>
 
-            { email?.data?.result && <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+                { email?.data?.result && 
                 <div className="grid gap-6">
                 <Card x-chunk="dashboard-04-chunk-1">
                     <CardHeader>
@@ -340,10 +338,9 @@ function DecisionMaker () {
                     </CardFooter>
                     }
                 </Card>
-                </div>
-            </div>}
+                </div>}
 
-            { deliverableEmail?.data?.score && <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+            { deliverableEmail?.data?.score && 
                 <div className="grid gap-6">
                 <Card x-chunk="dashboard-04-chunk-1">
                     <CardHeader>
@@ -362,8 +359,9 @@ function DecisionMaker () {
                     </form>
                     </CardContent>
                 </Card>
+                </div>}
                 </div>
-            </div>}
+            </div>
             </main>
          }
     </div>

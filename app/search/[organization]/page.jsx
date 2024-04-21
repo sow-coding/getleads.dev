@@ -2,7 +2,7 @@
 import {  useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { CircleUser, Menu, Package2, Search } from "lucide-react"
+import { CircleUser, Facebook, Linkedin, Menu, Package2, Search, Twitter } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,6 +15,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 function Organization() {
   const searchParams = useSearchParams()
@@ -24,6 +32,7 @@ function Organization() {
   const [loading, setLoading] = useState(true)
   const [entity, setEntity] = useState({})
 
+  //enrichOrganization pour avoir des informations sur l'organisation
   useEffect(() => {
     const getOrganization = async () => {
         if (!searchId) {
@@ -191,6 +200,33 @@ function Organization() {
               router.push(`/search/${entity?.name}/decisionMakers?id=${entity?.id}&name=${entity?.name}&searchId=${searchId}`)
             }}>See the decision-makers</Button>
         </div>
+        <div className="grid gap-6">
+            <Card x-chunk="dashboard-04-chunk-1">
+              <CardHeader>
+                <CardTitle>Social networks</CardTitle>
+                <CardDescription>
+                Go check {`${entity?.name}'s`} networks to find out more about them
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center w-full">
+                                
+                {entity?.facebook_url && <a className="mx-2" href={`${entity?.facebook_url}`} target="_blank">
+                <Facebook />
+                </a>}
+                
+                {entity?.linkedin_url && <a className="mx-2" href={`${entity?.linkedin_url}`} target="_blank">
+                <Linkedin />
+                </a>}
+
+                {entity?.twitter_url && <a className="mx-2" href={`${entity?.twitter_url}`} target="_blank">
+                <Twitter />
+                </a>}
+
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </main>
         }
     </div>
