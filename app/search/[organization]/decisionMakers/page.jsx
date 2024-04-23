@@ -126,7 +126,7 @@ return (
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="sm:max-w-xs">
+            <SheetContent side="left" className="max-w-xs">
               <nav className="grid gap-6 text-lg font-medium">
                 <Link
                   href="#"
@@ -237,20 +237,18 @@ return (
                     {` Don't `}waste your time and contact the right people directly, the decision makers.
                 </CardDescription>
             </CardHeader>
+
             <CardContent>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="hidden w-[100px] sm:table-cell">
-                                <span className="sr-only">Image</span>
-                            </TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Department</TableHead>
                             <TableHead>Title</TableHead>
-                            <TableHead className="hidden md:table-cell">
+                            <TableHead>
                                 Seniority
                             </TableHead>
-                            <TableHead className="hidden md:table-cell">
+                            <TableHead>
                                 Linkedin
                             </TableHead>
                             <TableHead>
@@ -272,10 +270,10 @@ return (
                                         <Badge variant="outline">{decisionMaker?.departments[0]}</Badge>
                                     </TableCell>
                                     <TableCell>{decisionMaker?.title}</TableCell>
-                                    <TableCell className="hidden md:table-cell">
+                                    <TableCell>
                                         {decisionMaker?.seniority}
                                     </TableCell>
-                                    <TableCell className="hidden md:table-cell">
+                                    <TableCell>
                                         <a target='_blank' href={`${decisionMaker?.linkedin_url}`}>
                                             <Button color='primary'>Linkedin</Button>
                                         </a>
@@ -307,8 +305,7 @@ return (
                     </TableBody>
                 </Table>
             </CardContent>
-            <CardFooter>
-            </CardFooter>
+
         </Card>
             </TabsContent>
 

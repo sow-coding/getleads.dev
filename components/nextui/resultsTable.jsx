@@ -1,18 +1,26 @@
 "use client"
-import React from "react";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button} from "@nextui-org/react";
-import {columns} from "./resultsTableData";
+import React, { useState } from "react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button, Pagination} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { columns } from "./resultsTableData";
 
 export function ResultsTable ({ organizations, searchId }) {
-  const router = useRouter()
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; // Vous pouvez ajuster ce nombre selon vos besoins
+  const pageCount = Math.ceil(organizations.length / itemsPerPage);
+
+  const currentData = organizations.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const router = useRouter();
+
   const renderCell = React.useCallback((organization, columnKey) => {
-  const cellValue = organization[columnKey];  
+    const cellValue = organization[columnKey];
     switch (columnKey) {
       case "name":
-        return (
-          <h3>{organization.name}</h3>
-        );
+        return <h3>{organization.name}</h3>;
       case "description":
         return (
           <div className="flex flex-col">
@@ -35,22 +43,25 @@ export function ResultsTable ({ organizations, searchId }) {
   }, [searchId, router]);
 
   return (
-  <Table aria-label="Example table with custom cells">
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
+    <>
+      <Table aria-label="Example table with custom cells">
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
 
-      <TableBody items={organizations}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        <TableBody items={currentData}>
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <Pagination total={pageCount} initialPage={1} onChange={setCurrentPage} color="primary" />
+    </>
   );
 }

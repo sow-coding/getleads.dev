@@ -159,13 +159,13 @@ export default function Feedback() {
           <div className="grid gap-6 w-full">
             <Card x-chunk="dashboard-04-chunk-1 w-full">
               <CardHeader>
-                <CardTitle>Feedback</CardTitle>
+                <CardTitle>Contact</CardTitle>
                 <CardDescription>
                     {`Don't`} hesitate to leave me feedback and ask me for new features by contacting me at this email address:
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <h1 className="text-3xl font-semibold">feedback@swos.be</h1>
+                <h1 className="text-3xl font-semibold">saikou@getleads.dev</h1>
               </CardContent>
             </Card>
           </div>

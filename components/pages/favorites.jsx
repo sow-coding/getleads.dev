@@ -71,7 +71,8 @@ export function Favorites({userId}) {
   const [loading, setLoading] = useState(true)
   const router = useRouter()
   const [favorites, setFavorites] = useState([])
-  const [searchId, setSearchId] = useState("")
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   async function getSearchId({organizationId}) {
     const response = await fetch("/api/getSearchId", {
@@ -126,7 +127,26 @@ export function Favorites({userId}) {
     getFavorites()
   }, [userId])
 
+  const endIndex = currentPage * itemsPerPage;
+  const startIndex = endIndex - itemsPerPage;
+  const currentFavorites = favorites.slice(startIndex, endIndex);
 
+  function Pagination({ currentPage, setCurrentPage, totalPages }) {
+    return (
+      <div className="flex justify-center space-x-2 mt-4">
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentPage(index + 1)}
+            className={`px-4 py-2 rounded ${index + 1 === currentPage ? 'bg-purple-500 text-white' : 'bg-gray-300'}`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+    );
+  }
+  
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -267,7 +287,7 @@ export function Favorites({userId}) {
                     </TableHeader>
 
                     <TableBody>
-                    {favorites.map((favoryEntity, index) => (
+                    {currentFavorites.map((favoryEntity, index) => (
                         <TableRow key={index}>
                           <TableCell>{favoryEntity?.organization?.name}</TableCell>
                           <TableCell>{favoryEntity?.organization?.industry}</TableCell>
@@ -301,6 +321,11 @@ export function Favorites({userId}) {
                     </TableBody>
 
                   </Table>
+                  <Pagination
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  totalPages={Math.ceil(favorites.length / itemsPerPage)}
+                  />
                 </CardContent>
               </Card>
             </TabsContent>

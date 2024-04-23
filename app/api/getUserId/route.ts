@@ -5,6 +5,8 @@ export async function GET () {
   
     const { data, error } = await supabase.auth.getUser()
 
-    if (error) return { status: 500, body: error.message }
+    if (error) {
+        return new Response(JSON.stringify(error), { status: 500 })
+    }
     return new Response(JSON.stringify(data.user.id), { status: 200 })
 }

@@ -9,6 +9,7 @@ import {
   Menu,
   Package2,
   Search,
+  UserRound,
   Users,
 } from "lucide-react"
 
@@ -46,9 +47,27 @@ import {
 } from "@/components/ui/table"
 import { useRouter } from "next/navigation"
 import { logout } from "@/app/login/actions"
+import { useEffect, useState } from "react"
 
-export function Dashboard() {
+export function Dashboard({userId}) {
   const router = useRouter()
+  const [userDecisionMakers, setUserDecisionMakers] = useState([])
+
+  useEffect(() => {
+    async function fetchUserDecisionMakers() {
+      const res = await fetch(`/api/getUserDecisionMakers`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: userId }),
+      })
+      const data = await res.json()
+      setUserDecisionMakers(data)
+    }
+    fetchUserDecisionMakers()
+  }, [userId])
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -169,61 +188,29 @@ export function Dashboard() {
       </header>
       {/* maybe mettre les 4 dernieres recherches en card, tableau transac devient tableau de decisionsMakers 
       avec le vieuwAll qui amene vers la page de decisionMakers, recent sales devient tableau de recent leads (companies)
+      table recent sales devient tableau de task pour prospecter les leads, prospecting or outreach tasks
       */}
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          <Card x-chunk="dashboard-01-chunk-0">
+          {userDecisionMakers.slice(0, 4).map((decisionMaker, index) => (
+            <Card key={index} className="cursor-pointer" x-chunk="dashboard-01-chunk-0" onClick={() => {
+              router.push(`/search/organization/decisionMakers/${decisionMaker?.person?.name}?id=${decisionMaker?.person?.id}`)
+            }}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Total Revenue
+                {decisionMaker?.person?.organization?.name}
               </CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <UserRound className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$45,231.89</div>
-              <p className="text-xs text-muted-foreground">
-                +20.1% from last month
+              <div className="text-2xl font-bold">{decisionMaker?.person?.name}</div>
+              <p className="text-sm text-foreground my-2">{decisionMaker?.person?.title}</p>
+              <p className="text-sm text-muted-foreground">
+                {decisionMaker?.person?.email}
               </p>
             </CardContent>
           </Card>
-          <Card x-chunk="dashboard-01-chunk-1">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Subscriptions
-              </CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
-              <p className="text-xs text-muted-foreground">
-                +180.1% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card x-chunk="dashboard-01-chunk-2">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Sales</CardTitle>
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+12,234</div>
-              <p className="text-xs text-muted-foreground">
-                +19% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card x-chunk="dashboard-01-chunk-3">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+573</div>
-              <p className="text-xs text-muted-foreground">
-                +201 since last hour
-              </p>
-            </CardContent>
-          </Card>
+          ))}
         </div>
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <Card
@@ -237,7 +224,7 @@ export function Dashboard() {
                 </CardDescription>
               </div>
               <Button asChild size="sm" className="ml-auto gap-1">
-                <Link href="#">
+                <Link href="/search/decisionsMakers">
                   View All
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>

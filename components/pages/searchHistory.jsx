@@ -69,9 +69,11 @@ import { logout } from "@/app/login/actions"
 
 
 export default function SearchHistory({userId}) {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [searchHistory, setSearchHistory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
   const router = useRouter()
-  const [searchHistory, setSearchHistory] = useState([])
 
   useEffect(() => {
     async function getSearchHistory () {
@@ -96,6 +98,30 @@ export default function SearchHistory({userId}) {
     }
     getSearchHistory()
   }, [userId])
+
+  const pageCount = Math.ceil(searchHistory.length / itemsPerPage);
+  const currentData = searchHistory.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  function Pagination({ pages, setCurrentPage, currentPage }) {
+    return (
+      <div className="flex justify-center gap-2 mt-4">
+        {Array.from({ length: pages }, (_, i) => i + 1).map(page => (
+          <button
+            key={page}
+            onClick={() => setCurrentPage(page)}
+            className={`py-2 px-4 rounded-full ${
+              currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -223,10 +249,10 @@ export default function SearchHistory({userId}) {
                         <TableHead>Sizes</TableHead>
                         <TableHead>Stack</TableHead>
                         <TableHead>Cities</TableHead>
-                        <TableHead className="hidden md:table-cell">
+                        <TableHead>
                           Countries
                         </TableHead>
-                        <TableHead className="hidden md:table-cell">
+                        <TableHead>
                           Industrie
                         </TableHead>
                         <TableHead>
@@ -236,7 +262,7 @@ export default function SearchHistory({userId}) {
                     </TableHeader>
 
                     <TableBody>
-                    {searchHistory.map((search, index) => (
+                    {currentData.map((search, index) => (
                         <TableRow key={index}>
                           <TableCell>{search.filters.sizes.map(size => size.replace(',', '-')).join(', ')|| 'N/A'}</TableCell>
                           <TableCell>{search.filters.stack.join(', ') || 'N/A'}</TableCell>
@@ -271,6 +297,7 @@ export default function SearchHistory({userId}) {
                 </CardContent>
               </Card>
             </TabsContent>
+            <Pagination pages={pageCount} setCurrentPage={setCurrentPage} currentPage={currentPage} />
           </Tabs>
         </main>
       </div>

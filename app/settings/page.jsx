@@ -23,9 +23,26 @@ import {
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useState } from "react"
+import { logout } from "../login/actions"
 
 export default function Settings() {
   const [email, setEmail] = useState("")
+
+  async function changeEmail () {
+    const res = await fetch('/api/change-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email }),
+    })
+    if (!res.ok) {
+      alert("Error changing email. Please try again.")
+    } else {
+      alert("Email changed successfully.")
+    }
+  }
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -68,7 +85,7 @@ export default function Settings() {
             Feedback
           </Link>
           <Link
-            href="/settings"
+            href="/#"
             className="text-foreground transition-colors hover:text-foreground"
           >
             Settings
@@ -95,7 +112,7 @@ export default function Settings() {
                 <Package2 className="h-6 w-6" />
                 <span className="sr-only">getleads.dev</span>
               </Link>
-              <Link href="#" className="hover:text-foreground">
+              <Link href="/dashboard" className="hover:text-foreground">
                 Dashboard
               </Link>
               <Link
@@ -161,7 +178,7 @@ export default function Settings() {
             <Link href="#" className="font-semibold text-primary">
               General
             </Link>
-            <Link href="#">Security</Link>
+            <Link href="/settings/password">Password</Link>
           </nav>
           <div className="grid gap-6">
             <Card x-chunk="dashboard-04-chunk-1">
@@ -187,7 +204,7 @@ export default function Settings() {
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
                 <Button onClick={() => {
-                  // Save email avec db
+                  email ? changeEmail() : alert("Please enter an email address.")
                 }}>Save</Button>
               </CardFooter>
             </Card>

@@ -204,5 +204,4 @@ export const countries: Country[] = [
     { name: "South America"},
     { name: "Oceania"},
     { name: "Antarctica"},
-    { name: "Worldwide"}
 ];

@@ -30,7 +30,7 @@ export function NewPassword() {
   const router = useRouter()
   const [password, setPassword] = useState("")
 
-  async function NewPassword() {
+  async function newPassword() {
     const response = await fetch("/api/newPassword", {
       method: "POST",
       headers: {
@@ -42,6 +42,9 @@ export function NewPassword() {
     })
     if (response.ok) {
       alert("Password updated")
+      router.push("/settings")
+    } else {
+      alert("Error updating password")
       router.push("/settings")
     }
   }  
@@ -114,7 +117,7 @@ export function NewPassword() {
                 <Package2 className="h-6 w-6" />
                 <span className="sr-only">getleads.dev</span>
               </Link>
-              <Link href="#" className="hover:text-foreground">
+              <Link href="/dashboard" className="hover:text-foreground">
                 Dashboard
               </Link>
               <Link
@@ -177,10 +180,10 @@ export function NewPassword() {
           <nav
             className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0"
           >
-            <Link href="#" className="font-semibold text-primary">
+            <Link href="/settings">
               General
             </Link>
-            <Link href="#">Security</Link>
+            <Link href="#" className="font-semibold text-primary">Security</Link>
           </nav>
           <div className="grid gap-6">
             <Card x-chunk="dashboard-04-chunk-1">
@@ -192,16 +195,12 @@ export function NewPassword() {
               </CardHeader>
               <CardContent>
                 <form>
-                <Input id="password" name='password' type="password" required onChange={(e) => {
+                <Input id="password" name='password' type="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$" placeholder='Password' title="The password must contain at least one uppercase letter, one lowercase letter, one digit, one symbol and must be at least 8 characters long." onChange={(e) => {
                   setPassword(e.currentTarget.value)
                 }}/>
+                <Button className="my-4" type="button" formAction={newPassword}>Save</Button>
                 </form>
               </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button onClick={() => {
-                  NewPassword()
-                }}>Save</Button>
-              </CardFooter>
             </Card>
           </div>
         </div>

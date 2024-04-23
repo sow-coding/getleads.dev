@@ -21,13 +21,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import EmployeesMultipleSelect from "../nextui/employeesMultipleSelect"
-import CitiesSelect from "../nextui/citiesSelect"
+import CitiesAutoComplete from "../nextui/CitiesAutoComplete"
 import { useRouter } from "next/navigation"
 import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import IndustryAutoComplete from "../nextui/industryAutoComplete"
+import CitiesAutoCompleteTest from "@/app/api/test"
+import { useFiltersContext } from "@/contexts/filters.context"
 
 export function SearchPage () {
   const router = useRouter()
+  const {cities, countries, industries, sizes} = useFiltersContext()
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -173,7 +176,7 @@ export function SearchPage () {
               <CardContent>
                 <form className="flex max-lg:flex-col items-start">
                   <CountriesMultipleSelect />
-                  <CitiesSelect /> {/* Mettre un async autocomplete*/}
+                  <CitiesAutoCompleteTest />
                   <EmployeesMultipleSelect />
                 </form>
               </CardContent>
@@ -187,13 +190,17 @@ export function SearchPage () {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="flex max-lg:flex-col">
+                <form className="flex w-full max-lg:flex-col">
                   <IndustryAutoComplete />
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
                 <Button onClick={() => {
-                  router.push("/search/stack")
+                  if (cities.length > 0 || countries.length > 0 || industries.length > 0 || sizes.length > 0) {
+                    router.push("/search/stack")
+                  } else {
+                    alert("Please select at least one filter")
+                  }
                 }}>Save</Button>
               </CardFooter>
             </Card>

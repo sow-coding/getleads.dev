@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/card"
 import { CircleUser, Menu } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { logout } from "@/app/login/actions"
 
 
 function DecisionMaker () {
@@ -123,13 +124,16 @@ function DecisionMaker () {
     
     useEffect(() => {
         async function getDecisionMaker() {
+            const userIdResponse = await fetch("/api/getUserId")
+            const userId = await userIdResponse.json()
             const response = await fetch(`/api/getSoloDecisionMaker`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    id: id
+                    id: id,
+                    userId: userId
                 })
             })
             if (!response.ok) {

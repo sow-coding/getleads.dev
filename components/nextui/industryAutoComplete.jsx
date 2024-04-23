@@ -1,21 +1,28 @@
 "use client"
-import React from "react";
-import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
+import React, { useState } from "react";
+import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { industriesData } from "./industriesData";
 import { useFiltersContext } from "@/contexts/filters.context";
+import { Badge } from "@/components/ui/badge";
+import { Trash2 } from "lucide-react"; // Make sure to import the Trash2 icon
 
 export default function IndustryAutoComplete() {
-  const {industries, setIndustries} = useFiltersContext()
+  const { industries, setIndustries } = useFiltersContext();
+  const [hoveredIndustry, setHoveredIndustry] = useState(null);
 
   const onSelectionChange = (key) => {
-    // Assurer que la clé est une chaîne avant de l'ajouter
-    const newIndustry = String(key).toLowerCase(); // Convertir en minuscules
+    // Convert key to string unless it's null or undefined and convert to lower case
+    const newIndustry = key != null ? String(key).toLowerCase().trim() : '';
   
-    // Vérifier si la ville est déjà incluse pour éviter les doublons
-    if ((newIndustry !== null && !industries.includes(newIndustry))) {
+    // Check if the new industry is a non-empty string and not already in the list
+    if (newIndustry.length > 0 && !industries.includes(newIndustry)) {
       setIndustries(prevIndustries => [...prevIndustries, newIndustry]);
     }
-  };  
+  };
+
+  const handleRemoveIndustry = (industry) => {
+    setIndustries(prevIndustries => prevIndustries.filter(ind => ind !== industry));
+  };
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -28,7 +35,21 @@ export default function IndustryAutoComplete() {
       >
         {(item) => <AutocompleteItem key={item.name}>{item.name}</AutocompleteItem>}
       </Autocomplete>
-      <p className="mt-1 text-small text-default-500 break-words">Selected industries: {industries.map(industry => <span key={industry}>{industry} </span>)}</p>
+      <div className="flex items-center flex-wrap">
+        {industries.map(industry => (
+          <div
+            key={industry}
+            onMouseEnter={() => setHoveredIndustry(industry)}
+            onMouseLeave={() => setHoveredIndustry(null)}
+            className="relative cursor-pointer mx-1"
+            onClick={() => handleRemoveIndustry(industry)}
+          >
+            <Badge variant="flat">
+              {hoveredIndustry === industry ? <Trash2 color="red" size={16} /> : industry}
+            </Badge>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

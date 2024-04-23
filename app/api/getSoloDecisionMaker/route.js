@@ -25,7 +25,7 @@ export async function POST(request) {
     const { data: supabaseData, error } = await supabase
     .from('soloDecisionMaker')
     .insert([
-        { id: inputRequestBody.id, person: data.person},
+        { id: inputRequestBody.id, person: data.person, userId: inputRequestBody.userId},
     ])
     .select()
 

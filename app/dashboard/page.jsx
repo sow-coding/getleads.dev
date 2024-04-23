@@ -21,5 +21,5 @@ export default async function PrivatePage() {
     }
   }
 
-  return <Dashboard />
+  return <Dashboard userId={data.user.id}/>
 }
