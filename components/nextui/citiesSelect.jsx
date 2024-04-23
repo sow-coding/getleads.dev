@@ -16,7 +16,7 @@ export default function CitiesSelect() {
       label="Cities"
       placeholder="Select cities"
       selectionMode="multiple"
-      className="max-w-xs mx-4"
+      className="max-w-xs lg:mx-4 max-lg:my-4"
       onSelectionChange={onSelectionChange}
     >
       {citiesData.map((city) => (

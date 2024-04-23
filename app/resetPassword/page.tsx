@@ -1,4 +1,4 @@
-import { login, signup } from './actions'
+"use client"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
@@ -11,14 +11,33 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
-export default function LoginPage() {
+export default function ResetPassword() {
+    const [email, setEmail] = useState("")
+    const router = useRouter()
+    async function forgotPassword() {
+      const response = await fetch("/api/resetPassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email
+      })
+    })
+    if (response.ok) {
+      alert("Password reset email sent")
+      router.push("/login")
+    }
+  }
   return (
     <Card className="mx-auto max-w-sm mt-6">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardTitle className="text-2xl">Reset your password</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter a new password for your account
         </CardDescription>
       </CardHeader>
       <form className='mx-4 my-4'>
@@ -31,19 +50,15 @@ export default function LoginPage() {
               name='email'
               placeholder="m@example.com"
               required
+              onChange={(e) => {
+                setEmail(e.currentTarget.value)
+              }}
             />
           </div>
-          <div className="grid gap-2">
-            <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              <Link href="/resetPassword" className="ml-auto inline-block text-sm underline">
-                Forgot your password?
-              </Link>
-            </div>
-            <Input id="password" name='password' type="password" required />
-          </div>
-          <Button formAction={login} className="w-full">
-            Login
+          <Button onClick={() => {
+            forgotPassword()
+          }} type="button" className="w-full">
+            Reset my password
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">

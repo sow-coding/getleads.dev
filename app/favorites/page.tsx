@@ -1,11 +1,10 @@
-import React from 'react'
+import {Favorites} from "@/components/pages/favorites"
+import { createClient } from "@/utils/supabase/server"
 
-function Favorites() {
-  return (
-    <div>
-        Here s the favorites page
-    </div>
-  )
+export default async function FavoritesPage () {
+  const supabase = createClient()
+  
+  const { data, error } = await supabase.auth.getUser()
+
+  return <Favorites userId={data?.user?.id}/>
 }
-
-export default Favorites

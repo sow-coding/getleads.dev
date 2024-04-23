@@ -2,7 +2,7 @@
 import {  useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { CircleUser, Facebook, Linkedin, Menu, Package2, Search, Twitter } from "lucide-react"
+import { CircleUser, Facebook, Linkedin, Menu, Package2, Search, Star, Twitter } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -31,8 +31,23 @@ function Organization() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [entity, setEntity] = useState({})
+  const [favorite, setFavorite] = useState(false)
 
-  //enrichOrganization pour avoir des informations sur l'organisation
+  async function postFavorites () {
+    const reponseUserId = await fetch("/api/getUserId")
+    const userId = await reponseUserId.json()
+    const response = await fetch('/api/postFavorites', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userId: userId, id: id, organization: entity })
+    });
+    if (!response.ok) {
+      console.error(`Failed to fetch search results: ${response.statusText}`);
+    }
+  }
+
   useEffect(() => {
     const getOrganization = async () => {
         if (!searchId) {
@@ -88,6 +103,21 @@ function Organization() {
       setLoading(false);
       const data = await response.json();
       setEntity(data?.organization);
+
+      const faouriteRes = await fetch('/api/isFavorite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id})
+      });
+      if (!response.ok) {
+        console.error(`Failed to fetch search results: ${response.statusText}`);
+      }
+      const favouriteData = await faouriteRes.json();
+      if (favouriteData?.isFavorite) {
+        setFavorite(true)
+      }
     }
     enrichOrganization()
   }, [searchId, id, router])
@@ -218,11 +248,17 @@ function Organization() {
             
         </div>
         </main> : <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
-        <div className="mx-auto flex justify-between w-full max-w-6xl gap-2">
+        <div className="mx-auto flex justify-between w-full max-w-6xl gap-2 max-sm:flex-col">
             <h1 className="text-3xl font-semibold">{entity?.name}</h1>
+            <div className="actions flex items-center max-sm:my-4">
             <Button onClick={() => {
               router.push(`/search/${entity?.name}/decisionMakers?id=${entity?.id}&name=${entity?.name}&searchId=${searchId}`)
             }}>See the decision-makers</Button>
+            { favorite ? <Star className="ml-5 cursor-pointer" color="#8400db" /> : <Star className="ml-5 cursor-pointer" onClick={() => {
+              postFavorites()
+              setFavorite(true)
+            }}/>}
+            </div>
         </div>
         <div className="grid gap-6">
             <Card x-chunk="dashboard-04-chunk-1">
@@ -242,9 +278,9 @@ function Organization() {
                   {entity?.raw_address && <div className="locations flex items-center">
                     <p>{entity?.raw_address}</p>
                   </div>}
-                  {entity?.industries?.length > 0 && <div className="industries flex items-center">
+                  {entity?.industries?.length > 0 && <div className="industries flex items-center flex-wrap">
                     {entity?.industries?.map((industry, index) => (
-                      <span key={index} className="inline-block px-2 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
+                      <span key={index} className="inline-block mr-3 px-2 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
                         {industry}
                       </span>
                     ))}
