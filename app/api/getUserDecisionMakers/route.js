@@ -8,7 +8,7 @@ export async function POST (request) {
     .select('person')
     .eq("userId", req.userId)
     
-    if (error) return { status: 500, body: error.message } 
+    if (error) return (new Response(JSON.stringify(error), {status: 500}))
 
     return new Response(JSON.stringify(soloDecisionMaker), {status: 200})
 }
