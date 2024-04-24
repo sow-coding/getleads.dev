@@ -10,7 +10,7 @@ function Test() {
             body: JSON.stringify({
                 countries: ["US"],
                 companySizes: ["10"],
-                industries: ["Software Development"],                
+                industries: ["Software Development"]                
             })
         })
         const data = await response.json()
