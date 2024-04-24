@@ -25,7 +25,6 @@ import CitiesAutoComplete from "../nextui/CitiesAutoComplete"
 import { useRouter } from "next/navigation"
 import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import IndustryAutoComplete from "../nextui/industryAutoComplete"
-import CitiesAutoCompleteTest from "@/app/api/test"
 import { useFiltersContext } from "@/contexts/filters.context"
 
 export function SearchPage () {
@@ -176,7 +175,7 @@ export function SearchPage () {
               <CardContent>
                 <form className="flex max-lg:flex-col items-start">
                   <CountriesMultipleSelect />
-                  <CitiesAutoCompleteTest />
+                  <CitiesAutoComplete/>
                   <EmployeesMultipleSelect />
                 </form>
               </CardContent>

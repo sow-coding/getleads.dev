@@ -1,6 +1,6 @@
 import { supabase } from "@/utils/supabase/auth";
 
-export async function POST (request: Request) {
+export async function POST (request) {
     const req = await request.json();
     
     let { data: soloDecisionMaker, error } = await supabase

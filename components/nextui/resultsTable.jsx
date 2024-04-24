@@ -21,10 +21,14 @@ export function ResultsTable ({ organizations, searchId }) {
     switch (columnKey) {
       case "name":
         return <h3>{organization.name}</h3>;
-      case "description":
+      case "site":
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-sm capitalize text-default-400">{organization.name}</p>
+            <Button shadow color="primary" auto onPress={() => {
+              window.open(`https://${organization?.primary_domain}`, "_blank");
+            }}>
+              {organization?.primary_domain}
+            </Button>
           </div>
         );
       case "actions":

@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect } from "react";
 import {Select, SelectItem} from "@nextui-org/react";
-import {countries} from "./countriesData";
+import {countriesData} from "./countriesData";
 import { useFiltersContext } from "@/contexts/filters.context";
 
 export default function CountriesMultipleSelect() {
@@ -25,8 +25,8 @@ export default function CountriesMultipleSelect() {
         className="max-w-xs"
         onSelectionChange={setValues}
       >
-        {countries.map((country, index) => (
-          <SelectItem key={country.name} value={country.name}>
+        {countriesData.map((country, index) => (
+          <SelectItem key={country.code} value={country.code}>
             {country.name}
           </SelectItem>
         ))}

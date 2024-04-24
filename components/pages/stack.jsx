@@ -21,11 +21,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import StackAutocomplete from "../nextui/stackAutocomplete"
 import { useStackContext } from "@/contexts/stack.context"
 import { useState } from "react"
 import { useFiltersContext } from "@/contexts/filters.context"
 import { useRouter } from "next/navigation"
+import StackAutocomplete from "../nextui/stackAutocomplete"
+
 
 export function StackPage () {
   const { stack } = useStackContext()
@@ -228,7 +229,7 @@ export function StackPage () {
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
                 <Button onClick={() => {
-                  stack.length > 0 && handleVerifyOrganizations()
+                  stack.length > 0 ? handleVerifyOrganizations() : alert("Please select at least one technology")
                 }}>Save</Button>
                 <Button style={{backgroundColor: "#FF0000"}} className="mx-4" onClick={() => {
                   setStackHere([])
