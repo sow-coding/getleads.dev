@@ -31,9 +31,3 @@ export async function POST (req, res) {
   }
 }
 
-// Assurez-vous que le middleware de Next.js ne parse pas le corps
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
