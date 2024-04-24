@@ -17,7 +17,7 @@ function verifySignature(body, signature, secret) {
   return hash === signature;
 }
 
-export default async function POST (req, res) {
+export async function POST (req, res) {
   if (req.method === 'POST') {
     const signature = req.headers['wappalyzer-signature'];
     const secret = process.env.CALLBACK_WAPPALYZER; // Votre secret de signature
