@@ -9,12 +9,11 @@ function Test() {
             },
             body: JSON.stringify({
                 countries: ["US"],
-                companySizes: ["10"],
+                companySizes: [50],
                 industries: ["Software Development"]                
             })
         })
         const data = await response.json()
-        console.log(data)
     }
   return (
     <button onClick={() => {

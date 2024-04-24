@@ -6,8 +6,10 @@ export async function POST (request) {
         countries: req.countries,
         companySizes: req.sizes,
         industries: req.industries,
-        sets: ["locations"],
-        callbackUrl: 'https://getleads.dev/api/leadsListCallback'
+        sets: ["company"],
+        subset: 11,
+        callbackUrl: 'https://getleads.dev/api/leadsListCallback',
+        format: 'json'
     };
 
     const response = await fetch("https://api.wappalyzer.com/v2/lists", {
