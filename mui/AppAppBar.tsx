@@ -12,12 +12,7 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import ToggleColorMode from './ToggleColorMode';
 import Image from 'next/image';
-
-const logoStyle = {
-  width: '140px',
-  height: 'auto',
-  cursor: 'pointer',
-};
+import { useRouter } from 'next/navigation';
 
 interface AppAppBarProps {
   mode: PaletteMode;
@@ -26,7 +21,7 @@ interface AppAppBarProps {
 
 function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const [open, setOpen] = React.useState(false);
-
+  const router = useRouter()
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
@@ -92,9 +87,9 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 width={24}
                 height={24}
                 src={
-                  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg'
+                  '/user-search.svg'
                 }
-                style={logoStyle}
+                className='ml-5'
                 alt="logo of sitemark"
               />
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -120,6 +115,14 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 >
                   <Typography variant="body2" color="text.primary">
                     Highlights
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => router.push("/signup")}
+                  sx={{ py: '6px', px: '12px' }}
+                >
+                  <Typography variant="body2" color="text.primary">
+                    Try
                   </Typography>
                 </MenuItem>
                 <MenuItem
@@ -152,8 +155,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 size="small"
                 component="a"
-                href="/material-ui/getting-started/templates/sign-in/"
-                target="_blank"
+                href="/login"
               >
                 Sign in
               </Button>
@@ -162,8 +164,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="contained"
                 size="small"
                 component="a"
-                href="/material-ui/getting-started/templates/sign-up/"
-                target="_blank"
+                href="/signup"
               >
                 Sign up
               </Button>
@@ -195,7 +196,6 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       flexGrow: 1,
                     }}
                   >
-                    <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                   </Box>
                   <MenuItem onClick={() => scrollToSection('features')}>
                     Features
@@ -206,6 +206,12 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   <MenuItem onClick={() => scrollToSection('highlights')}>
                     Highlights
                   </MenuItem>
+                  <MenuItem
+                  onClick={() => router.push("/signup")}
+                  sx={{ py: '6px', px: '12px' }}
+                  >
+                  Try
+                </MenuItem>
                   <MenuItem onClick={() => scrollToSection('pricing')}>
                     Pricing
                   </MenuItem>
@@ -216,8 +222,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       color="primary"
                       variant="contained"
                       component="a"
-                      href="/material-ui/getting-started/templates/sign-up/"
-                      target="_blank"
+                      href="/signup"
                       sx={{ width: '100%' }}
                     >
                       Sign up
@@ -228,8 +233,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       color="primary"
                       variant="outlined"
                       component="a"
-                      href="/material-ui/getting-started/templates/sign-in/"
-                      target="_blank"
+                      href="/signin"
                       sx={{ width: '100%' }}
                     >
                       Sign in

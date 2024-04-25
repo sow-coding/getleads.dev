@@ -24,10 +24,11 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useState } from "react"
 import { logout } from "../login/actions"
+import { useRouter } from "next/navigation"
 
 export default function Settings() {
   const [email, setEmail] = useState("")
-
+  const router = useRouter()
   async function changeEmail () {
     const res = await fetch('/api/change-email', {
       method: 'POST',

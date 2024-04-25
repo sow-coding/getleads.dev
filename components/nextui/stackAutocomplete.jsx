@@ -19,7 +19,6 @@ export default function StackAutocomplete({ stackHere, setStackHere }) {
           return { items: [] };
         }
         let json = await res.json();
-        console.log("API Data:", json);  // Log to see what is received
         return {
           items: json.map(item => ({ id: item.slug, name: item.name }))
         };
