@@ -233,7 +233,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       color="primary"
                       variant="outlined"
                       component="a"
-                      href="/signin"
+                      href="/login"
                       sx={{ width: '100%' }}
                     >
                       Sign in

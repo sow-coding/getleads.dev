@@ -62,9 +62,7 @@ export default function Features() {
               color="text.secondary"
               sx={{ mb: { xs: 2, sm: 4 } }}
             >
-              Here you can provide a brief overview of the key features of the
-              product. For example, you could list the number of features, the types
-              of features, add-ons, or the benefits of the features.
+            Getleads.dev does its utmost to optimize prospecting and the search for potential customers for developers by putting several systems in place so that developers can <span style={{color: "#000", fontWeight: "bolder"}}>concentrate on their outreach and save time on their search for leads.</span>
             </Typography>
           </div>
           <Grid container item gap={1} sx={{ display: { xs: 'auto', sm: 'none' } }}>

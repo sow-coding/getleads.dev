@@ -7,6 +7,7 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { Badge } from '@/components/ui/badge';
 
 export default function Hero() {
   return (
@@ -31,7 +32,7 @@ export default function Hero() {
           pb: { xs: 8, sm: 12 },
         }}
       >
-        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '70%' } }}>
+        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '90%' } }}>
           <Typography
             variant="h1"
             sx={{
@@ -42,7 +43,7 @@ export default function Hero() {
               fontSize: 'clamp(3.5rem, 10vw, 4rem)',
             }}
           >
-            Our latest&nbsp;
+            The prospecting tool for&nbsp;
             <Typography
               component="span"
               variant="h1"
@@ -52,7 +53,7 @@ export default function Hero() {
                   theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
               }}
             >
-              products
+              devs
             </Typography>
           </Typography>
           <Typography
@@ -71,30 +72,12 @@ export default function Hero() {
             useFlexGap
             sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
           >
-            <TextField
-              id="outlined-basic"
-              hiddenLabel
-              size="small"
-              variant="outlined"
-              aria-label="Enter your email address"
-              placeholder="Your email address"
-              inputProps={{
-                autocomplete: 'off',
-                ariaLabel: 'Enter your email address',
-              }}
-            />
-            <Button variant="contained" color="primary">
-              Start now
-            </Button>
+            <a href="https://twitter.com/sow4code" target='_blank' className='self-center'>
+              <Badge variant={"outline"}>{`Made by a dev for devs ;)`}</Badge>
+            </a>
           </Stack>
-          <Typography variant="caption" textAlign="center" sx={{ opacity: 0.8 }}>
-            By clicking &quot;Start now&quot; you agree to our&nbsp;
-            <Link href="#" color="primary">
-              Terms & Conditions
-            </Link>
-            .
-          </Typography>
         </Stack>
+        
         <Box
           id="image"
           sx={(theme) => ({
@@ -104,7 +87,7 @@ export default function Hero() {
             width: '100%',
             backgroundImage:
               theme.palette.mode === 'light'
-                ? 'url("/static/images/templates/templates-images/hero-light.png")'
+                ? 'url("/previeuw.png")'
                 : 'url("/static/images/templates/templates-images/hero-dark.png")',
             backgroundSize: 'cover',
             borderRadius: '10px',

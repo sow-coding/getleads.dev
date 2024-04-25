@@ -14,7 +14,8 @@ import { signup } from "../login/actions"
 
 export default function SignUpForm() {
   return (
-    <Card className="mx-auto max-w-sm mt-6">
+    <>
+      <Card className="mx-auto max-w-sm mt-6">
       <CardHeader>
         <CardTitle className="text-xl">Sign Up</CardTitle>
         <CardDescription>
@@ -49,5 +50,6 @@ export default function SignUpForm() {
         </div>
       </form>
     </Card>
+    </>
   )
 }
