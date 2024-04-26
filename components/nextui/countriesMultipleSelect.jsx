@@ -26,7 +26,7 @@ export default function CountriesMultipleSelect() {
         onSelectionChange={setValues}
       >
         {countriesData.map((country, index) => (
-          <SelectItem key={country.code} value={country.code}>
+          <SelectItem key={country.name} value={country.name}>
             {country.name}
           </SelectItem>
         ))}

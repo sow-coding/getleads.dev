@@ -11,6 +11,7 @@ export async function POST (request: Request) {
     
     if (error) {
         console.error('Error fetching favorites:', error.message)
+        return new Response(JSON.stringify({isFavorite: false}), { status: 500 })
     } else if (!favorites) {
         return new Response(JSON.stringify({isFavorite: false}), { status: 500 })
     }

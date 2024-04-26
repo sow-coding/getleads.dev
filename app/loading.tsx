@@ -1,17 +1,31 @@
-"use client"
 import Link from "next/link"
-import { CircleUser, Menu, Package2, Search } from "lucide-react"
+import {
+  Activity,
+  ArrowUpRight,
+  CircleUser,
+  CreditCard,
+  DollarSign,
+  Menu,
+  Package2,
+  Search,
+  UserRound,
+  Users,
+} from "lucide-react"
 
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,11 +36,18 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import CircularProgressComponent from "@/components/nextui/circularProgress"
 
-export default function Feedback() {
-    const router = useRouter()
+
+export default function Loading() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -39,8 +60,8 @@ export default function Feedback() {
             <span className="sr-only">getleads.dev</span>
           </Link>
           <Link
-            href="/dashboard"
-            className="text-muted-foreground transition-colors hover:text-foreground"
+            href="#"
+            className="text-foreground transition-colors hover:text-foreground"
           >
             Dashboard
           </Link>
@@ -63,16 +84,10 @@ export default function Feedback() {
             Favorites
           </Link>
           <Link
-            href="#"
-            className="text-foreground transition-colors hover:text-foreground"
-          >
-            Feedback
-          </Link>
-          <Link
-            href="/settings"
+            href="/feedback"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Settings
+            Feedback
           </Link>
         </nav>
 
@@ -96,7 +111,7 @@ export default function Feedback() {
                 <Package2 className="h-6 w-6" />
                 <span className="sr-only">getleads.dev</span>
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-foreground">
+              <Link href="#" className="hover:text-foreground">
                 Dashboard
               </Link>
               <Link
@@ -119,7 +134,7 @@ export default function Feedback() {
               </Link>
               <Link
                 href="/feedback"
-                className="hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground"
               >
                 Feedback
               </Link>
@@ -137,39 +152,20 @@ export default function Feedback() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => {
-                router.push("/settings")
-              }}>Settings</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => {
-                router.push("/support")
-              }}>Support</DropdownMenuItem>
+              <DropdownMenuItem >Settings</DropdownMenuItem>
+              <DropdownMenuItem >Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => {
-                logout()
-              }}>Logout</DropdownMenuItem>
+              <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </header>
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
-        <div className="mx-auto grid w-full max-w-6xl gap-2">
-          <h1 className="text-3xl font-semibold">Feedback</h1>
-        </div>
-        <div className="mx-auto w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-          <div className="grid gap-6 w-full">
-            <Card x-chunk="dashboard-04-chunk-1 w-full">
-              <CardHeader>
-                <CardTitle>Contact</CardTitle>
-                <CardDescription>
-                    {`Don't`} hesitate to leave me feedback and ask me for new features by contacting me at this email address:
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <h1 className="text-3xl font-semibold">saikou@getleads.dev</h1>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+      {/* maybe mettre les 4 dernieres recherches en card, tableau transac devient tableau de decisionsMakers 
+      avec le vieuwAll qui amene vers la page de decisionMakers, recent sales devient tableau de recent leads (companies)
+      table recent sales devient tableau de task pour prospecter les leads, prospecting or outreach tasks
+      */}
+      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        <CircularProgressComponent />
       </main>
     </div>
   )

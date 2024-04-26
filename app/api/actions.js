@@ -12,7 +12,20 @@ function chunkArray(array, chunkSize) {
     }
     return chunks;
 }
-//regler erreur ici
+
+function normalizeFilters(filters) {
+    const normalizedFilters = {};
+    Object.keys(filters).forEach(key => {
+        if (Array.isArray(filters[key])) {
+            // Tri des tableaux pour assurer la cohérence
+            normalizedFilters[key] = filters[key].sort();
+        } else {
+            normalizedFilters[key] = filters[key];
+        }
+    });
+    return normalizedFilters;
+  }
+
 export async function verifyOrganizationsWithStackWappalyzer(entities, stack) {
     // Filtrer les entités pour ne garder que celles avec un website_url valide
     const websiteUrls = entities
@@ -38,6 +51,7 @@ export async function verifyOrganizationsWithStackWappalyzer(entities, stack) {
         }
 
         const data = await response.json();
+
         urls.forEach((url, index) => {
             // Vérifier si la réponse inclut une des technologies demandées
             const isTechnologyPresent = data[index]?.technologies?.some(tech => stack.includes(tech.name));
@@ -46,15 +60,16 @@ export async function verifyOrganizationsWithStackWappalyzer(entities, stack) {
     }
 
     const verifiedEntities = entities.filter(entity => results[entity.website_url]); // Filtrer les entités validées
-
+    
     return {
         id: uuidv4(),
         entities: verifiedEntities
     };
 }
 
-export async function saveSearchResults(searchId, organizations, searchFilters) {
+export async function saveSearchResults(searchId, organizations, searchFilters, decisionMakers) {
     let userId = null;
+    const normalizedFilters = normalizeFilters(searchFilters);
 
     const { data: userData, error: userError } = await supabase.auth.getUser();
     if (userError) {
@@ -65,7 +80,7 @@ export async function saveSearchResults(searchId, organizations, searchFilters) 
     const { data, error } = await supabase
     .from('searches')
     .insert([
-      { user_id: userId, searchId: searchId, organizations_searched: organizations, filters: searchFilters }
+      { user_id: userId, searchId: searchId, organizations_searched: organizations, filters: normalizedFilters, decisionMakers: decisionMakers }
     ]);
 
     if (error) {

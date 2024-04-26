@@ -24,8 +24,9 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { logout } from "@/app/login/actions"
 
-export default function Feedback() {
+export default function Nothing() {
     const router = useRouter()
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -46,7 +47,7 @@ export default function Feedback() {
           </Link>
           <Link
             href="/search/organizations"
-            className="text-muted-foreground transition-colors hover:text-foreground"
+            className="text-foreground transition-colors hover:text-foreground"
           >
             Search
           </Link>
@@ -63,8 +64,8 @@ export default function Feedback() {
             Favorites
           </Link>
           <Link
-            href="#"
-            className="text-foreground transition-colors hover:text-foreground"
+            href="/feedback"
+            className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Feedback
           </Link>
@@ -107,7 +108,7 @@ export default function Feedback() {
               </Link>
               <Link
                 href="/search"
-                className="text-muted-foreground hover:text-foreground"
+                className="hover:text-foreground"
               >
                 History
               </Link>
@@ -119,7 +120,7 @@ export default function Feedback() {
               </Link>
               <Link
                 href="/feedback"
-                className="hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground"
               >
                 Feedback
               </Link>
@@ -153,20 +154,33 @@ export default function Feedback() {
       </header>
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
         <div className="mx-auto grid w-full max-w-6xl gap-2">
-          <h1 className="text-3xl font-semibold">Feedback</h1>
+          <h1 className="text-3xl font-semibold">No result</h1>
         </div>
         <div className="mx-auto w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
           <div className="grid gap-6 w-full">
             <Card x-chunk="dashboard-04-chunk-1 w-full">
               <CardHeader>
-                <CardTitle>Contact</CardTitle>
+                <CardTitle>Sorry</CardTitle>
                 <CardDescription>
-                    {`Don't`} hesitate to leave me feedback and ask me for new features by contacting me at this email address:
+                    We did not find any results for your search
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <h1 className="text-3xl font-semibold">saikou@getleads.dev</h1>
+                <p>
+                Unfortunately we did not find any results for the filters you requested, getleads.dev being at the start of its project currently has quite limited data, by May 20 there will be a lot more data available on getleads .dev, you can try again at that point, for now try another search.
+
+                Thank you for your understanding.
+                </p>
               </CardContent>
+                <CardFooter>
+                <Button
+                onClick={() => {
+                    router.push("/search/organizations")
+                }}
+                >
+                New Search
+                </Button>
+                </CardFooter>
             </Card>
           </div>
         </div>

@@ -19,14 +19,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useStackContext } from "@/contexts/stack.context"
 import { useState } from "react"
 import { useFiltersContext } from "@/contexts/filters.context"
 import { useRouter } from "next/navigation"
 import StackAutocomplete from "../nextui/stackAutocomplete"
-
+import { v4 as uuidv4 } from 'uuid'; 
 
 export function StackPage () {
   const { stack } = useStackContext()
@@ -35,7 +34,27 @@ export function StackPage () {
   const router = useRouter()
 
   const handleVerifyOrganizations = async () => {
-    try {
+    const searchFilters = { countries, cities, sizes, industries, stack };  
+      
+    const dbResponse = await fetch("/api/searchOrganizationsByDb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ filters: searchFilters }),
+      });
+
+      const { organizations_searched, decisionMakers } = await dbResponse.json();
+      
+      // Vérifier si des résultats existent déjà pour ces filtres
+      if (organizations_searched?.length > 0) {
+        const newId = uuidv4();  // Générer un nouvel ID pour cette recherche
+        await saveSearchResults(newId, organizations_searched, searchFilters, decisionMakers);
+        router.push(`/search/results/search?id=${newId}`);
+        return;  // Arrête la fonction ici pour éviter un appel inutile à l'API Apollo
+      }
+      console.log("No results found in DB, proceeding to Apollo API call");
+      // Étape 2: Aucun résultat préexistant, faire un appel à l'API externe
       const response = await fetch("/api/searchOrganizationsApollo", {
         method: "POST",
         headers: {
@@ -46,26 +65,25 @@ export function StackPage () {
           sizes: sizes,
           industries: industries
         }),
-      
-      })
-  
+      });
+
       if (!response.ok) {
+        router.push("/search/nothing")
         throw new Error(`Failed to fetch organizations: ${response.statusText}`);
       }
-  
+
       const apolloResponse = await response.json();
       const apolloOrganizations = apolloResponse.organizations;
 
       const result = await verifyOrganizationsWithStackWappalyzer(apolloOrganizations, stack);
+      const { id, entities } = result;
 
-      const { id, entities } = result;  // Déstructuration pour obtenir l'ID et les entités
-      const searchFilters = { countries, cities, sizes, industries, stack };  // Créer un objet de filtres de recherche
-      entities?.length > 0 ? await saveSearchResults(id, entities, searchFilters) : router.push("/search?empty=yes") // Sauvegarder les résultats avec l'ID pour référence future
-      router.push(`/search/results/search?id=${id}`);
-    } catch (error) {
-      console.error("Failed to verify organizations:", error);
-      router.push("/error")
-    }
+      if (entities?.length > 0) {
+        await saveSearchResults(id, entities, searchFilters);
+        router.push(`/search/results/search?id=${id}`);
+      } else {
+        router.push("/search/nothing");
+      }
   };
   
   return (

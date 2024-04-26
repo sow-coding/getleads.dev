@@ -756,8 +756,4 @@ export const countriesData: Country[] =
         "name": "Zimbabwe",
         "code": "ZW"
     },
-    {
-        "name": "Antarctica",
-        "code": "AQ"
-    }
 ]
