@@ -261,9 +261,11 @@ export default function SearchHistory({userId}) {
                       </TableRow>
                     </TableHeader>
 
-                    <TableBody>
+                    <TableBody className="cursor-pointer">
                     {currentData.map((search, index) => (
-                        <TableRow key={index}>
+                        <TableRow key={index} onClick={() => {
+                          router.push(`/search/results/search?id=${search.searchId}`)
+                        }}>
                           <TableCell>{search.filters.sizes.map(size => size.replace(',', '-')).join(', ')|| 'N/A'}</TableCell>
                           <TableCell>{search.filters.stack.join(', ') || 'N/A'}</TableCell>
                           <TableCell>{search.filters.cities.join(', ') || 'N/A'}</TableCell>
@@ -283,7 +285,8 @@ export default function SearchHistory({userId}) {
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem onClick={() => {
+                                <DropdownMenuItem onClick={(e) => {
+                                  e.stopPropagation()
                                   router.push(`/search/results/search?id=${search.searchId}`)
                                 }}>Go</DropdownMenuItem>
                               </DropdownMenuContent>

@@ -28,12 +28,12 @@ export default function IndustryAutoComplete() {
     <div className="flex flex-col gap-4 w-full">
       <Autocomplete
         label="Company's Industry"
-        placeholder="Search an industry"
+        placeholder="Inudstry or keyword (e.g. 'SaaS')"
         className="max-w-xs w-96"
         defaultItems={industriesData}
         onSelectionChange={onSelectionChange}
       >
-        {(item) => <AutocompleteItem key={item.name}>{item.name}</AutocompleteItem>}
+        {(item) => <AutocompleteItem key={item.label}>{item.label}</AutocompleteItem>}
       </Autocomplete>
       <div className="flex items-center flex-wrap">
         {industries.map(industry => (

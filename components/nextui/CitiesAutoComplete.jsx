@@ -24,11 +24,11 @@ export default function CitiesAutoComplete() {
   return (
     <div className="flex flex-col lg:mx-4 max-lg:my-4 md:flex-nowrap gap-4">
       <Autocomplete
+        isDisabled
         label="Cities"
-        placeholder="Search cities"
+        placeholder="Arrives at the end of May"
         className="max-w-xs w-96"
         defaultItems={citiesData}
-        onSelectionChange={onSelectionChange}
       >
         {(item) => <AutocompleteItem key={item.name}>{item.name}</AutocompleteItem>}
       </Autocomplete>

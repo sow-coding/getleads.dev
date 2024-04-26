@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import EmployeesMultipleSelect from "../nextui/employeesMultipleSelect"
-import CitiesAutoComplete from "../nextui/CitiesAutoComplete"
+import CitiesAutoComplete from "../nextui/citiesAutoComplete"
 import { useRouter } from "next/navigation"
 import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import IndustryAutoComplete from "../nextui/industryAutoComplete"
@@ -183,7 +183,7 @@ export function SearchPage () {
             
             <Card x-chunk="dashboard-04-chunk-2">
               <CardHeader>
-                <CardTitle>Industry</CardTitle>
+                <CardTitle>Industry & Keywords</CardTitle>
                 <CardDescription>
                 Write down some keywords and industry names searched for for the company.
                 </CardDescription>
