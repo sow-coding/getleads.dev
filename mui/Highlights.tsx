@@ -11,44 +11,30 @@ import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
 import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
 import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
 import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
+import { Boxes, CircleDollarSign, Percent } from 'lucide-react';
 
 const items = [
   {
-    icon: <SettingsSuggestRoundedIcon />,
-    title: 'Adaptable performance',
+    icon: <CircleDollarSign />,
+    title: 'Save a lot of money',
     description:
-      'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
+    `Prospecting tools are constantly in monthly subscription format which makes absolutely no sense and which makes you lose a lot of money because you are supposed to use these tools a few times a year at most and it may even be that you don't use it for several months in a row but you still have to pay. Pay getleads.dev once, use it whenever you want.
+      Prospecting tool to find leads (the blue one for example) + email finder and verifier = $150/month * 12 = $1800/year
+      getleads.dev = $199 once
+    `
   },
   {
-    icon: <ConstructionRoundedIcon />,
-    title: 'Built to last',
+    icon: <Boxes />,
+    title: 'All in one',
     description:
-      'Experience unmatched durability that goes above and beyond with lasting investment.',
+      'The research part of prospecting is often done with several tools, one to find leads and others to manage everything that involves finding and checking emails for deliverability. All this part is grouped in getleads.dev in order to have everything in one tool and improve your productivity.',
   },
   {
-    icon: <ThumbUpAltRoundedIcon />,
-    title: 'Great user experience',
+    icon: <Percent />,
+    title: 'A very potentially winning investment',
     description:
-      'Integrate our product into your routine with an intuitive and easy-to-use interface.',
-  },
-  {
-    icon: <AutoFixHighRoundedIcon />,
-    title: 'Innovative functionality',
-    description:
-      'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
-  },
-  {
-    icon: <SupportAgentRoundedIcon />,
-    title: 'Reliable support',
-    description:
-      'Count on our responsive customer support, offering assistance that goes beyond the purchase.',
-  },
-  {
-    icon: <QueryStatsRoundedIcon />,
-    title: 'Precision in every detail',
-    description:
-      'Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.',
-  },
+      'The calculation is done very quickly because you just need to find a single client thanks to getleads.dev and this investment is reimbursed in 1 day for some and multiplied by tens or even hundreds for others.',
+  }
 ];
 
 export default function Highlights() {

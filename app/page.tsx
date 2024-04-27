@@ -18,6 +18,7 @@ import Testimonials from '@/mui/Testimonials';
 import FAQ from '@/mui/FAQ';
 import Footer from '@/mui/Footer';
 import getLPTheme from '@/mui/getLPTheme';
+import Demo from '@/mui/Demo';
 
 interface ToggleCustomThemeProps {
   showCustomTheme: Boolean;
@@ -84,7 +85,8 @@ export default function LandingPage() {
       <Box sx={{ bgcolor: 'background.default' }}>
         <Features />
         <Divider />
-        <Testimonials />
+        {/*<Testimonials />*/}
+        <Demo />
         <Divider />
         <Highlights />
         <Divider />

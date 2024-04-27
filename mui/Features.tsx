@@ -16,25 +16,25 @@ import ViewQuiltRoundedIcon from '@mui/icons-material/ViewQuiltRounded';
 const items = [
   {
     icon: <ViewQuiltRoundedIcon />,
-    title: 'Dashboard',
+    title: 'Tech stack filter',
     description:
-      'This item could provide a snapshot of the most important metrics or data points related to the product.',
+      'In addition to searching for companies using all the usual filters such as the country of the company or its number of employees, getleads.dev also allows searching by the web technology used by the company, whether programming languages, web servers or JavaScript frameworks.',
     imageLight: 'url("/static/images/templates/templates-images/dash-light.png")',
     imageDark: 'url("/static/images/templates/templates-images/dash-dark.png")',
   },
   {
     icon: <EdgesensorHighRoundedIcon />,
-    title: 'Mobile integration',
+    title: 'Focused on decision-makers',
     description:
-      'This item could provide information about the mobile app version of the product.',
+      'The most important element in prospecting is reaching out and talking to the right person, the one who will decide whether or not the company wants to work with you, in the case of devs this will usually be the CTO, getleads.dev is totally focused on finding you the decision makers of the companies you like.',
     imageLight: 'url("/static/images/templates/templates-images/mobile-light.png")',
     imageDark: 'url("/static/images/templates/templates-images/mobile-dark.png")',
   },
   {
     icon: <DevicesRoundedIcon />,
-    title: 'Available on all platforms',
+    title: 'Email search and verification',
     description:
-      'This item could let users know the product is available on all platforms, such as web, mobile, and desktop.',
+      'Although you have written the best prospecting email, if this email does not reach the correct destination (target mailbox), all this precious work will have been for nothing. For this getleads.dev integrates an email search and email verification system.',
     imageLight: 'url("/static/images/templates/templates-images/devices-light.png")',
     imageDark: 'url("/static/images/templates/templates-images/devices-dark.png")',
   },

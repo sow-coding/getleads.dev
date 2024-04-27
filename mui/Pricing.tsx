@@ -11,47 +11,33 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import { Badge } from '@/components/ui/badge';
 
 const tiers = [
   {
-    title: 'Free',
-    price: '0',
+    title: 'Basic',
+    price: '169',
     description: [
-      '10 users included',
-      '2 GB of storage',
-      'Help center access',
+      'Tech stack filter',
+      'Email finder',
       'Email support',
     ],
-    buttonText: 'Sign up for free',
+    buttonText: 'Start now',
     buttonVariant: 'outlined',
   },
   {
-    title: 'Professional',
+    title: 'Premium',
     subheader: 'Recommended',
-    price: '15',
+    price: '199',
     description: [
-      '20 users included',
-      '10 GB of storage',
-      'Help center access',
-      'Priority email support',
-      'Dedicated team',
-      'Best deals',
+      'Tech stack filter',
+      'Email finder',
+      'Email verification',
+      'Email support',
     ],
     buttonText: 'Start now',
     buttonVariant: 'contained',
-  },
-  {
-    title: 'Enterprise',
-    price: '30',
-    description: [
-      '50 users included',
-      '30 GB of storage',
-      'Help center access',
-      'Phone & email support',
-    ],
-    buttonText: 'Contact us',
-    buttonVariant: 'outlined',
-  },
+  }
 ];
 
 export default function Pricing() {
@@ -99,15 +85,19 @@ export default function Pricing() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 4,
-                border: tier.title === 'Professional' ? '1px solid' : undefined,
+                border: tier.title === 'Premium' ? '1px solid' : undefined,
                 borderColor:
-                  tier.title === 'Professional' ? 'primary.main' : undefined,
+                  tier.title === 'Premium' ? 'primary.main' : undefined,
                 background:
-                  tier.title === 'Professional'
+                  tier.title === 'Premium'
                     ? 'linear-gradient(#033363, #021F3B)'
                     : undefined,
               }}
             >
+                    <Chip
+                      label={"Launch discount ends 6/05"}
+                      size="small"
+                    />
               <CardContent>
                 <Box
                   sx={{
@@ -115,13 +105,13 @@ export default function Pricing() {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    color: tier.title === 'Professional' ? 'grey.100' : '',
+                    color: tier.title === 'Premium' ? 'grey.100' : '',
                   }}
                 >
                   <Typography component="h3" variant="h6">
                     {tier.title}
                   </Typography>
-                  {tier.title === 'Professional' && (
+                  {tier.title === 'Premium' && (
                     <Chip
                       icon={<AutoAwesomeIcon />}
                       label={tier.subheader}
@@ -144,14 +134,14 @@ export default function Pricing() {
                   sx={{
                     display: 'flex',
                     alignItems: 'baseline',
-                    color: tier.title === 'Professional' ? 'grey.50' : undefined,
+                    color: tier.title === 'Premium' ? 'grey.50' : undefined,
                   }}
                 >
                   <Typography component="h3" variant="h2">
                     ${tier.price}
                   </Typography>
-                  <Typography component="h3" variant="h6">
-                    &nbsp; per month
+                  <Typography className='ml-2' style={{textDecoration: "line-through"}} component="h3" variant="h6">
+                    ${tier.title === 'Basic' ? '269' : '299'}
                   </Typography>
                 </Box>
                 <Divider
@@ -175,7 +165,7 @@ export default function Pricing() {
                       sx={{
                         width: 20,
                         color:
-                          tier.title === 'Professional'
+                          tier.title === 'Premium'
                             ? 'primary.light'
                             : 'primary.main',
                       }}
@@ -185,7 +175,7 @@ export default function Pricing() {
                       variant="subtitle2"
                       sx={{
                         color:
-                          tier.title === 'Professional' ? 'grey.200' : undefined,
+                          tier.title === 'Premium' ? 'grey.200' : undefined,
                       }}
                     >
                       {line}
@@ -193,7 +183,7 @@ export default function Pricing() {
                   </Box>
                 ))}
               </CardContent>
-              <CardActions>
+              <CardActions className='flex flex-col'>
                 <Button
                   fullWidth
                   variant={tier.buttonVariant as 'outlined' | 'contained'}
@@ -203,6 +193,7 @@ export default function Pricing() {
                 >
                   {tier.buttonText}
                 </Button>
+                <p className={`mt-4 font-bold ${tier.title === "Premium" && "text-white"}`}>Pay once. Find leads</p>
               </CardActions>
             </Card>
           </Grid>
