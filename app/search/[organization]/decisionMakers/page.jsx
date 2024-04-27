@@ -268,9 +268,7 @@ return (
                             decisionMaker.title.toLowerCase().includes("co-founder")
                           )
                           .map((decisionMaker) => (
-                                <TableRow key={decisionMaker?.id} onClick={() => {
-                                    router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
-                                }}>
+                                <TableRow key={decisionMaker?.id}>
                                     <TableCell className="font-medium">
                                         {decisionMaker?.name}
                                     </TableCell>
@@ -304,7 +302,6 @@ return (
                                                     e.stopPropagation()
                                                     router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
                                                 }}>Contact</DropdownMenuItem>
-                                                <DropdownMenuItem>Delete</DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
@@ -346,9 +343,7 @@ return (
                     <TableBody>
                         
                         {decisionMakers?.map((decisionMaker) => (
-                            <TableRow key={decisionMaker?.id} onClick={() => {
-                                router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
-                            }}>
+                            <TableRow key={decisionMaker?.id}>
                                 <TableCell className="font-medium">
                                     {decisionMaker?.name}
                                 </TableCell>
@@ -384,7 +379,6 @@ return (
                                             e.stopPropagation()
                                             router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
                                         }}>Contact</DropdownMenuItem>
-                                        <DropdownMenuItem>Delete</DropdownMenuItem>
                                     </DropdownMenuContent>
                                     </DropdownMenu>
                                 </TableCell>

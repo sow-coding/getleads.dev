@@ -53,9 +53,8 @@ export function StackPage () {
         router.push(`/search/results/search?id=${newId}`);
         return;  // Arrête la fonction ici pour éviter un appel inutile à l'API Apollo
       }
-      console.log("No results found in DB, proceeding to Apollo API call");
       // Étape 2: Aucun résultat préexistant, faire un appel à l'API externe
-      const response = await fetch("/api/searchOrganizationsApollo", {
+      const response = await fetch("/api/searchOrganizations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
