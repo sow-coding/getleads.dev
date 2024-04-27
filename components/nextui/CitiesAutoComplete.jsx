@@ -6,7 +6,7 @@ import { useFiltersContext } from "@/contexts/filters.context";
 import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";  // Assurez-vous d'avoir cette icône importée
 
-export function CitiesAutoComplete() {
+export default function CitiesAutoComplete () {
   const { cities, setCities } = useFiltersContext();
   const [hoveredCity, setHoveredCity] = useState(null);
 
