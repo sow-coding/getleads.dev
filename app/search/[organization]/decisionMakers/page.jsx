@@ -258,8 +258,16 @@ return (
                     </TableHeader>
                     <TableBody>
                         {decisionMakers
-                            .filter(decisionMaker => decisionMaker?.departments[0] === "c_suite")
-                            .map((decisionMaker) => (
+                          .filter(decisionMaker => 
+                            decisionMaker?.departments[0] === "c_suite" ||
+                            decisionMaker.headline.toLowerCase().includes("chief") ||
+                            decisionMaker.headline.toLowerCase().includes("founder") ||
+                            decisionMaker.headline.toLowerCase().includes("co-founder") ||
+                            decisionMaker.title.toLowerCase().includes("chief") ||
+                            decisionMaker.title.toLowerCase().includes("founder") ||
+                            decisionMaker.title.toLowerCase().includes("co-founder")
+                          )
+                          .map((decisionMaker) => (
                                 <TableRow key={decisionMaker?.id} onClick={() => {
                                     router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
                                 }}>
@@ -321,9 +329,6 @@ return (
                     <Table>
                     <TableHeader>
                         <TableRow>
-                        <TableHead className="hidden w-[100px] sm:table-cell">
-                            <span className="sr-only">Image</span>
-                        </TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Department</TableHead>
                         <TableHead>Title</TableHead>
