@@ -3,6 +3,7 @@ import Link from "next/link"
 import {
   Activity,
   ArrowUpRight,
+  Building2,
   CircleUser,
   CreditCard,
   DollarSign,
@@ -52,6 +53,7 @@ import { useEffect, useState } from "react"
 export function Dashboard({userId}) {
   const router = useRouter()
   const [userDecisionMakers, setUserDecisionMakers] = useState([])
+  const [organizations, setOrganizations] = useState([])
 
   useEffect(() => {
     async function fetchUserDecisionMakers() {
@@ -65,7 +67,19 @@ export function Dashboard({userId}) {
       const data = await res.json()
       setUserDecisionMakers(data)
     }
+    async function fetchUserSearches() {
+      const res = await fetch(`/api/getUserSearches`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: userId }),
+      })
+      const data = await res.json()
+      setOrganizations(data)
+    }
     fetchUserDecisionMakers()
+    fetchUserSearches()
   }, [userId])
 
   return (
@@ -192,25 +206,47 @@ export function Dashboard({userId}) {
       */}
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          {userDecisionMakers.slice(0, 4).map((decisionMaker, index) => (
+          {organizations.slice(0, 3).map((organization, index) => (
             <Card key={index} className="cursor-pointer" x-chunk="dashboard-01-chunk-0" onClick={() => {
-              router.push(`/search/organization/decisionMakers/${decisionMaker?.person?.name}?id=${decisionMaker?.person?.id}`)
+              router.push(`/search/results/search?id=${organization?.searchId}`)
             }}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                {decisionMaker?.person?.organization?.name}
+                {organization?.organizations_searched[0]?.name}
               </CardTitle>
-              <UserRound className="h-4 w-4 text-muted-foreground" />
+              <Building2 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{decisionMaker?.person?.name}</div>
-              <p className="text-sm text-foreground my-2">{decisionMaker?.person?.title}</p>
-              <p className="text-sm text-muted-foreground">
-                {decisionMaker?.person?.email}
-              </p>
+            <CardContent className="flex flex-col justify-between h-3/5">
+              <div className="text-2xl font-bold">{organization?.organizations_searched[0]?.primary_domain}</div>
+              
+              <div className="flex items-center flex-wrap">
+              {organization?.filters?.stack?.map((stack, index) => (
+                <Badge key={index} className="text-xs mr-2 mt-2" variant="outline">
+                  {stack}
+                </Badge>
+              ))}
+              </div>
             </CardContent>
           </Card>
           ))}
+            <Card className="cursor-pointer" x-chunk="dashboard-01-chunk-0">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-2xl font-bold">
+                Actions
+              </CardTitle>
+              <Search className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <Button className="mr-4 mb-3" onClick={() => {
+                router.push(`/search/organizations`)
+              }}>Start a new search</Button>
+              <Button onClick={() => {
+                router.push(`/search`)
+              }} variant={"outline"}>
+                Go to previous search
+              </Button>
+            </CardContent>
+          </Card>
         </div>
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <Card
@@ -218,23 +254,17 @@ export function Dashboard({userId}) {
           >
             <CardHeader className="flex flex-row items-center">
               <div className="grid gap-2">
-                <CardTitle>Transactions</CardTitle>
+                <CardTitle>People</CardTitle>
                 <CardDescription>
-                  Recent transactions from your store.
+                  Here are the last people you found.
                 </CardDescription>
               </div>
-              <Button asChild size="sm" className="ml-auto gap-1">
-                <Link href="/search/decisionsMakers">
-                  View All
-                  <ArrowUpRight className="h-4 w-4" />
-                </Link>
-              </Button>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Customer</TableHead>
+                    <TableHead>Decision-makers</TableHead>
                     <TableHead className="hidden xl:table-column">
                       Type
                     </TableHead>
@@ -244,124 +274,53 @@ export function Dashboard({userId}) {
                     <TableHead className="hidden xl:table-column">
                       Date
                     </TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                    {userDecisionMakers.length > 0 && <TableHead className="text-right">Company</TableHead>}
                   </TableRow>
                 </TableHeader>
+
                 <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-23
-                    </TableCell>
-                    <TableCell className="text-right">$250.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Olivia Smith</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        olivia@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Refund
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Declined
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-24
-                    </TableCell>
-                    <TableCell className="text-right">$150.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Noah Williams</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        noah@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Subscription
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-25
-                    </TableCell>
-                    <TableCell className="text-right">$350.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Emma Brown</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        emma@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-26
-                    </TableCell>
-                    <TableCell className="text-right">$450.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-27
-                    </TableCell>
-                    <TableCell className="text-right">$550.00</TableCell>
-                  </TableRow>
+                  {userDecisionMakers.length > 0 ? userDecisionMakers.slice(0, 5).map((decisionMaker, index) => (
+                    <TableRow key={index} className="cursor-pointer" onClick={() => {
+                      router.push(`/search/organization/decisionMakers/${decisionMaker?.person?.name}?id=${decisionMaker?.person?.id}`)
+                    }}>
+                      <TableCell>
+                        <div className="font-medium">{decisionMaker?.person?.name}</div>
+                        <div className="hidden text-sm text-muted-foreground md:inline">
+                          {decisionMaker?.person?.email}
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden xl:table-column">
+                        Sale
+                      </TableCell>
+                      <TableCell className="hidden xl:table-column">
+                        <Badge className="text-xs" variant="outline">
+                          Approved
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+                        2023-06-23
+                      </TableCell>
+                      <TableCell className="text-right">{decisionMaker?.person?.organization?.name}</TableCell>
+                    </TableRow>
+                  )) : <TableRow>
+                      <div className="flex flex-col justify-center items-center mt-14 w-full">
+                        <h1 className="text-center">
+                        You {`haven't`} found any decision makers yet, start a search to remedy this</h1>
+                        <Button className="my-4" onClick={() => {
+                          router.push(`/search/organizations`)
+                        }}>Start a search</Button>  
+                      </div>  
+                  </TableRow>}
                 </TableBody>
               </Table>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-5">
             <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
+              <CardTitle>Tasks</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-8">
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     Olivia Martin
@@ -373,10 +332,6 @@ export function Dashboard({userId}) {
                 <div className="ml-auto font-medium">+$1,999.00</div>
               </div>
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/02.png" alt="Avatar" />
-                  <AvatarFallback>JL</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     Jackson Lee
@@ -388,10 +343,6 @@ export function Dashboard({userId}) {
                 <div className="ml-auto font-medium">+$39.00</div>
               </div>
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/03.png" alt="Avatar" />
-                  <AvatarFallback>IN</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     Isabella Nguyen
@@ -403,10 +354,6 @@ export function Dashboard({userId}) {
                 <div className="ml-auto font-medium">+$299.00</div>
               </div>
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/04.png" alt="Avatar" />
-                  <AvatarFallback>WK</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     William Kim
@@ -418,10 +365,6 @@ export function Dashboard({userId}) {
                 <div className="ml-auto font-medium">+$99.00</div>
               </div>
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/05.png" alt="Avatar" />
-                  <AvatarFallback>SD</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     Sofia Davis

@@ -18,14 +18,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import EmployeesMultipleSelect from "../nextui/employeesMultipleSelect"
-import CitiesAutoComplete from "../nextui/citiesAutoComplete"
 import { useRouter } from "next/navigation"
 import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import IndustryAutoComplete from "../nextui/industryAutoComplete"
 import { useFiltersContext } from "@/contexts/filters.context"
+import CitiesAutoComplete from "../nextui/citiesAutoComplete"
 
 export function SearchPage () {
   const router = useRouter()
@@ -175,7 +174,7 @@ export function SearchPage () {
               <CardContent>
                 <form className="flex max-lg:flex-col items-start">
                   <CountriesMultipleSelect />
-                  <CitiesAutoComplete/>
+                  <CitiesAutoComplete />
                   <EmployeesMultipleSelect />
                 </form>
               </CardContent>

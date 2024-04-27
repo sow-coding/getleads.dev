@@ -4,7 +4,7 @@ interface Industry {
 }
 export const industriesData: Industry[] = 
 [
-    {
+    /*{
       "value": "5567ce1f7369643b78570000",
       "label": "accounting"
     },
@@ -587,5 +587,5 @@ export const industriesData: Industry[] =
     {
       "value": "5567cdd973696439a1370000",
       "label": "writing & editing"
-    }
+    }*/
   ]

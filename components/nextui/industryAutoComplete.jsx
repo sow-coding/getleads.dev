@@ -27,8 +27,9 @@ export default function IndustryAutoComplete() {
   return (
     <div className="flex flex-col gap-4 w-full">
       <Autocomplete
+        isDisabled
         label="Company's Industry"
-        placeholder="Inudstry or keyword (e.g. 'SaaS')"
+        placeholder="Available from May 21"
         className="max-w-xs w-96"
         defaultItems={industriesData}
         onSelectionChange={onSelectionChange}

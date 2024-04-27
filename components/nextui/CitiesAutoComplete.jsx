@@ -26,7 +26,7 @@ export default function CitiesAutoComplete() {
       <Autocomplete
         isDisabled
         label="Cities"
-        placeholder="Arrives at the end of May"
+        placeholder="Available from May 21"
         className="max-w-xs w-96"
         defaultItems={citiesData}
       >

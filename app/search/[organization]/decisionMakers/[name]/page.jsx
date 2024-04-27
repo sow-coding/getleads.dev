@@ -294,7 +294,15 @@ function DecisionMaker () {
                 <Link href="#">
                     {decisionMaker?.person?.title}
                 </Link>
+                <Link href="#">{decisionMaker?.person?.organization?.name}</Link>
                 <Link href="#">{decisionMaker?.person?.city}</Link>
+                <Link href="#">{decisionMaker?.person?.country}</Link>
+                {decisionMaker?.person?.linkedin_url && <a href={`${decisionMaker?.person?.linkedin_url}`} target="_blank">
+                  <Badge variant={"outline"}>Linkedin</Badge>
+                  </a>}
+                <a href={`${decisionMaker?.person?.organization?.website_url}`} target="_blank">
+                  <Badge variant={"outline"}>{decisionMaker?.person?.organization?.primary_domain}</Badge>
+                </a>
                 </nav>
                 <div className="grid gap-6">
                 <Card x-chunk="dashboard-04-chunk-1">
