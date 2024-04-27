@@ -76,9 +76,9 @@ export function StackPage () {
 
       const result = await verifyOrganizationsWithStackWappalyzer(apolloOrganizations, stack);
       const { id, entities } = result;
-
+      await saveSearchResults(id, entities, searchFilters);
+      
       if (entities?.length > 0) {
-        await saveSearchResults(id, entities, searchFilters);
         router.push(`/search/results/search?id=${id}`);
       } else {
         router.push("/search/nothing");

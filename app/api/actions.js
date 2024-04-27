@@ -36,6 +36,7 @@ export async function verifyOrganizationsWithStackWappalyzer(entities, stack) {
     let results = {};
 
     for (const urls of urlChunks) {
+        // d'abord lookupByDb et pour les websites qui n'ont pas de résultats, lookupByApi
         if (urls.length === 0) continue; // Si le chunk est vide, passez au suivant
 
         const apiUrl = `https://api.wappalyzer.com/v2/lookup?urls=${urls.join(',')}&live=false`;

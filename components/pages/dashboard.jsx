@@ -54,6 +54,7 @@ export function Dashboard({userId}) {
   const router = useRouter()
   const [userDecisionMakers, setUserDecisionMakers] = useState([])
   const [organizations, setOrganizations] = useState([])
+  const [favorites, setFavorites] = useState([])
 
   useEffect(() => {
     async function fetchUserDecisionMakers() {
@@ -78,8 +79,20 @@ export function Dashboard({userId}) {
       const data = await res.json()
       setOrganizations(data)
     }
+    async function getFavorites() {
+      const res = await fetch(`/api/getFavorites`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: userId }),
+      })
+      const data = await res.json()
+      setFavorites(data)
+    }
     fetchUserDecisionMakers()
     fetchUserSearches()
+    getFavorites()
   }, [userId])
 
   return (
@@ -200,15 +213,11 @@ export function Dashboard({userId}) {
           </DropdownMenu>
         </div>
       </header>
-      {/* maybe mettre les 4 dernieres recherches en card, tableau transac devient tableau de decisionsMakers 
-      avec le vieuwAll qui amene vers la page de decisionMakers, recent sales devient tableau de recent leads (companies)
-      table recent sales devient tableau de task pour prospecter les leads, prospecting or outreach tasks
-      */}
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           {organizations.slice(0, 3).map((organization, index) => (
             <Card key={index} className="cursor-pointer" x-chunk="dashboard-01-chunk-0" onClick={() => {
-              router.push(`/search/results/search?id=${organization?.searchId}`)
+              router.push(`/search/organization?searchId=${organization?.searchId}&id=${organization?.organizations_searched[0]?.id}`)
             }}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -315,68 +324,36 @@ export function Dashboard({userId}) {
               </Table>
             </CardContent>
           </Card>
+
           <Card x-chunk="dashboard-01-chunk-5">
             <CardHeader>
-              <CardTitle>Tasks</CardTitle>
+              <CardTitle>Favorites</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-8">
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Olivia Martin
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    olivia.martin@email.com
-                  </p>
+              {favorites.length > 0 ? favorites.slice(0, 5).map((favorite, index) => (
+                <div key={index} className="flex items-center gap-4 cursor-pointer">
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium leading-none">
+                      {favorite?.organization?.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {favorite?.organization?.city}
+                    </p>
+                  </div>
+                  <div className="ml-auto font-medium">
+                    <Badge className="text-xs" variant="outline">{favorite?.organization?.industry}</Badge>
+                  </div>
                 </div>
-                <div className="ml-auto font-medium">+$1,999.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Jackson Lee
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    jackson.lee@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$39.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Isabella Nguyen
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    isabella.nguyen@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$299.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    William Kim
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    will@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$99.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Sofia Davis
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    sofia.davis@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$39.00</div>
-              </div>
+              )) : <div className="flex items-center gap-4 cursor-pointer">
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium leading-none">
+                      You {`haven't`} favorited any organizations yet
+                    </p>
+                  </div>
+              </div>}
             </CardContent>
           </Card>
+
         </div>
       </main>
     </div>
