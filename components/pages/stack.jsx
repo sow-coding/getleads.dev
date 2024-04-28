@@ -26,14 +26,18 @@ import { useFiltersContext } from "@/contexts/filters.context"
 import { useRouter } from "next/navigation"
 import StackAutocomplete from "../nextui/stackAutocomplete"
 import { v4 as uuidv4 } from 'uuid'; 
+import CircularProgressComponent from "../nextui/circularProgress"
+import { logout } from "@/app/login/actions"
 
 export function StackPage () {
   const { stack } = useStackContext()
   const {countries, cities, sizes, industries} = useFiltersContext()
   const [stackHere, setStackHere] = useState([]);
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
-
+  
   const handleVerifyOrganizations = async () => {
+    setLoading(true)
     const searchFilters = { countries, cities, sizes, industries, stack };  
       
     const dbResponse = await fetch("/api/searchOrganizationsByDb", {
@@ -50,6 +54,7 @@ export function StackPage () {
       if (organizations_searched?.length > 0) {
         const newId = uuidv4();  // Générer un nouvel ID pour cette recherche
         await saveSearchResults(newId, organizations_searched, searchFilters, decisionMakers);
+        setLoading(false)
         router.push(`/search/results/search?id=${newId}`);
         return;  // Arrête la fonction ici pour éviter un appel inutile à l'API Apollo
       }
@@ -77,7 +82,7 @@ export function StackPage () {
       const result = await verifyOrganizationsWithStackWappalyzer(apolloOrganizations, stack);
       const { id, entities } = result;
       await saveSearchResults(id, entities, searchFilters);
-      
+      setLoading(false)
       if (entities?.length > 0) {
         router.push(`/search/results/search?id=${id}`);
       } else {
@@ -202,47 +207,51 @@ export function StackPage () {
           </DropdownMenu>
         </div>
       </header>
+      {loading ? <div className="mx-4 my-4">
+      <CircularProgressComponent />
+      </div> : 
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
-        <div className="mx-auto grid w-full max-w-6xl gap-2">
-          <h1 className="text-3xl font-semibold">Search</h1>
-        </div>
-        <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-          <nav
-            className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0"
-          >
-            <Link href="/search/organizations">
-              1.Organizations
-            </Link>
-            <Link href="#" className="font-semibold text-primary">2.Stack</Link>
-            <Link href="#">3.People</Link>
-            <Link href="#">4.Contact</Link>
-          </nav>
+      <div className="mx-auto grid w-full max-w-6xl gap-2">
+        <h1 className="text-3xl font-semibold">Search</h1>
+      </div>
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+        <nav
+          className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0"
+        >
+          <Link href="/search/organizations">
+            1.Organizations
+          </Link>
+          <Link href="#" className="font-semibold text-primary">2.Stack</Link>
+          <Link href="#">3.People</Link>
+          <Link href="#">4.Contact</Link>
+        </nav>
 
-          <div className="grid gap-6">
-            <Card x-chunk="dashboard-04-chunk-1">
-              <CardHeader>
-                <CardTitle>Tech stack</CardTitle>
-                <CardDescription>
-                Filter your search: by programming language, frameworks or tools
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="flex max-lg:flex-col items-start">
-                  <StackAutocomplete stackHere={stackHere} setStackHere={setStackHere} />
-                </form>
-              </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button onClick={() => {
-                  stack.length > 0 ? handleVerifyOrganizations() : alert("Please select at least one technology")
-                }}>Save</Button>
-                <Button style={{backgroundColor: "#FF0000"}} className="mx-4" onClick={() => {
-                  setStackHere([])
-                }}>Clean</Button>
-              </CardFooter>
-            </Card>
-          </div>
+        <div className="grid gap-6">
+          <Card x-chunk="dashboard-04-chunk-1">
+            <CardHeader>
+              <CardTitle>Tech stack</CardTitle>
+              <CardDescription>
+              Filter your search: by programming language, frameworks or tools
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="flex max-lg:flex-col items-start">
+                <StackAutocomplete stackHere={stackHere} setStackHere={setStackHere} />
+              </form>
+            </CardContent>
+            <CardFooter className="border-t px-6 py-4">
+              <Button onClick={() => {
+                stack.length > 0 ? handleVerifyOrganizations() : alert("Please select at least one technology")
+              }}>Save</Button>
+              <Button style={{backgroundColor: "#FF0000"}} className="mx-4" onClick={() => {
+                setStackHere([])
+              }}>Clean</Button>
+            </CardFooter>
+          </Card>
         </div>
-      </main>
+      </div>
+    </main>
+      }
     </div>
   )
 }

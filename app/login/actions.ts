@@ -5,12 +5,12 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
 
-export async function login(formData: FormData) {
+export async function login({email, password}: {email: string, password: string}) {
   const supabase = createClient()
 
   const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
+    email: email,
+    password: password
   }
 
   const { error } = await supabase.auth.signInWithPassword(data)
@@ -25,14 +25,15 @@ export async function login(formData: FormData) {
   redirect('/dashboard')
 }
 
-export async function signup(formData: FormData) {
+export async function signup({email, password}: {email: string, password: string}) {
   const supabase = createClient()
 
   const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
+    email: email,
+    password: password,
     options: {
       data: {
+        userType: 'free',
         paid: false
       }
     }
