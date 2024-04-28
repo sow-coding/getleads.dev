@@ -28,6 +28,7 @@ import StackAutocomplete from "../nextui/stackAutocomplete"
 import { v4 as uuidv4 } from 'uuid'; 
 import CircularProgressComponent from "../nextui/circularProgress"
 import { logout } from "@/app/login/actions"
+import Image from "next/image"
 
 export function StackPage () {
   const { stack } = useStackContext()
@@ -247,6 +248,17 @@ export function StackPage () {
                 setStackHere([])
               }}>Clean</Button>
             </CardFooter>
+          </Card>
+          <Card x-chunk="dashboard-04-chunk-2">
+            <CardHeader>
+              <CardTitle>Our data</CardTitle>
+              <CardDescription>
+              Our data on the technologies used by the companies are provided by Wappalyzer
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Image src="/wappalyzer.svg" alt="Wappalyzer" width={200} height={200} />
+            </CardContent>
           </Card>
         </div>
       </div>

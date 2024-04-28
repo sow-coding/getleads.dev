@@ -105,13 +105,13 @@ export default function Footer() {
           <Typography variant="body2" fontWeight={600}>
             Company
           </Typography>
+          <Link color="text.secondary" href="/support">
+            Support
+          </Link>
           <Link color="text.secondary" href="/aboutUs">
             About us
           </Link>
           <Link color="text.secondary" href="/toAcquire">
-            To Acquire
-          </Link>
-          <Link color="text.secondary" href="/support">
             To Acquire
           </Link>
         </Box>

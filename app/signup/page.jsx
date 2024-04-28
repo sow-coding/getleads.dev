@@ -92,7 +92,7 @@ export default function SignUpForm() {
             </Link>
           </div>
           <div className="mt-4 text-center text-sm">
-            <Link href="/terms" className="underline my-2">
+            <Link href="/termsAndConditions" className="underline my-2">
               Terms and Conditions
             </Link>
           </div>
