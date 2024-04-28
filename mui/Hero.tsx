@@ -37,7 +37,7 @@ export default function Hero() {
               alignSelf="center"
               spacing={1}
               useFlexGap
-              sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
+              sx={{ pt: 2, width: { xs: '100%', sm: 'auto' }, marginBottom: "10px" }}
             >
             <a href="https://twitter.com/sow4code" target='_blank' className='self-center'>
               <Badge variant={"outline"}>{`By a dev for devs ;)`}</Badge>

@@ -260,12 +260,12 @@ return (
                         {decisionMakers
                           .filter(decisionMaker => 
                             decisionMaker?.departments[0] === "c_suite" ||
-                            decisionMaker.headline.toLowerCase().includes("chief") ||
-                            decisionMaker.headline.toLowerCase().includes("founder") ||
-                            decisionMaker.headline.toLowerCase().includes("co-founder") ||
-                            decisionMaker.title.toLowerCase().includes("chief") ||
-                            decisionMaker.title.toLowerCase().includes("founder") ||
-                            decisionMaker.title.toLowerCase().includes("co-founder")
+                            decisionMaker?.headline?.toLowerCase().includes("chief") ||
+                            decisionMaker?.headline?.toLowerCase().includes("founder") ||
+                            decisionMaker?.headline?.toLowerCase().includes("co-founder") ||
+                            decisionMaker?.title?.toLowerCase().includes("chief") ||
+                            decisionMaker?.title?.toLowerCase().includes("founder") ||
+                            decisionMaker?.title?.toLowerCase().includes("co-founder")
                           )
                           .map((decisionMaker) => (
                                 <TableRow key={decisionMaker?.id}>

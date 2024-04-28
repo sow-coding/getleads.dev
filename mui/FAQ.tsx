@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function FAQ() {
@@ -62,9 +61,8 @@ export default function FAQ() {
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
               You can reach our customer support team by emailing
-              <Link> support@email.com </Link>
-              or calling our toll-free number. We&apos;re here to assist you
-              promptly.
+              <Link> support@swos.be </Link>
+              feel free to contact us with any questions or concerns you may have.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -88,8 +86,9 @@ export default function FAQ() {
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
               Absolutely! We offer a hassle-free return policy. If you&apos;re not
-              completely satisfied, you can return the product within [number of
-              days] days for a full refund or exchange.
+               satisfied, you can return the product within 10 days for a full refund provided you prove the use of getleads.dev in real prospecting efforts. <Link className='cursor-pointer'> 
+                <a href='/terms'>Read the terms of use to find out more.</a>
+               </Link>
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -112,9 +111,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Our product distinguishes itself through its adaptability, durability,
-              and innovative features. We prioritize user satisfaction and
-              continually strive to exceed expectations in every aspect.
+            To our knowledge no other product has been created specifically for developers, other prospecting tools are often too general for the use and needs of a developer in terms and this is generally seen in the ability to search for companies by their tech stack.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -128,7 +125,7 @@ export default function FAQ() {
             id="panel4d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              Is there a warranty on the product, and what does it cover?
+              Who is getleads.dev for? Can any type of developer use it?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -137,10 +134,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Yes, our product comes with a [length of warranty] warranty. It covers
-              defects in materials and workmanship. If you encounter any issues
-              covered by the warranty, please contact our customer support for
-              assistance.
+            Given the limited access to private company data such as their tech stack, only web technologies are available on getleads.dev due to their public accessibility. Getleads.dev is therefore aimed at front-end, back-end or full-stack web developers.
             </Typography>
           </AccordionDetails>
         </Accordion>

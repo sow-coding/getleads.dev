@@ -11,18 +11,20 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import { Badge } from '@/components/ui/badge';
 
 const tiers = [
   {
     title: 'Basic',
     price: '169',
     description: [
+      'Unlimited search',
+      'All search filters',
       'Tech stack filter',
       'Email finder',
-      'Email support',
+      'Free trial',
+      'Email support'
     ],
-    buttonText: 'Start now',
+    buttonText: 'Start free trial',
     buttonVariant: 'outlined',
   },
   {
@@ -30,12 +32,15 @@ const tiers = [
     subheader: 'Recommended',
     price: '199',
     description: [
+      'Unlimited search',
+      'All search filters',
       'Tech stack filter',
       'Email finder',
       'Email verification',
+      'Free trial',
       'Email support',
     ],
-    buttonText: 'Start now',
+    buttonText: 'Start free trial',
     buttonVariant: 'contained',
   }
 ];
@@ -200,7 +205,7 @@ export default function Pricing() {
                   fullWidth
                   variant={tier.buttonVariant as 'outlined' | 'contained'}
                   component="a"
-                  href="/material-ui/getting-started/templates/checkout/"
+                  href="/signup"
                   target="_blank"
                 >
                   {tier.buttonText}
