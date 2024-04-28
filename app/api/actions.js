@@ -1,9 +1,10 @@
 "use server"
 
+import { supabase } from "@/utils/supabase/auth";
 import { createClient } from "@/utils/supabase/server";
 import { v4 as uuidv4 } from 'uuid';
 
-const supabase = createClient();
+const supabase1 = createClient();
 
 function chunkArray(array, chunkSize) {
     const chunks = [];
@@ -27,58 +28,123 @@ function normalizeFilters(filters) {
   }
 
 export async function verifyOrganizationsWithStackWappalyzer(entities, stack) {
-    // Filtrer les entités pour ne garder que celles avec un website_url valide
     const websiteUrls = entities
         .map(entity => entity.website_url)
-        .filter(url => url);  // Cette ligne enlève toutes les valeurs falsy (undefined, null, '', etc.)
+        .filter(url => url);  // Filtrer les URLs vides
 
-    const urlChunks = chunkArray(websiteUrls, 10); // Utilisation de tranches de 10 URLs
+    const urlChunks = chunkArray(websiteUrls, 10); // Chunks de 10 URLs
     let results = {};
 
     for (const urls of urlChunks) {
-        // d'abord lookupByDb et pour les websites qui n'ont pas de résultats, lookupByApi
-        if (urls.length === 0) continue; // Si le chunk est vide, passez au suivant
+        // Premièrement, vérifier si les données existent dans la base de données
+        const lookupResults = await checkUrlsInDatabase(urls);
 
-        const apiUrl = `https://api.wappalyzer.com/v2/lookup?urls=${urls.join(',')}&live=false`;
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: { 'x-api-key': process.env.WAPPALYZER_API_KEY }
-        });
+        // Filtrer les URLs qui ne sont pas déjà enregistrées dans la base de données
+        const urlsToFetch = urls.filter(url => !lookupResults[url]);
 
-        if (!response.ok) {
-            // Ici, log l'erreur pour plus de détails
-            console.error('API call failed with status:', response.status);
-            return await response.json();  // Retourne l'erreur si la réponse n'est pas OK
+        if (urlsToFetch.length > 0) {
+            const apiUrl = `https://api.wappalyzer.com/v2/lookup?urls=${urlsToFetch.join(',')}&live=false`;
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: { 'x-api-key': process.env.WAPPALYZER_API_KEY }
+            });
+
+            if (!response.ok) {
+                console.error('API call failed with status:', response.status);
+                continue;  // Passer à l'itération suivante si l'appel API échoue
+            }
+
+            const data = await response.json();
+
+            // Traiter les données reçues et les enregistrer dans la base de données
+            for (let i = 0; i < urlsToFetch.length; i++) {
+                try {
+                    const url = urlsToFetch[i];
+                    const apiData = data.find(d => d.url === url);
+                    if (apiData && apiData.technologies) {
+                        const isTechnologyPresent = apiData.technologies.some(tech => stack.includes(tech.name));
+                        results[url] = isTechnologyPresent;
+                        await saveLookupInDatabase(url, apiData.technologies);
+                    } else {
+                        console.error('No technologies data for URL:', url);
+                        results[url] = false;
+                    }
+                } catch (error) {
+                    console.error(error.message);
+                    results[url] = false;
+                    continue;  // Passer à l'itération suivante si une erreur se produit
+                }
+            }
         }
 
-        const data = await response.json();
-
-        urls.forEach((url, index) => {
-            // Vérifier si la réponse inclut une des technologies demandées
-            const isTechnologyPresent = data[index]?.technologies?.some(tech => stack.includes(tech.name));
-            results[url] = isTechnologyPresent;
+        // Utiliser les résultats de la base de données pour les URLs déjà connues
+        urls.forEach(url => {
+            if (lookupResults[url]) {
+                results[url] = lookupResults[url].some(tech => stack.includes(tech.name));
+            }
         });
     }
 
-    const verifiedEntities = entities.filter(entity => results[entity.website_url]); // Filtrer les entités validées
-    
+    const verifiedEntities = entities.filter(entity => results[entity.website_url]);
+
     return {
         id: uuidv4(),
         entities: verifiedEntities
     };
 }
 
+// Fonction pour vérifier si les URLs ont déjà été analysées et sont stockées dans la base de données
+async function checkUrlsInDatabase(urls) {
+    let results = {};
+
+    const { data, error } = await supabase
+        .from('lookup')
+        .select('website, technologies')
+        .in('website', urls); // Recherche des entrées où la colonne 'website' est dans la liste des URLs
+
+    if (error) {
+        console.error('Error fetching data from database:', error.message);
+        return results;
+    }
+
+    // Formatter les données pour les retourner dans la structure attendue
+    data.forEach(item => {
+        results[item.website] = item.technologies; // Assumer que 'technologies' est déjà un tableau
+    });
+
+    return results;
+}
+
+// Fonction pour enregistrer les nouvelles données obtenues de l'API Wappalyzer dans la base de données
+async function saveLookupInDatabase(url, technologies) {
+    const { data, error } = await supabase
+        .from('lookup')
+        .insert([
+            {
+                website: url,
+                technologies: technologies // Supposer que 'technologies' est un tableau d'objets ou de chaînes
+            }
+        ]);
+
+    if (error) {
+        console.error('Error saving data to database:', error.message);
+    } else {
+        console.log('Data saved successfully:', data);
+    }
+}
+
+
 export async function saveSearchResults(searchId, organizations, searchFilters, decisionMakers) {
     let userId = null;
     const normalizedFilters = normalizeFilters(searchFilters);
 
-    const { data: userData, error: userError } = await supabase.auth.getUser();
+    const { data: userData, error: userError } = await supabase1.auth.getUser();
     if (userError) {
     console.error('Erreur lors de la récupération de l’utilisateur connecté', userError);
     } else if (userData) {
     userId = userData.user.id;
     }
-    const { data, error } = await supabase
+    const { data, error } = await supabase1
     .from('searches')
     .insert([
       { user_id: userId, searchId: searchId, organizations_searched: organizations, filters: normalizedFilters, decisionMakers: decisionMakers }
