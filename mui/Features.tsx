@@ -62,8 +62,7 @@ export default function Features() {
               color="text.secondary"
               sx={{ mb: { xs: 2, sm: 4 } }}
             >
-            Getleads.dev does its utmost to optimize prospecting and the search for potential customers for developers by putting several systems in place so that developers can <span style={{color: "#000", fontWeight: "bolder"}}>concentrate on their outreach and save time on their search for leads.</span>
-            </Typography>
+            Getleads.dev does it utmost to <span className='font-bold text-black'>optimize prospecting and the search of potential customers</span> for developers, by putting several systems in place so that you can <span className='font-bold text-black'>concentrate on your outreach and save time on your search for leads.</span></Typography>
           </div>
           <Grid container item gap={1} sx={{ display: { xs: 'auto', sm: 'none' } }}>
             {items.map(({ title }, index) => (

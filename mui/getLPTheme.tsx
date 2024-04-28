@@ -21,16 +21,16 @@ declare module '@mui/material/styles/createPalette' {
 }
 
 export const brand = {
-  50: 'hsl(262.1, 80%, 95%)',  // Très clair
-  100: 'hsl(262.1, 80%, 85%)', // Très clair mais un peu plus saturé
-  200: 'hsl(262.1, 80%, 75%)', // Clair
-  300: 'hsl(262.1, 80%, 65%)', // Moyen clair
-  400: 'hsl(262.1, 80%, 60%)', // Proche de la couleur principale mais plus clair
-  500: 'hsl(262.1, 83.3%, 57.8%)', // Couleur principale
-  600: 'hsl(262.1, 85%, 50%)',  // Foncé
-  700: 'hsl(262.1, 90%, 45%)',  // Plus foncé
-  800: 'hsl(262.1, 95%, 40%)',  // Très foncé
-  900: 'hsl(262.1, 100%, 35%)'  // Presque noir
+  50: '#F0F7FF',
+  100: '#CEE5FD',
+  200: '#9CCCFC',
+  300: '#55A6F6',
+  400: '#0A66C2',
+  500: '#0959AA',
+  600: '#064079',
+  700: '#033363',
+  800: '#02294F',
+  900: '#021F3B',
 };
 
 export const secondary = {

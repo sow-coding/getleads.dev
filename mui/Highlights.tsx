@@ -18,10 +18,11 @@ const items = [
     icon: <CircleDollarSign />,
     title: 'Save a lot of money',
     description:
-    `Prospecting tools are constantly in monthly subscription format which makes absolutely no sense and which makes you lose a lot of money because you are supposed to use these tools a few times a year at most and it may even be that you don't use it for several months in a row but you still have to pay. Pay getleads.dev once, use it whenever you want.
-      Prospecting tool to find leads (the blue one for example) + email finder and verifier = $150/month * 12 = $1800/year
-      getleads.dev = $199 once
-    `
+    `Prospecting tools are constantly in the form of a monthly subscription, which makes no sense, because you are supposed to use these tools a few times a year (at most).
+    And you may not even use them for several months in a row. Pay getleads.dev once, use it whenever you want. Prospecting tool to find leads (blue for example) + email researcher and verifier = $150/month * 12 = $1,800/year getleads.dev = 
+    `,
+    price: '$299',
+    fakePrice: ' $199 once'
   },
   {
     icon: <Boxes />,
@@ -67,9 +68,7 @@ export default function Highlights() {
             Highlights
           </Typography>
           <Typography variant="body1" sx={{ color: 'grey.400' }}>
-            Explore why our product stands out: adaptability, durability,
-            user-friendly design, and innovation. Enjoy reliable customer support and
-            precision in every detail.
+          Discover what sets getleads.dev apart: seamless integration of tech stack targeting, user-friendly design, and a single-payment model. Experience innovative tools and reliable support that enhance your prospecting efficiency.
           </Typography>
         </Box>
         <Grid container spacing={2.5}>
@@ -97,6 +96,8 @@ export default function Highlights() {
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'grey.400' }}>
                     {item.description}
+                    <span style={{textDecoration: "line-through"}}>{item.price}</span>
+                    <span>{item.fakePrice}</span>
                   </Typography>
                 </div>
               </Stack>

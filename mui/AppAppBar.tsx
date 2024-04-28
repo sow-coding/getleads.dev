@@ -102,14 +102,6 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   </Typography>
                 </MenuItem>
                 <MenuItem
-                  onClick={() => scrollToSection('demo')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Demo
-                  </Typography>
-                </MenuItem>
-                <MenuItem
                   onClick={() => scrollToSection('highlights')}
                   sx={{ py: '6px', px: '12px' }}
                 >
@@ -118,11 +110,11 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   </Typography>
                 </MenuItem>
                 <MenuItem
-                  onClick={() => router.push("/signup")}
+                  onClick={() => scrollToSection('demo')}
                   sx={{ py: '6px', px: '12px' }}
                 >
                   <Typography variant="body2" color="text.primary">
-                    Try
+                    Demo
                   </Typography>
                 </MenuItem>
                 <MenuItem
@@ -166,7 +158,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 component="a"
                 href="/signup"
               >
-                Sign up
+                Free trial
               </Button>
             </Box>
             <Box sx={{ display: { sm: '', md: 'none' } }}>
@@ -200,18 +192,12 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   <MenuItem onClick={() => scrollToSection('features')}>
                     Features
                   </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('demo')}>
-                    Demo
-                  </MenuItem>
                   <MenuItem onClick={() => scrollToSection('highlights')}>
                     Highlights
                   </MenuItem>
-                  <MenuItem
-                  onClick={() => router.push("/signup")}
-                  sx={{ py: '6px', px: '12px' }}
-                  >
-                  Try
-                </MenuItem>
+                  <MenuItem onClick={() => scrollToSection('demo')}>
+                    Demo
+                  </MenuItem>
                   <MenuItem onClick={() => scrollToSection('pricing')}>
                     Pricing
                   </MenuItem>
@@ -225,7 +211,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       href="/signup"
                       sx={{ width: '100%' }}
                     >
-                      Sign up
+                      Free trial
                     </Button>
                   </MenuItem>
                   <MenuItem>

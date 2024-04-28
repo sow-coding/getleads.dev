@@ -31,8 +31,19 @@ export default function Hero() {
           pt: { xs: 14, sm: 20 },
           pb: { xs: 8, sm: 12 },
         }}
-      >
-        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '90%' } }}>
+      > 
+          <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              alignSelf="center"
+              spacing={1}
+              useFlexGap
+              sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
+            >
+            <a href="https://twitter.com/sow4code" target='_blank' className='self-center'>
+              <Badge variant={"outline"}>{`By a dev for devs ;)`}</Badge>
+            </a>
+          </Stack>
+        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '100%' } }}>
           <Typography
             variant="h1"
             sx={{
@@ -43,7 +54,7 @@ export default function Hero() {
               fontSize: 'clamp(3.5rem, 10vw, 4rem)',
             }}
           >
-            The prospecting tool for&nbsp;
+            The best prospecting tool for&nbsp;
             <Typography
               component="span"
               variant="h1"
@@ -61,21 +72,8 @@ export default function Hero() {
             color="text.secondary"
             sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
           >
-            Explore our cutting-edge dashboard, delivering high-quality solutions
-            tailored to your needs. Elevate your experience with top-tier features
-            and services.
+            Maximize Your Reach with Decision Makers, Target Companies by tech Stack, and Save with with One-Time payment--All in One Powerful Tool
           </Typography>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            alignSelf="center"
-            spacing={1}
-            useFlexGap
-            sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
-          >
-            <a href="https://twitter.com/sow4code" target='_blank' className='self-center'>
-              <Badge variant={"outline"}>{`Made by a dev for devs ;)`}</Badge>
-            </a>
-          </Stack>
         </Stack>
         
         <Box
