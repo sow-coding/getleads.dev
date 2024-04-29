@@ -1,5 +1,5 @@
 import React from 'react'
-import { NewPassword } from "../../../components/pages/newPassword"
+import { NewPassword } from "../../../components/pagesAsComponent/newPassword"
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -9,7 +9,7 @@ async function Password() {
   
   if (error || !data?.user) {
     redirect("/login")
-  }
+  } 
   return <NewPassword />
 }
 
