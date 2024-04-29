@@ -23,8 +23,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { logout } from "@/app/login/actions"
+import X from "@mui/icons-material/X"
 
-function Organization() {
+function OrganizationPage() {
   const searchParams = useSearchParams()
   const searchId = searchParams.get("searchId")
   const id = searchParams.get("id")
@@ -321,7 +323,7 @@ function Organization() {
                 </a>}
 
                 {entity?.twitter_url && <a className="mx-2" href={`${entity?.twitter_url}`} target="_blank">
-                <Twitter />
+                <X />
                 </a>}
 
                 </div>
@@ -334,4 +336,4 @@ function Organization() {
   )
 }
 
-export default Organization
+export default OrganizationPage

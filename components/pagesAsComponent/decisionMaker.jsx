@@ -1,5 +1,5 @@
 "use client"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import {
@@ -42,14 +42,14 @@ import { Badge } from "@/components/ui/badge"
 import { logout } from "@/app/login/actions"
 
 
-function DecisionMaker () {
+function DecisionMakerPage ({ verifyRight }) {
     const searchParams = useSearchParams()
     const id = searchParams.get("id")
     const [decisionMaker, setDecisionMaker] = useState([])
     const [loading, setLoading] = useState(true)
     const [email, setEmail] = useState({})
     const [deliverableEmail, setDeliverableEmail] = useState({})
-
+    const router = useRouter()
     async function emailVerification() {
         const response = await fetch(`/api/emailVerification`, {
             method: "POST",
@@ -319,7 +319,7 @@ function DecisionMaker () {
                     </CardContent>
                     <CardFooter className="border-t px-6 py-4">
                     <Button onClick={() => {
-                        emailVerificationByDb()
+                        verifyRight ? emailVerificationByDb() : router.push("/onlyPremium")
                     }}>Verify</Button>
                     </CardFooter>
                 </Card>
@@ -380,4 +380,4 @@ function DecisionMaker () {
     )
 }
 
-export default DecisionMaker
+export default DecisionMakerPage

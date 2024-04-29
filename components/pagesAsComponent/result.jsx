@@ -1,16 +1,10 @@
 "use client"
+import { useRouter, useSearchParams } from 'next/navigation'
+import React, { useEffect } from 'react'
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
-import { saveSearchResults, verifyOrganizationsWithStackWappalyzer } from "../../app/api/actions"
+
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,78 +13,51 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useStackContext } from "@/contexts/stack.context"
-import { useState } from "react"
-import { useFiltersContext } from "@/contexts/filters.context"
-import { useRouter } from "next/navigation"
-import StackAutocomplete from "../nextui/stackAutocomplete"
-import { v4 as uuidv4 } from 'uuid'; 
-import CircularProgressComponent from "../nextui/circularProgress"
-import { logout } from "@/app/login/actions"
-import Image from "next/image"
+import { ResultsTable } from "@/components/nextui/resultsTable"
+import { logout } from '@/app/login/actions'
 
-export function StackPage () {
-  const { stack } = useStackContext()
-  const {countries, cities, sizes, industries} = useFiltersContext()
-  const [stackHere, setStackHere] = useState([]);
-  const [loading, setLoading] = useState(false)
+function ResultPage() {
+  const searchparams = useSearchParams()
+  const searchId = searchparams.get('id')
+  const [searchResult, setSearchResult] = React.useState([])
+  const [loading, setLoading] = React.useState(true)
+  const [filters, setFilters] = React.useState({})
   const router = useRouter()
   
-  const handleVerifyOrganizations = async () => {
-    setLoading(true)
-    const searchFilters = { countries, cities, sizes, industries, stack };  
-      
-    const dbResponse = await fetch("/api/searchOrganizationsByDb", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ filters: searchFilters }),
-      });
-
-      const { organizations_searched, decisionMakers } = await dbResponse.json();
-      
-      // Vérifier si des résultats existent déjà pour ces filtres
-      if (organizations_searched?.length > 0) {
-        const newId = uuidv4();  // Générer un nouvel ID pour cette recherche
-        await saveSearchResults(newId, organizations_searched, searchFilters, decisionMakers);
-        setLoading(false)
-        router.push(`/search/results/search?id=${newId}`);
-        return;  // Arrête la fonction ici pour éviter un appel inutile à l'API Apollo
+  useEffect(() => {
+    const getSearchResult = async () => {
+      if (!searchId) {
+        // Si aucun searchId n'est fourni, rediriger ou gérer l'erreur
+        router.push("/search")
+        return;
       }
-      // Étape 2: Aucun résultat préexistant, faire un appel à l'API externe
-      const response = await fetch("/api/searchOrganizations", {
-        method: "POST",
+
+      const response = await fetch('/api/getSearchResult', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          countries: countries,
-          sizes: sizes,
-          industries: industries
-        }),
+        body: JSON.stringify({ searchId })
       });
 
       if (!response.ok) {
-        router.push("/search/nothing")
-        throw new Error(`Failed to fetch organizations: ${response.statusText}`);
+        console.error(`Failed to fetch search results: ${response.statusText}`);
+        // Gérer l'erreur ici, par exemple en affichant un message d'erreur à l'utilisateur
+        setLoading(false);
+        return;
       }
 
-      const apolloResponse = await response.json();
-      const apolloOrganizations = apolloResponse.organizations;
+      const data = await response.json();
+      setSearchResult(data.organizations_searched);
+      setFilters(data.filters);
+      setLoading(false);
+    };
 
-      const result = await verifyOrganizationsWithStackWappalyzer(apolloOrganizations, stack);
-      const { id, entities } = result;
-      await saveSearchResults(id, entities, searchFilters);
-      setLoading(false)
-      if (entities?.length > 0) {
-        router.push(`/search/results/search?id=${id}`);
-      } else {
-        router.push("/search/nothing");
-      }
-  };
-  
+    getSearchResult();
+  }, [searchId, router]);
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -109,7 +76,7 @@ export function StackPage () {
             Dashboard
           </Link>
           <Link
-            href="#"
+            href="/search/organizations"
             className="text-foreground transition-colors hover:text-foreground"
           >
             Search
@@ -133,6 +100,7 @@ export function StackPage () {
             Feedback
           </Link>
         </nav>
+
         <Sheet>
           <SheetTrigger asChild>
             <Button
@@ -147,17 +115,17 @@ export function StackPage () {
           <SheetContent side="left">
             <nav className="grid gap-6 text-lg font-medium">
               <Link
-                href="#"
+                href="/dashboard"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
                 <Package2 className="h-6 w-6" />
                 <span className="sr-only">getleads.dev</span>
               </Link>
-              <Link href="/dashboard" className="text-muted-foreground hover:text-foreground">
+              <Link href="#" className="text-muted-foreground hover:text-foreground">
                 Dashboard
               </Link>
               <Link
-                href="#"
+                href="/search/organizations"
                 className="hover:text-foreground"
               >
                 Search
@@ -208,62 +176,41 @@ export function StackPage () {
           </DropdownMenu>
         </div>
       </header>
-      {loading ? <div className="mx-4 my-4">
-      <CircularProgressComponent />
-      </div> : 
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
       <div className="mx-auto grid w-full max-w-6xl gap-2">
-        <h1 className="text-3xl font-semibold">Search</h1>
+        <h1 className="text-3xl font-semibold">Filters</h1>
       </div>
       <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
         <nav
           className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0"
         >
-          <Link href="/search/organizations">
-            1.Organizations
-          </Link>
-          <Link href="#" className="font-semibold text-primary">2.Stack</Link>
-          <Link href="#">3.People</Link>
-          <Link href="#">4.Contact</Link>
+        <Link href="#">
+          {filters?.sizes?.length > 0 ? filters.sizes.map(size => size.replace(',', '-')).join(', ') : 'N/A'}
+        </Link>
+        <Link href="#">
+          {filters?.stack?.length > 0 ? filters.stack.join(', ') : 'N/A'}
+        </Link>
+        <Link href="#">
+          {filters?.industries?.length > 0 ? filters.industries.map(industry => industry.charAt(0).toUpperCase() + industry.slice(1)).join(', ') : 'N/A'}
+        </Link>
+        <Link href="#">
+          {filters?.cities?.length > 0 ? filters.cities.join(', ') : 'N/A'}
+        </Link>
+        <Link href="#">
+          {filters?.countries?.length > 0 ? filters.countries.join(', ') : 'N/A'}
+        </Link>
         </nav>
-
         <div className="grid gap-6">
-          <Card x-chunk="dashboard-04-chunk-1">
-            <CardHeader>
-              <CardTitle>Tech stack</CardTitle>
-              <CardDescription>
-              Filter your search: by programming language, frameworks or tools
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form className="flex max-lg:flex-col items-start">
-                <StackAutocomplete stackHere={stackHere} setStackHere={setStackHere} />
-              </form>
-            </CardContent>
-            <CardFooter className="border-t px-6 py-4">
-              <Button onClick={() => {
-                stack.length > 0 ? handleVerifyOrganizations() : alert("Please select at least one technology")
-              }}>Save</Button>
-              <Button style={{backgroundColor: "#FF0000"}} className="mx-4" onClick={() => {
-                setStackHere([])
-              }}>Clean</Button>
-            </CardFooter>
-          </Card>
-          <Card x-chunk="dashboard-04-chunk-2">
-            <CardHeader>
-              <CardTitle>Our data</CardTitle>
-              <CardDescription>
-              Our data on the technologies used by the companies are provided by Wappalyzer
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Image src="/wappalyzer.svg" alt="Wappalyzer" width={200} height={200} />
-            </CardContent>
-          </Card>
+          {loading ? (
+            <p>Loading...</p> // mettre progress spinner ici
+          ) : (
+            <ResultsTable organizations={searchResult} searchId={searchId} />
+          )}
         </div>
       </div>
     </main>
-      }
-    </div>
+  </div>
   )
 }
+
+export default ResultPage

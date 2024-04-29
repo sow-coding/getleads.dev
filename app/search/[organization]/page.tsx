@@ -1,8 +1,8 @@
-import ResultPage from "@/components/pagesAsComponent/result"
+import OrganizationPage from "@/components/pagesAsComponent/organization"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
-export default async function Result() {
+export default async function Feedback() {
   const supabase = createClient()
   
   const { data, error } = await supabase.auth.getUser()
@@ -11,5 +11,5 @@ export default async function Result() {
     redirect("/login")
   } 
 
-  return <ResultPage />
+  return <OrganizationPage />
 }

@@ -1,4 +1,4 @@
-import SearchHistory from "@/components/pages/searchHistory";
+import SearchHistory from "@/components/pagesAsComponent/searchHistory";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 

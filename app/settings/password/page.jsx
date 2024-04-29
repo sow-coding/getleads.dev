@@ -9,10 +9,6 @@ async function Password() {
   
   if (error || !data?.user) {
     redirect("/login")
-  } else if (data.user.user_metadata.paid === false) {
-    if (diffDays > 3) {
-      redirect("/payment")
-    }
   }
   return <NewPassword />
 }

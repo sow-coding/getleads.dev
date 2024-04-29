@@ -1,5 +1,5 @@
 import React from 'react'
-import {StackPage} from "../../../components/pages/stack"
+import {StackPage} from "../../../components/pagesAsComponent/stack"
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -8,7 +8,7 @@ async function Stack() {
 
     const { data, error } = await supabase.auth.getUser()
     if (error || !data?.user) {
-        redirect('/')
+        redirect('/login')
     }
 
     return <StackPage />

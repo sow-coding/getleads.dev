@@ -1,4 +1,4 @@
-import FeedbackPage from "@/components/pagesAsComponent/feedback"
+import DecisionMakersPage from "@/components/pagesAsComponent/decisionMakers"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
@@ -9,7 +9,8 @@ export default async function Feedback() {
 
   if (error || !data?.user) {
     redirect("/login")
-  } 
-
-  return <FeedbackPage />
+  } else if (data.user.user_metadata?.userType == "free") {
+    redirect("/notInFreeTrial")
+  }
+  return <DecisionMakersPage />
 }

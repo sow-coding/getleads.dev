@@ -133,6 +133,24 @@ async function saveLookupInDatabase(url, technologies) {
     }
 }
 
+export async function addSearchForTheUser () {
+    const { data, error } = await supabase1.auth.getUser()
+
+    if (error) {
+    console.log("Error catching user: ", error.message)
+    return new Response(error.message, { status: 500 });
+    }
+
+    const { data: userInfo, error: adminError } = await supabase.auth.admin.updateUserById(
+        data.user.id,
+        { user_metadata: { searches: data.user.user_metadata?.searches + 1 } }
+        )
+        if (adminError) {
+        console.log("Error updating user: ", error.message, userId)
+        return new Response(error.message, { status: 500 });
+        }
+}
+
 
 export async function saveSearchResults(searchId, organizations, searchFilters, decisionMakers) {
     let userId = null;

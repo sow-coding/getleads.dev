@@ -65,8 +65,9 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
+import { logout } from '@/app/login/actions'
 
-function DecisionMakers() {
+function DecisionMakersPage () {
     const searchParams = useSearchParams()
     const id = searchParams.get("id")
     const name = searchParams.get("name")
@@ -223,7 +224,6 @@ return (
             <div className="flex items-center">
                 <TabsList>
                 <TabsTrigger value="all">Decision-makers</TabsTrigger>
-                <TabsTrigger value="allPeople">All</TabsTrigger>
                 </TabsList>
             </div>
 
@@ -259,13 +259,19 @@ return (
                     <TableBody>
                         {decisionMakers
                           .filter(decisionMaker => 
-                            decisionMaker?.departments[0] === "c_suite" ||
+                            decisionMaker?.departments?.includes("c_suite") ||
+                            decisionMaker?.subdepartments?.includes("founder") ||
                             decisionMaker?.headline?.toLowerCase().includes("chief") ||
                             decisionMaker?.headline?.toLowerCase().includes("founder") ||
                             decisionMaker?.headline?.toLowerCase().includes("co-founder") ||
+                            decisionMaker?.headline?.toLowerCase().includes("cto") ||
+                            decisionMaker?.headline?.toLowerCase().includes("ceo") ||
                             decisionMaker?.title?.toLowerCase().includes("chief") ||
                             decisionMaker?.title?.toLowerCase().includes("founder") ||
-                            decisionMaker?.title?.toLowerCase().includes("co-founder")
+                            decisionMaker?.title?.toLowerCase().includes("co-founder") ||
+                            decisionMaker?.title?.toLowerCase().includes("cto") ||
+                            decisionMaker?.title?.toLowerCase().includes("ceo") ||
+                            decisionMaker?.seniority?.toLowerCase().includes == "founder"
                           )
                           .map((decisionMaker) => (
                                 <TableRow key={decisionMaker?.id}>
@@ -314,84 +320,6 @@ return (
         </Card>
             </TabsContent>
 
-            <TabsContent value="allPeople">
-                <Card x-chunk="dashboard-06-chunk-0">
-                <CardHeader>
-                    <CardTitle>People - {name}</CardTitle>
-                    <CardDescription>
-                    Someone other than the decision makers ?
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Table>
-                    <TableHeader>
-                        <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Department</TableHead>
-                        <TableHead>Title</TableHead>
-                        <TableHead className="hidden md:table-cell">
-                            Seniority
-                        </TableHead>
-                        <TableHead className="hidden md:table-cell">
-                            Linkedin
-                        </TableHead>
-                        <TableHead>
-                            <span className="sr-only">Actions</span>
-                        </TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        
-                        {decisionMakers?.map((decisionMaker) => (
-                            <TableRow key={decisionMaker?.id}>
-                                <TableCell className="font-medium">
-                                    {decisionMaker?.name}
-                                </TableCell>
-                                <TableCell>
-                                    <Badge variant="outline">{decisionMaker?.departments[0]}</Badge>
-                                </TableCell>
-                                <TableCell>{decisionMaker?.title}</TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                    {decisionMaker?.seniority}
-                                </TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                    <a onClick={(e) => {
-                                        e.stopPropagation()
-                                    }} target='_blank' href={`${decisionMaker?.linkedin_url}`}>
-                                        <Button color='primary'>Linkedin</Button>
-                                    </a>
-                                </TableCell>
-                                <TableCell>
-                                    <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button
-                                        aria-haspopup="true"
-                                        size="icon"
-                                        variant="ghost"
-                                        >
-                                        <MoreHorizontal className="h-4 w-4" />
-                                        <span className="sr-only">Toggle menu</span>
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                        <DropdownMenuItem onClick={(e) => {
-                                            e.stopPropagation()
-                                            router.push(`/search/organization/decisionMakers/${decisionMaker?.name}?id=${decisionMaker?.id}`)
-                                        }}>Contact</DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                    </Table>
-                </CardContent>
-                <CardFooter>
-                </CardFooter>
-                </Card>
-            </TabsContent>
-
             </>
             
             }
@@ -403,4 +331,4 @@ return (
 }
 
 
-export default DecisionMakers
+export default DecisionMakersPage

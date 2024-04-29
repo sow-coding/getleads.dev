@@ -33,6 +33,7 @@ export async function signup({email, password}: {email: string, password: string
     password: password,
     options: {
       data: {
+        searches: 0,
         userType: 'free',
         paid: false
       }
