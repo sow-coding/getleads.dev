@@ -5,6 +5,7 @@ export default function PrivacyPolicyPage() {
     <div className='w-full flex flex-col items-center'>
     <main className='w-4/5 flex flex-col items-center'>
       <h1 className='text-center font-bold text-2xl mt-4'>Privacy policy - getleads.dev</h1>
+      <p className='text-center font-bold text-xl mt-4'>Last Updated: April 28, 2024</p>
       <div className="my-4">
       <h2 className="text-center text-xl">Privacy Policy</h2>
       <p className="text-center">

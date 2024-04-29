@@ -1,10 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export default async function NotInFreeTrial() {
     const supabase = createClient()
     const { data, error } = await supabase.auth.getUser()
+
+    if (error || !data?.user) {
+      redirect("/login")
+    }
+     
     const userId = data.user?.id
     const userPlan = data.user?.user_metadata?.userType
 

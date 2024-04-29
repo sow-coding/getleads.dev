@@ -3,6 +3,7 @@ export default function Terms() {
     <div className='flex flex-col items-center w-full'>
       <main className="flex flex-col items-center w-4/5">
         <h1 className='text-center font-bold text-2xl'>Terms of Use - getleads.dev</h1>
+        <p className='text-center font-bold text-xl mt-4'>Last Updated: April 28, 2024</p>
         <section className="my-4">
           <h2 className="text-center text-xl">Introduction</h2>
           <p className="text-center">
