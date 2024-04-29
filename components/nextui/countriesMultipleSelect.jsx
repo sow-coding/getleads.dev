@@ -16,7 +16,7 @@ export default function CountriesMultipleSelect() {
   }, [values, setCountries]);
 
   return (
-    <div className="flex w-full max-w-xs flex-col gap-2">
+    <div className="flex w-1/3 max-lg:w-full max-w-xs flex-col gap-2">
       <Select
         label="Countries"
         selectionMode="multiple"
