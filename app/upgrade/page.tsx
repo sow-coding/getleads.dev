@@ -25,10 +25,10 @@ export default async function Upgrade() {
               {`Hey, thanks for trying getleads.dev. The free trial only allows 2 searches, to do more searches and take full advantage of the current features of getleads.dev please purchase it.`}
             </div>
             <Button type="button" variant={"outline"} className="w-full">
-              <a href={`https://swos.lemonsqueezy.com/buy/b46b64ec-9c60-4e5f-968a-1b7ec399e3b0?checkout[custom][nkn]=${userId}&checkout[email]=${data.user?.email}`}>Get classic getleads.dev</a>
+              <a href={`https://swos.lemonsqueezy.com/buy/b46b64ec-9c60-4e5f-968a-1b7ec399e3b0?checkout[custom][nkn]=${userId}&checkout[email]=${data.user?.email}&checkout[custom][userType]=classic`}>Get classic getleads.dev</a>
             </Button>
             <Button type="button" className="w-full">
-              <a href={`https://swos.lemonsqueezy.com/buy/66a631bf-ef10-443f-9de3-d40ed38f358b?checkout[custom][nkn]=${userId}&checkout[email]=${data.user?.email}`}>Get premium getleads.dev</a>
+              <a href={`https://swos.lemonsqueezy.com/buy/66a631bf-ef10-443f-9de3-d40ed38f358b?checkout[custom][nkn]=${userId}&checkout[email]=${data.user?.email}&checkout[custom][userType]=premium`}>Get premium getleads.dev</a>
             </Button>
             <a href="/#pricing" className="mt-4 text-center" style={{textDecoration: "underline"}}>What is the difference between the two?</a>
           </div>

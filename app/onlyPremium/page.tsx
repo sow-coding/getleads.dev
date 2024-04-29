@@ -21,7 +21,7 @@ export default async function NotInFreeTrial() {
               {`Email verification is only available for Premium users, if you want to have access to it you must move from a classic account to a premium account by paying the difference price between the two which is the price of the verification email from getleads.dev which is $30 when your account will go from classic to premium.`}
             </div>
             <Button type="button" className="w-full">
-              <a href={`https://swos.lemonsqueezy.com/buy/0ccbaea5-9a77-4467-8c00-7dc3362b23fb?checkout[custom][nkn]=${userId}&checkout[email]=${data.user?.email}`}>Get premium getleads.dev</a>
+              <a href={`https://swos.lemonsqueezy.com/buy/0ccbaea5-9a77-4467-8c00-7dc3362b23fb?checkout[custom][nkn]=${userId}&checkout[email]=${data.user?.email}&checkout[custom][orderType]=classicToPremium`}>Get premium getleads.dev</a>
             </Button>
           </div>
         </div>
