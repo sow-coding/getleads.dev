@@ -190,6 +190,7 @@ export default function SettingsPage() {
               General
             </Link>
             <Link href="/settings/password">Password</Link>
+            <Link href="/settings/plan">Subscription plan</Link>
           </nav>
           <div className="grid gap-6">
             <h1 className="text-2xl font-bold">Hello {userEmail}</h1>
