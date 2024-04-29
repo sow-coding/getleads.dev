@@ -25,7 +25,7 @@ import CountriesMultipleSelect from "../nextui/countriesMultipleSelect"
 import IndustryAutoComplete from "../nextui/industryAutoComplete"
 import { useFiltersContext } from "@/contexts/filters.context"
 import { logout } from "@/app/login/actions"
-import CitiesAutoComplete from "../nextui/citiesAutoComplete"
+import CitiesSelect from "../nextui/citiesSelect"
 
 export function SearchPage () {
   const router = useRouter()
@@ -175,7 +175,7 @@ export function SearchPage () {
               <CardContent>
                 <form className="flex max-lg:flex-col items-start">
                   <CountriesMultipleSelect />
-                  <CitiesAutoComplete />
+                  <CitiesSelect />
                   <EmployeesMultipleSelect />
                 </form>
               </CardContent>

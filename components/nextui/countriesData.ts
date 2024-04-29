@@ -37,10 +37,6 @@ export const countriesData: Country[] =
         "code": "AU"
     },
     {
-        "name": "Australia",
-        "code": "AU"
-    },
-    {
         "name": "Belgium (coming soon)",
         "code": "BE"
     },
