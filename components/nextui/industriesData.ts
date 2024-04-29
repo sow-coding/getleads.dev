@@ -588,4 +588,36 @@ export const industriesData: Industry[] =
       "value": "5567cdd973696439a1370000",
       "label": "writing & editing"
     }*/
+    {
+      label: "Web development",
+      value: "web development"
+    },
+    {
+      label: "Ecommerce",
+      value: "ecommerce"
+    },
+    {
+      label: "SaaS",
+      value: "saas"
+    },
+    {
+      label: "AI",
+      value: "ai"
+    },
+    {
+      label: 'Digital marketing',
+      value: 'digital marketing'
+    },
+    {
+      label: "Startups",
+      value: "startups"
+    },
+    {
+      label: 'E-learning',
+      value: 'elearning'
+    },
+    {
+      label: 'Many more industries from 05/21',
+      value: 'Many more industries from 05/21'
+    }
   ]

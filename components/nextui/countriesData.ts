@@ -5,6 +5,26 @@ interface Country {
 export const countriesData: Country[] =
 [
     {
+        "name": "United Kingdom",
+        "code": "GB"
+    },
+    {
+        "name": "United States",
+        "code": "US"
+    },
+    {
+        "name": "Canada",
+        "code": "CA"
+    },
+    {
+        "name": "France",
+        "code": "FR"
+    },
+    {
+        "name": "Germany",
+        "code": "DE"
+    },
+    {
         "name": "Europe",
         "code": "EU"
     },
@@ -25,32 +45,12 @@ export const countriesData: Country[] =
         "code": "US"
     },
     {
-        "name": "United Kingdom",
-        "code": "GB"
-    },
-    {
-        "name": "United States",
-        "code": "US"
-    },
-    {
-        "name": "Australia",
+        "name": "Australia (coming soon)",
         "code": "AU"
     },
     {
         "name": "Belgium (coming soon)",
         "code": "BE"
-    },
-    {
-        "name": "Canada",
-        "code": "CA"
-    },
-    {
-        "name": "France",
-        "code": "FR"
-    },
-    {
-        "name": "Germany",
-        "code": "DE"
     },
     {
         "name": "India (coming soon)",

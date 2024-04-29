@@ -18,12 +18,14 @@ export default function CountriesMultipleSelect() {
   return (
     <div className="flex w-1/3 max-lg:w-full max-w-xs flex-col gap-2">
       <Select
+        isRequired
         label="Countries"
         selectionMode="multiple"
         placeholder="Select countries"
         selectedKeys={values}
         className="max-w-xs"
         onSelectionChange={setValues}
+        disabledKeys={["Belgium (coming soon)", "India (coming soon)", "Italy (coming soon)", "Japan (coming soon)", "Netherlands (coming soon)", "Portugal (coming soon)", "Sweden (coming soon)", "Switzerland (coming soon)", "Australia (coming soon)"]}
       >
         {countriesData.map((country, index) => (
           <SelectItem key={country.name} value={country.name}>

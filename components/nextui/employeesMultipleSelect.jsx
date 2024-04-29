@@ -17,6 +17,7 @@ export default function EmployeesMultipleSelect() {
   return (
     <div className="flex w-1/3 max-lg:w-full max-w-xs flex-col gap-2">
       <Select
+        isRequired
         label="Size"
         selectionMode="multiple"
         placeholder="Select intervals"

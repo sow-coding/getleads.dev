@@ -1,18 +1,51 @@
-import React from "react";
-import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
-import {citiesData} from "./citiesData";
+"use client"
+import React, { useState } from "react";
+import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { citiesData } from "./citiesData";
+import { useFiltersContext } from "@/contexts/filters.context";
+import { Badge } from "@/components/ui/badge";
+import { Trash2 } from "lucide-react";  // Assurez-vous d'avoir cette icône importée
 
-export default function CitiesSelect () {
+export default function CitiesSelect() {
+  const { cities, setCities } = useFiltersContext();
+  const [hoveredCity, setHoveredCity] = useState(null);
+
+  const onSelectionChange = (key) => {
+    const newCity = key != null ? String(key).trim() : '';
+    if (newCity.length > 0 && !cities.includes(newCity)) {
+      setCities(prevCities => [...prevCities, newCity]);
+    }
+  };
+
+  const handleRemoveCity = (city) => {
+    setCities(prevCities => prevCities.filter(c => c !== city));
+  };
+
   return (
-    <div className="flex w-1/3 max-lg:w-full flex-col lg:mx-4 max-lg:my-4 md:flex-nowrap gap-4">
-        <Autocomplete
+    <div className="flex flex-col lg:mx-4 max-lg:my-4 md:flex-nowrap gap-4">
+      <Autocomplete
+        label="Cities"
+        placeholder="Search cities"
+        className="max-w-xs w-96"
         defaultItems={citiesData}
-        label="Favorite Animal"
-        placeholder="Search an animal"
-        className="max-w-xs"
-        >
-        {(city) => <AutocompleteItem key={city.name}>{city.name}</AutocompleteItem>}
-        </Autocomplete>
+        onSelectionChange={onSelectionChange}
+        disabledKeys={["Many more cities from 05/21"]}
+      >
+        {(item) => <AutocompleteItem key={item.value}>{item.name}</AutocompleteItem>}
+      </Autocomplete>
+      <div className="flex items-center flex-wrap">
+        {cities.map(city => (
+          <div
+            key={city}
+            onMouseEnter={() => setHoveredCity(city)}
+            onMouseLeave={() => setHoveredCity(null)}
+            className="relative cursor-pointer"
+            onClick={() => handleRemoveCity(city)}
+          >
+            <Badge className="mx-1">{hoveredCity === city ? <Trash2 color="red" size={16} /> : city}</Badge>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
