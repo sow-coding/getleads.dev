@@ -168,7 +168,7 @@ export default function Nothing() {
               <CardContent>
                 <p>
                 Unfortunately we did not find any results for the filters you requested, getleads.dev being at the start of its project currently has quite limited data, by May 20 there will be a lot more data available on getleads .dev, you can try again at that point, for now try another search.
-
+                However, it may also be that you were not specific enough in your search, if this is the case please be more specific.
                 Thank you for your understanding.
                 </p>
               </CardContent>
