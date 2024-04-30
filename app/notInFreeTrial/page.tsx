@@ -18,7 +18,7 @@ export default async function NotInFreeTrial() {
         <div className="mx-4 my-4">
           <div className="grid gap-4">
             <div className="grid gap-2">
-              {`Hey, thanks for trying getleads.dev but to see decision-makers or the automatic email finder functionality or email verification is not available in the free trial, also searches are limited to two and the returned search results are truncated, To take full advantage of all the features currently available on getleads.dev please purchase it`}
+              {`Hey, thanks for trying getleads.dev but to see decision-makers contact infomations or to access the automatic email finder functionality or email verification is not possible in the free trial, also searches are limited to two and the returned search results are truncated, To take full advantage of all the features currently available on getleads.dev please purchase it`}
             </div>
             <Button type="button" variant={"outline"} className="w-full">
               <a href={`https://swos.lemonsqueezy.com/buy/b46b64ec-9c60-4e5f-968a-1b7ec399e3b0?checkout[custom][nkn]=${userId}&checkout[email]=${data.user?.email}&checkout[custom][userType]=classic`}>Get classic getleads.dev</a>

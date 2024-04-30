@@ -17,8 +17,16 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { ResultsTable } from "@/components/nextui/resultsTable"
 import { logout } from '@/app/login/actions'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
-function ResultPage() {
+function ResultPage({truncated, userId, email}) {
   const searchparams = useSearchParams()
   const searchId = searchparams.get('id')
   const [searchResult, setSearchResult] = React.useState([])
@@ -204,7 +212,34 @@ function ResultPage() {
           {loading ? (
             <p>Loading...</p> // mettre progress spinner ici
           ) : (
-            <ResultsTable organizations={searchResult} searchId={searchId} />
+            <>
+              <ResultsTable organizations={searchResult} searchId={searchId} />
+              {truncated && 
+              <Card x-chunk="dashboard-04-chunk-2">
+              <CardHeader>
+                <CardTitle>Limited result</CardTitle>
+                <CardDescription>
+                getleads.dev truncates user results in free trial.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>
+                The search results displayed and available to trial period users are limited and are only part of the results for this search. <br />
+                To get full access to all results, please upgrade your account.
+                </p>
+                <div className="flex my-4 max-lg:flex-col">
+                <Button type="button" variant={"outline"} className="w-1/2 max-lg:w-full">
+                  <a href={`https://swos.lemonsqueezy.com/buy/b46b64ec-9c60-4e5f-968a-1b7ec399e3b0?checkout[custom][nkn]=${userId}&checkout[email]=${email}&checkout[custom][userType]=classic`}>Get classic getleads.dev</a>
+                  </Button>
+                  <Button type="button" className="w-1/2 max-lg:w-full lg:ml-4 max-lg:mt-4">
+                    <a href={`https://swos.lemonsqueezy.com/buy/66a631bf-ef10-443f-9de3-d40ed38f358b?checkout[custom][nkn]=${userId}&checkout[email]=${email}&checkout[custom][userType]=premium`}>Get premium getleads.dev</a>
+                  </Button>
+                </div>
+                <a href="/#pricing" className="mt-4 text-center" style={{textDecoration: "underline"}}>What is the difference between the two?</a>
+              </CardContent>
+            </Card>
+              }
+            </>
           )}
         </div>
       </div>

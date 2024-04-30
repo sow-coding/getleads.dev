@@ -49,47 +49,48 @@ export function StackPage () {
         body: JSON.stringify({ filters: searchFilters }),
       });
 
-      const { organizations_searched, decisionMakers } = await dbResponse.json();
-      
-      // Vérifier si des résultats existent déjà pour ces filtres
-      if (organizations_searched?.length > 0) {
-        const newId = uuidv4();  // Générer un nouvel ID pour cette recherche
-        await saveSearchResults(newId, organizations_searched, searchFilters, decisionMakers);
-        setLoading(false)
-        router.push(`/search/results/search?id=${newId}`);
-        return;  // Arrête la fonction ici pour éviter un appel inutile à l'API Apollo
-      }
-      // Étape 2: Aucun résultat préexistant, faire un appel à l'API externe
-      const response = await fetch("/api/searchOrganizations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          countries: countries,
-          sizes: sizes,
-          industries: industries
-        }),
-      });
-
-      if (!response.ok) {
-        router.push("/search/nothing")
-        throw new Error(`Failed to fetch organizations: ${response.statusText}`);
-      }
-
-      const apolloResponse = await response.json();
-      const apolloOrganizations = apolloResponse.organizations;
-
-      const result = await verifyOrganizationsWithStackWappalyzer(apolloOrganizations, stack);
-      const { id, entities } = result;
-      await saveSearchResults(id, entities, searchFilters);
+    const { organizations_searched, decisionMakers } = await dbResponse.json();
+    
+    // Vérifier si des résultats existent déjà pour ces filtres
+    if (organizations_searched?.length > 0) {
+      const newId = uuidv4();  // Générer un nouvel ID pour cette recherche
+      await saveSearchResults(newId, organizations_searched, searchFilters, decisionMakers);
       await addSearchForTheUser()
       setLoading(false)
-      if (entities?.length > 0) {
-        router.push(`/search/results/search?id=${id}`);
-      } else {
-        router.push("/search/nothing");
-      }
+      router.push(`/search/results/search?id=${newId}`);
+      return;  // Arrête la fonction ici pour éviter un appel inutile à l'API Apollo
+    }
+    // Étape 2: Aucun résultat préexistant, faire un appel à l'API externe
+    const response = await fetch("/api/searchOrganizations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        countries: countries,
+        sizes: sizes,
+        industries: industries
+      }),
+    });
+
+    if (!response.ok) {
+      router.push("/search/nothing")
+      throw new Error(`Failed to fetch organizations: ${response.statusText}`);
+    }
+
+    const apolloResponse = await response.json();
+    const apolloOrganizations = apolloResponse.organizations;
+
+    const result = await verifyOrganizationsWithStackWappalyzer(apolloOrganizations, stack);
+    const { id, entities } = result;
+    await saveSearchResults(id, entities, searchFilters);
+    await addSearchForTheUser()
+    setLoading(false)
+    if (entities?.length > 0) {
+      router.push(`/search/results/search?id=${id}`);
+    } else {
+      router.push("/search/nothing");
+    }
   };
   
   return (

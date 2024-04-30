@@ -266,12 +266,18 @@ return (
                             decisionMaker?.headline?.toLowerCase().includes("co-founder") ||
                             decisionMaker?.headline?.toLowerCase().includes("cto") ||
                             decisionMaker?.headline?.toLowerCase().includes("ceo") ||
+                            decisionMaker?.headline?.toLowerCase().includes("director") ||
+                            decisionMaker?.headline?.toLowerCase().includes("head") ||
+                            decisionMaker?.title?.toLowerCase().includes("director") ||
                             decisionMaker?.title?.toLowerCase().includes("chief") ||
                             decisionMaker?.title?.toLowerCase().includes("founder") ||
                             decisionMaker?.title?.toLowerCase().includes("co-founder") ||
                             decisionMaker?.title?.toLowerCase().includes("cto") ||
                             decisionMaker?.title?.toLowerCase().includes("ceo") ||
-                            decisionMaker?.seniority?.toLowerCase().includes == "founder"
+                            decisionMaker?.title?.toLowerCase().includes("head") ||
+                            decisionMaker?.seniority?.toLowerCase().includes == "founder" ||
+                            decisionMaker?.seniority?.toLowerCase().includes == "director" ||
+                            decisionMaker?.seniority?.toLowerCase().includes == "head" 
                           )
                           .map((decisionMaker) => (
                                 <TableRow key={decisionMaker?.id}>
