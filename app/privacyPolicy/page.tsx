@@ -75,6 +75,17 @@ export default function PrivacyPolicyPage() {
           If you have any questions about this Privacy Policy, please contact us at support@swos.be.
         </p>
       </section>
+
+      <section className="my-4">
+      <h2 className="text-center text-xl">Politique de Cookies</h2>
+      <p className="text-center">
+          GetLeads.dev utilise des cookies pour améliorer votre expérience utilisateur, analyser le trafic, et assurer la sécurité de notre site. Les cookies sont de petits fichiers texte envoyés à votre navigateur par les sites web que vous visitez. Ils sont utilisés pour mémoriser vos préférences, vous identifier sur notre plateforme, ou encore pour fournir des données analytiques anonymisées à notre équipe.
+      </p>
+      <p className="text-center">
+          En utilisant GetLeads.dev, vous consentez à {`l'utilisation`} de cookies conformément à cette politique. Vous pouvez gérer vos préférences de cookies à tout moment via les paramètres de votre navigateur, mais veuillez noter que certaines fonctionnalités de notre site pourraient ne pas fonctionner correctement sans {`l'aide`} des cookies.
+      </p>
+    </section>
+
     </div>
     </main>
     </div>
