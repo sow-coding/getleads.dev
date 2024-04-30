@@ -13,5 +13,6 @@ export const stackData = [
     "Vue.js",
     "Emotion (coming soon)",
     "Backbone.js (coming soon)",
-    "Gatsby (coming soon)"
+    "Gatsby (coming soon)",
+    "More coming from 05/21"
 ].map(name => ({ name }));

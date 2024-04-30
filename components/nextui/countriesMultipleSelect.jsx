@@ -18,7 +18,6 @@ export default function CountriesMultipleSelect() {
   return (
     <div className="flex w-1/3 max-lg:w-full max-w-xs flex-col gap-2">
       <Select
-        isRequired
         label="Countries"
         selectionMode="multiple"
         placeholder="Select countries"

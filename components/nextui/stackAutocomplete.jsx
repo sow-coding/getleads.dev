@@ -48,7 +48,7 @@ export default function StackAutocomplete({stackHere, setStackHere}) {
                 className="max-w-xs w-full"
                 defaultItems={stackData}
                 onSelectionChange={onSelectionChange}
-                disabledKeys={["Express (coming soon)", "Laravel (coming soon)", "Marko (coming soon)", "Emotion (coming soon)", "Backbone.js (coming soon)", "Gatsby (coming soon)"]}
+                disabledKeys={["Express (coming soon)", "Laravel (coming soon)", "Marko (coming soon)", "Emotion (coming soon)", "Backbone.js (coming soon)", "Gatsby (coming soon)", "More coming from 05/21"]}
             >
                 {(item) => <AutocompleteItem key={item.name}>{item.name}</AutocompleteItem>}
             </Autocomplete>

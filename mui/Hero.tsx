@@ -89,13 +89,8 @@ export default function Hero() {
           sx={(theme) => ({
             mt: { xs: 8, sm: 10 },
             alignSelf: 'center',
-            height: { xs: 200, sm: 700 },
+            height: { xs: 200, sm: 500 }, // These might be adjusted or removed
             width: '100%',
-            backgroundImage:
-              theme.palette.mode === 'light'
-                ? 'url("/previeuw.png")'
-                : 'url("/static/images/templates/templates-images/hero-dark.png")',
-            backgroundSize: 'cover',
             borderRadius: '10px',
             outline: '1px solid',
             outlineColor:
@@ -107,7 +102,17 @@ export default function Hero() {
                 ? `0 0 12px 8px ${alpha('#9CCCFC', 0.2)}`
                 : `0 0 24px 12px ${alpha('#033363', 0.2)}`,
           })}
-        />
+        >
+          <img
+            src={ "/previeuw.png"    }
+            alt="Preview Image"
+            style={{
+              width: '100%', 
+              height: 'auto',  // Makes the image height adjust to maintain the aspect ratio
+              display: 'block'
+            }}
+          />
+        </Box>
       </Container>
     </Box>
   );
