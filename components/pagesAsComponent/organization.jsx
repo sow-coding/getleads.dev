@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/card"
 import { logout } from "@/app/login/actions"
 import X from "@mui/icons-material/X"
+import { Badge } from "../ui/badge"
 
 function OrganizationPage() {
   const searchParams = useSearchParams()
@@ -34,6 +35,20 @@ function OrganizationPage() {
   const [loading, setLoading] = useState(true)
   const [entity, setEntity] = useState({})
   const [favorite, setFavorite] = useState(false)
+  const [technologies, setTechnologies] = useState([])
+
+  async function deleteFavorites () {
+    const response = await fetch('/api/deleteFavorites', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id: id})
+    });
+    if (!response.ok) {
+      console.error(`Failed to fetch search results: ${response.statusText}`);
+    }
+  }
 
   async function postFavorites () {
     const reponseUserId = await fetch("/api/getUserId")
@@ -51,6 +66,20 @@ function OrganizationPage() {
   }
 
   useEffect(() => {
+    async function getTechnologies () {
+      const response = await fetch('/api/getTechnologies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ website: entity?.website_url})
+      });
+      if (!response.ok) {
+        console.error(`Failed to fetch search results: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setTechnologies(data?.technologies);
+    }
     const getOrganization = async () => {
         if (!searchId) {
           // Si aucun searchId n'est fourni, rediriger ou gérer l'erreur
@@ -78,6 +107,7 @@ function OrganizationPage() {
     }
     const enrichOrganization = async () => {
       const domain = await getOrganization()
+      const techno = await getTechnologies()
       const response = await fetch('/api/enrichOrganizationByDb', {
         method: 'POST',
         headers: {
@@ -122,7 +152,7 @@ function OrganizationPage() {
       }
     }
     enrichOrganization()
-  }, [searchId, id, router])
+  }, [searchId, id, router, entity?.website_url])
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -256,7 +286,10 @@ function OrganizationPage() {
             <Button onClick={() => {
               router.push(`/search/${entity?.name}/decisionMakers?id=${entity?.id}&name=${entity?.name}&searchId=${searchId}`)
             }}>See the decision-makers</Button>
-            { favorite ? <Star className="ml-5 cursor-pointer" color="#8400db" /> : <Star className="ml-5 cursor-pointer" onClick={() => {
+            { favorite ? <Star className="ml-5 cursor-pointer" color="#8400db" onClick={() => {
+              deleteFavorites()
+              setFavorite(false)
+            }}/> : <Star className="ml-5 cursor-pointer" onClick={() => {
               postFavorites()
               setFavorite(true)
             }}/>}
@@ -326,6 +359,22 @@ function OrganizationPage() {
                 <X />
                 </a>}
 
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card x-chunk="dashboard-04-chunk-3">
+              <CardHeader>
+                <CardTitle>Full stack</CardTitle>
+                <CardDescription>
+                Here are the stack elements found for {`${entity?.name}`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center w-full flex-wrap">
+                    {technologies?.length > 0 && technologies?.map((technology, index) => (
+                      <Badge className="mx-2 my-2" key={technology.slug}>{technology.name}</Badge>
+                    ))}
                 </div>
               </CardContent>
             </Card>

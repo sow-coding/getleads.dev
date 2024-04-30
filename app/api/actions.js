@@ -119,12 +119,14 @@ async function checkUrlsInDatabase(urls) {
 async function saveLookupInDatabase(url, technologies) {
     const { data, error } = await supabase
         .from('lookup')
-        .insert([
+        .upsert([
             {
                 website: url,
                 technologies: technologies // Supposer que 'technologies' est un tableau d'objets ou de chaînes
             }
-        ]);
+        ], {
+            onConflict: 'website' // Spécifie la colonne clé pour les conflits
+        });
 
     if (error) {
         console.error('Error saving data to database:', error.message);
