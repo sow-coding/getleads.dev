@@ -89,7 +89,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 src={
                   '/user-search.svg'
                 }
-                className='ml-5'
+                style={{margin: "0 15px 0 35px"}}
                 alt="logo of sitemark"
               />
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

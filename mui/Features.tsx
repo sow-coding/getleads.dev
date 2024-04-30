@@ -19,7 +19,7 @@ const items = [
     title: 'Tech stack filter',
     description:
       'In addition to searching for companies using all the usual filters such as the country of the company or its number of employees, getleads.dev also allows searching by the web technology used by the company, whether programming languages, web servers or JavaScript frameworks.',
-    imageLight: 'url("/static/images/templates/templates-images/dash-light.png")',
+    imageLight: 'url("/jsFrameworks.png")',
     imageDark: 'url("/static/images/templates/templates-images/dash-dark.png")',
   },
   {
@@ -27,7 +27,7 @@ const items = [
     title: 'Focused on decision-makers',
     description:
       'The most important element in prospecting is reaching out and talking to the right person, the one who will decide whether or not the company wants to work with you, in the case of devs this will usually be the CTO, getleads.dev is totally focused on finding you the decision makers of the companies you like.',
-    imageLight: 'url("/static/images/templates/templates-images/mobile-light.png")',
+    imageLight: 'url("/decisionMakers.png")',
     imageDark: 'url("/static/images/templates/templates-images/mobile-dark.png")',
   },
   {
@@ -35,7 +35,7 @@ const items = [
     title: 'Email search and verification',
     description:
       'Although you have written the best prospecting email, if this email does not reach the correct destination (target mailbox), all this precious work will have been for nothing. For this getleads.dev integrates an email search and email verification system.',
-    imageLight: 'url("/static/images/templates/templates-images/devices-light.png")',
+    imageLight: 'url("/email.png")',
     imageDark: 'url("/static/images/templates/templates-images/devices-dark.png")',
   },
 ];
@@ -243,7 +243,7 @@ export default function Features() {
               sx={{
                 m: 'auto',
                 width: 420,
-                height: 500,
+                height: 400,
                 backgroundSize: 'contain',
                 backgroundImage: (theme) =>
                   theme.palette.mode === 'light'
