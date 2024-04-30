@@ -43,7 +43,7 @@ export default function Terms() {
           <h2 className="text-center text-xl">Refunds</h2>
           <p className="text-center">
           If the product does not meet your expectations, it is possible to request a refund by contacting the support email address (
-          support@swos.be and by stipulating in the subject of the email: {`"REFUND"`}) in 7 days maximum by proving extensive use of getleads.dev as part of your prospecting which led to nothing, Proofs may be requested and an internal audit will obviously be carried out to verify your use of getleads.dev. If it turns out that your case is real, a full refund is then possible.
+          support@swos.be and by stipulating in the subject of the email: {`"REFUND"`}) in 14 days maximum by proving extensive use of getleads.dev as part of your prospecting which led to nothing, Proofs may be requested and an internal audit will obviously be carried out to verify your use of getleads.dev. If it turns out that your case is real, a full refund is then possible.
           </p>
         </section>
 

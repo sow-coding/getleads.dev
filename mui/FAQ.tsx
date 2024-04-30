@@ -86,8 +86,8 @@ export default function FAQ() {
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
               Absolutely! We offer a hassle-free return policy. If you&apos;re not
-               satisfied, you can return the product within 10 days for a full refund provided you prove the use of getleads.dev in real prospecting efforts. <Link className='cursor-pointer'> 
-                <a href='/terms'>Read the terms of use to find out more.</a>
+               satisfied, you can return the product within 14 days for a full refund provided you prove the use of getleads.dev in real prospecting efforts. <Link className='cursor-pointer'> 
+                <a href='/termsAndConditions'>Read the terms of use to find out more.</a>
                </Link>
             </Typography>
           </AccordionDetails>

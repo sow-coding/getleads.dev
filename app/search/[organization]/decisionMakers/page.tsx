@@ -9,8 +9,6 @@ export default async function Feedback() {
 
   if (error || !data?.user) {
     redirect("/login")
-  } else if (data.user.user_metadata?.userType == "free") {
-    redirect("/notInFreeTrial")
   }
   return <DecisionMakersPage />
 }
