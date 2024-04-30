@@ -107,7 +107,6 @@ function OrganizationPage() {
     }
     const enrichOrganization = async () => {
       const domain = await getOrganization()
-      const techno = await getTechnologies()
       const response = await fetch('/api/enrichOrganizationByDb', {
         method: 'POST',
         headers: {
@@ -135,7 +134,7 @@ function OrganizationPage() {
       setLoading(false);
       const data = await response.json();
       setEntity(data?.organization);
-
+      const techno = await getTechnologies()
       const faouriteRes = await fetch('/api/isFavorite', {
         method: 'POST',
         headers: {
