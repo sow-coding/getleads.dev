@@ -25,7 +25,8 @@ export default function RootLayout({
     <StackContextProvider>
     <FiltersContextProvider>
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

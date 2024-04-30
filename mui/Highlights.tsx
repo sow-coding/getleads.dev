@@ -19,7 +19,7 @@ const items = [
     title: 'Save a lot of money',
     description:
     `Prospecting tools are constantly in the form of a monthly subscription, which makes no sense, because you are supposed to use these tools a few times a year (at most).
-    And you may not even use them for several months in a row. Pay getleads.dev once, use it whenever you want. Prospecting tool to find leads (blue for example) + email researcher and verifier = $150/month * 12 = $1,800/year getleads.dev = 
+     Pay getleads.dev once, use it whenever you want. Prospecting tool to find leads (blue for example) + email researcher and verifier = $150/month * 12 = $1,800/year getleads.dev = 
     `,
     price: '$299',
     fakePrice: ' $199 once'

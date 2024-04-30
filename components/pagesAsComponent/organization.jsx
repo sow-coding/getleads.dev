@@ -26,6 +26,7 @@ import {
 import { logout } from "@/app/login/actions"
 import X from "@mui/icons-material/X"
 import { Badge } from "../ui/badge"
+import CircularProgressComponent from "../nextui/circularProgress"
 
 function OrganizationPage() {
   const searchParams = useSearchParams()
@@ -131,7 +132,6 @@ function OrganizationPage() {
         setLoading(false);
         return;
       }
-      setLoading(false);
       const data = await response.json();
       setEntity(data?.organization);
       const techno = await getTechnologies()
@@ -149,6 +149,7 @@ function OrganizationPage() {
       if (favouriteData?.isFavorite) {
         setFavorite(true)
       }
+      setLoading(false);
     }
     enrichOrganization()
   }, [searchId, id, router, entity?.website_url])
@@ -271,14 +272,9 @@ function OrganizationPage() {
           </DropdownMenu>
         </div>
       </header>
-        {loading ?  <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
-        <div className="mx-auto grid w-full max-w-6xl gap-2">
-            <h1 className="text-3xl font-semibold">Loading...</h1>
-        </div>
-        <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-            
-        </div>
-        </main> : <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+        {loading ?  <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        <CircularProgressComponent />
+      </main> : <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
         <div className="mx-auto flex justify-between w-full max-w-6xl gap-2 max-sm:flex-col">
             <h1 className="text-3xl font-semibold">{entity?.name}</h1>
             <div className="actions flex items-center max-sm:my-4">

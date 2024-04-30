@@ -149,6 +149,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
     },
   },
   typography: {
+    fontFamily: ['var(--font-sans)'].join(','),
     h1: {
       fontSize: 60,
       fontWeight: 600,

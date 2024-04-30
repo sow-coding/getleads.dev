@@ -66,6 +66,7 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import { logout } from '@/app/login/actions'
+import CircularProgressComponent from '../nextui/circularProgress'
 
 function DecisionMakersPage () {
     const searchParams = useSearchParams()
@@ -227,7 +228,9 @@ return (
                 </TabsList>
             </div>
 
-            {loading ? <h1>Loading...</h1> : 
+            {loading ? <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        <CircularProgressComponent />
+      </main> : 
             <>
             <TabsContent value="all">
             <Card x-chunk="dashboard-06-chunk-0">

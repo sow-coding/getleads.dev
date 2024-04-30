@@ -66,6 +66,7 @@ import {
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { logout } from "@/app/login/actions"
+import CircularProgressComponent from "../nextui/circularProgress"
 
 
 export default function SearchHistory({userId}) {
@@ -226,83 +227,87 @@ export default function SearchHistory({userId}) {
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
+        { loading ? <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        <CircularProgressComponent />
+      </main> : 
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <Tabs defaultValue="all">
-            <div className="flex items-center">
-              <TabsList>
-                <TabsTrigger value="all">All</TabsTrigger>
-              </TabsList>
-            </div>
+        <Tabs defaultValue="all">
+          <div className="flex items-center">
+            <TabsList>
+              <TabsTrigger value="all">All</TabsTrigger>
+            </TabsList>
+          </div>
 
-            <TabsContent value="all">
-              <Card x-chunk="dashboard-06-chunk-0">
-                <CardHeader>
-                  <CardTitle>Search History</CardTitle>
-                  <CardDescription>
-                    Here is the list of all your old searches
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Sizes</TableHead>
-                        <TableHead>Stack</TableHead>
-                        <TableHead>Cities</TableHead>
-                        <TableHead>
-                          Countries
-                        </TableHead>
-                        <TableHead>
-                          Industrie
-                        </TableHead>
-                        <TableHead>
-                          <span className="sr-only">Actions</span>
-                        </TableHead>
+          <TabsContent value="all">
+            <Card x-chunk="dashboard-06-chunk-0">
+              <CardHeader>
+                <CardTitle>Search History</CardTitle>
+                <CardDescription>
+                  Here is the list of all your old searches
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Sizes</TableHead>
+                      <TableHead>Stack</TableHead>
+                      <TableHead>Cities</TableHead>
+                      <TableHead>
+                        Countries
+                      </TableHead>
+                      <TableHead>
+                        Industrie
+                      </TableHead>
+                      <TableHead>
+                        <span className="sr-only">Actions</span>
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+
+                  <TableBody className="cursor-pointer">
+                  {currentData.map((search, index) => (
+                      <TableRow key={index} onClick={() => {
+                        router.push(`/search/results/search?id=${search.searchId}`)
+                      }}>
+                        <TableCell>{search.filters.sizes.map(size => size.replace(',', '-')).join(', ')|| 'N/A'}</TableCell>
+                        <TableCell>{search.filters.stack.join(', ') || 'N/A'}</TableCell>
+                        <TableCell>{search.filters.cities.join(', ') || 'N/A'}</TableCell>
+                        <TableCell>{search.filters.countries.join(', ') || 'N/A'}</TableCell>
+                        <TableCell>
+                          {search.filters.industries.map(industry => 
+                            industry.charAt(0).toUpperCase() + industry.slice(1)
+                          ).join(', ') || 'N/A'}
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button aria-haspopup="true" size="icon" variant="ghost">
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Toggle menu</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem onClick={(e) => {
+                                e.stopPropagation()
+                                router.push(`/search/results/search?id=${search.searchId}`)
+                              }}>Go</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
                       </TableRow>
-                    </TableHeader>
+                    ))}
+                  </TableBody>
 
-                    <TableBody className="cursor-pointer">
-                    {currentData.map((search, index) => (
-                        <TableRow key={index} onClick={() => {
-                          router.push(`/search/results/search?id=${search.searchId}`)
-                        }}>
-                          <TableCell>{search.filters.sizes.map(size => size.replace(',', '-')).join(', ')|| 'N/A'}</TableCell>
-                          <TableCell>{search.filters.stack.join(', ') || 'N/A'}</TableCell>
-                          <TableCell>{search.filters.cities.join(', ') || 'N/A'}</TableCell>
-                          <TableCell>{search.filters.countries.join(', ') || 'N/A'}</TableCell>
-                          <TableCell>
-                            {search.filters.industries.map(industry => 
-                              industry.charAt(0).toUpperCase() + industry.slice(1)
-                            ).join(', ') || 'N/A'}
-                          </TableCell>
-                          <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button aria-haspopup="true" size="icon" variant="ghost">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                  <span className="sr-only">Toggle menu</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem onClick={(e) => {
-                                  e.stopPropagation()
-                                  router.push(`/search/results/search?id=${search.searchId}`)
-                                }}>Go</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-
-                  </Table>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <Pagination pages={pageCount} setCurrentPage={setCurrentPage} currentPage={currentPage} />
-          </Tabs>
-        </main>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <Pagination pages={pageCount} setCurrentPage={setCurrentPage} currentPage={currentPage} />
+        </Tabs>
+      </main>
+        }
       </div>
     </div>
   )

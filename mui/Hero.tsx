@@ -43,7 +43,7 @@ export default function Hero() {
               <Badge variant={"outline"}>{`By a dev for devs ;)`}</Badge>
             </a>
           </Stack>
-        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '100%' } }}>
+        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '75%' } }}>
           <Typography
             variant="h1"
             sx={{
@@ -54,28 +54,36 @@ export default function Hero() {
               fontSize: 'clamp(3.5rem, 10vw, 4rem)',
             }}
           >
-            The best prospecting tool for&nbsp;
-            <Typography
-              component="span"
-              variant="h1"
-              sx={{
-                fontSize: 'clamp(3rem, 10vw, 4rem)',
-                color: (theme) =>
-                  theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
-              }}
-            >
-              devs
-            </Typography>
+            The (only) prospecting tool a dev need
           </Typography>
           <Typography
             textAlign="center"
             color="text.secondary"
             sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
           >
-            Maximize Your Reach with Decision Makers, Target Companies by tech Stack, and Save with with One-Time payment--All in One Powerful Tool
+            Maximize Your Reach with <span className='font-bold'>Decision Makers</span>, 
+            Target Companies by <span className='font-bold'>Tech Stack</span>, and 
+            Save <span className='font-bold'>(a Lot of) Money</span> with 
+            a One-Time Payment and <span className='font-bold'>a Lot of Time </span> 
+            with an All-in-One Tool.
           </Typography>
         </Stack>
-        
+          
+        <div
+            className='flex flex-col items-center my-4'
+          >
+          <Button
+            color="primary"
+            variant="contained"
+            size="small"
+            component="a"
+            href="/signup"
+            style={{width: "256px", height: "56px"}}
+          >
+            Start free trial
+          </Button>
+          <a className='mt-2 hover:underline' href='/termsAndConditions' style={{fontSize: "11px"}}>Satisfied or refunded under conditions*</a>
+        </div>
         <Box
           id="image"
           sx={(theme) => ({
