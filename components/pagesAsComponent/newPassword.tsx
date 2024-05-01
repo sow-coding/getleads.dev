@@ -184,6 +184,7 @@ export function NewPassword() {
               General
             </Link>
             <Link href="#" className="font-semibold text-primary">Security</Link>
+            <Link href="/settings/plan">Subscription plans</Link>
           </nav>
           <div className="grid gap-6">
             <Card x-chunk="dashboard-04-chunk-1">
