@@ -38,60 +38,69 @@ export function StackPage () {
   const router = useRouter()
   
   const handleVerifyOrganizations = async () => {
-    setLoading(true)
-    const searchFilters = { countries, cities, sizes, industries, stack };  
-      
+    setLoading(true);
+    const searchFilters = { countries, cities, sizes, industries, stack };
+
+    // Vérifier les résultats dans la base de données
     const dbResponse = await fetch("/api/searchOrganizationsByDb", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({ filters: searchFilters }),
-      });
+    });
 
     const { organizations_searched, decisionMakers } = await dbResponse.json();
-    
-    // Vérifier si des résultats existent déjà pour ces filtres
+
+    // Si des résultats existent déjà, les sauvegarder et mettre à jour l'utilisateur
     if (organizations_searched?.length > 0) {
-      const newId = uuidv4();  // Générer un nouvel ID pour cette recherche
-      await saveSearchResults(newId, organizations_searched, searchFilters, decisionMakers);
-      await addSearchForTheUser()
-      setLoading(false)
-      router.push(`/search/results/search?id=${newId}`);
-      return;  // Arrête la fonction ici pour éviter un appel inutile à l'API Apollo
+        const newId = uuidv4();  // Générer un nouvel ID pour cette recherche
+        await saveSearchResults(newId, organizations_searched, searchFilters, decisionMakers);
+        await addSearchForTheUser();
+        setLoading(false);
+        router.push(`/search/results/search?id=${newId}`);
+        return;  // Arrêter la fonction ici pour éviter un appel inutile à l'API externe
     }
-    // Étape 2: Aucun résultat préexistant, faire un appel à l'API externe
+
+    // Étape 2 : Aucun résultat préexistant, faire un appel à l'API externe
     const response = await fetch("/api/searchOrganizations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        countries: countries,
-        sizes: sizes,
-        industries: industries
-      }),
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            countries,
+            sizes,
+            industries
+        }),
     });
 
     if (!response.ok) {
-      router.push("/search/nothing")
-      throw new Error(`Failed to fetch organizations: ${response.statusText}`);
+        setLoading(false);
+        router.push("/search/nothing");
+        throw new Error(`Failed to fetch organizations: ${response.statusText}`);
     }
 
     const apolloResponse = await response.json();
     const apolloOrganizations = apolloResponse.organizations;
 
+    // Vérifier les organisations avec Wappalyzer
     const result = await verifyOrganizationsWithStackWappalyzer(apolloOrganizations, stack);
     const { id, entities } = result;
+
+    // Sauvegarder les résultats et mettre à jour l'utilisateur
     await saveSearchResults(id, entities, searchFilters);
-    await addSearchForTheUser()
-    setLoading(false)
+    await addSearchForTheUser();
+    setLoading(false);
+
+    // Rediriger vers les résultats ou la page "nothing" si aucun résultat n'est trouvé
     if (entities?.length > 0) {
-      router.push(`/search/results/search?id=${id}`);
+        router.push(`/search/results/search?id=${id}`);
     } else {
-      router.push("/search/nothing");
+        router.push("/search/nothing");
     }
-  };
+};
+
   
   return (
     <div className="flex min-h-screen w-full flex-col">

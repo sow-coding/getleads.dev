@@ -4,7 +4,7 @@ export async function POST(request) {
     // Initialize the request body with the static values
     let requestBody = {
         api_key: process.env.APOLLO_API_KEY,
-        per_page: 10,
+        per_page: 50,
         q_organization_keyword_tags: ["saas", "software", "web development"],
         page: 1
     };
