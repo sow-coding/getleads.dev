@@ -1,12 +1,13 @@
 import { supabase } from "@/utils/supabase/auth";
 
-export async function POST (request: Request) {
-    const req = await request.json();
+export async function GET (request: Request) {
+    const {searchParams} = new URL(request.url)
+    const website = searchParams.get("website")
     
     let { data: lookup, error } = await supabase
     .from('lookup')
     .select('*')
-    .eq('website', req.website)
+    .eq('website', website)
     .single()
     
     if (error) {

@@ -47,7 +47,10 @@ export default function SettingsPage() {
 
   useEffect(() => {
     async function getUserEmail () {
-      const response = await fetch('/api/getUserEmail')
+      const response = await fetch('/api/getUserEmail', {
+        next: {tags: ["userEmail"]},
+        cache: "force-cache"
+      })
       const data = await response.json()
       setUserEmail(data)
     }

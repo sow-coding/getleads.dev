@@ -1,9 +1,10 @@
 import { supabase } from "@/utils/supabase/auth";
 
-export async function POST (request) {
+export async function GET (request) {
     // Extraire le searchId et l'UUID de l'entité spécifique de la requête
-    const { searchId, id } = await request.json();
-
+    const {searchParams} = new URL(request.url)
+    const searchId = searchParams.get("searchId")
+    const id = searchParams.get("id")
     // Requête à la base de données pour récupérer le tableau des entités
     const { data, error } = await supabase
         .from('searches')

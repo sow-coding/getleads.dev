@@ -42,12 +42,13 @@ function ResultPage({truncated, userId, email}) {
         return;
       }
 
-      const response = await fetch('/api/getSearchResult', {
-        method: 'POST',
+      const response = await fetch(`/api/getSearchResult?searchId=${searchId}`, {
+        next: {tags: ["resultPage"]},
+        cache: "force-cache",
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ searchId })
+        }
       });
 
       if (!response.ok) {

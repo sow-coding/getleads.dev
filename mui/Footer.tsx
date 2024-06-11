@@ -65,8 +65,7 @@ export default function Footer() {
               </Typography>
             </div>
             <Typography className='max-w-sm' variant="body2" color="text.secondary" mb={2}>
-            The prospecting tool designed to help developers find and reach their potential customers by providing them with a whole bunch of tools starting with appropriate search filters and ending with email verification for deliverability.
-            </Typography>
+            The prospecting tool intended to help developers find and reach their potential customers by providing them with features like proper search filters and email verification to ensure deliverability.            </Typography>
           </Box>
         </Box>
         <Box

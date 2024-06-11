@@ -1,12 +1,13 @@
 import { supabase } from "@/utils/supabase/auth";
 
-export async function POST (request: Request) {
-    const req = await request.json();
-    
+export async function GET (request: Request) {
+    const {searchParams} = new URL(request.url)
+    const id = searchParams.get("id")
+
     let { data: favorites, error } = await supabase
     .from('favorites')
     .select('*')
-    .eq('id', req.id)
+    .eq('id', id)
     .single()
     
     if (error) {

@@ -24,9 +24,9 @@ export async function POST(request) {
     const data = await response.json();
 
     const { data: supabaseData, error } = await supabase
-    .from('searches')
+    .from('organizationsEnrichment')
     .update({ decisionMakers: data.people })
-    .eq('searchId', inputRequestBody.searchId)
+    .eq('id', inputRequestBody.id)
     .select();
 
     if (error) {

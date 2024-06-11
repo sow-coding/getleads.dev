@@ -78,16 +78,13 @@ export default function SearchHistory({userId}) {
 
   useEffect(() => {
     async function getSearchHistory () {
-      const response = await fetch("/api/getSearchHistory", {
-        method: "POST",
+      const response = await fetch(`/api/getSearchHistory?userId=${userId}`, {
+        next: {tags: ["searchHistory"]},
+        cache: "force-cache",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(
-          {
-            userId: userId
-          }
-        ),
       })
       if (response.ok) {
         const data = await response.json()

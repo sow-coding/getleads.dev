@@ -70,15 +70,13 @@ function DecisionMakerPage ({ verifyRight }) {
     }
 
     async function emailVerificationByDb() {
-        const response = await fetch(`/api/emailVerificationByDb`, {
-            method: "POST",
+        const response = await fetch(`/api/emailVerificationByDb?id=${id}`, {
+            next: {tags: ["emailVerificationByDb"]},
+            cache: "force-cache",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                id: id,
-                email: decisionMaker?.person?.email
-            })
         })
         if (!response.ok) {
             emailVerification()
@@ -107,14 +105,11 @@ function DecisionMakerPage ({ verifyRight }) {
     }
 
     async function getEmailByDb () {
-        const response = await fetch(`/api/getDeliverableEmailByDb`, {
-            method: "POST",
+        const response = await fetch(`/api/getDeliverableEmailByDb?id=${id}`, {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                id: id
-            })
         })
         if (!response.ok) {
             getEmail()
@@ -145,15 +140,13 @@ function DecisionMakerPage ({ verifyRight }) {
             setLoading(false)
         }
         async function getDecisionMakerByDb() {
-            const response = await fetch(`/api/getSoloDecisionMakerByDb`, {
-                method: "POST",
+            const response = await fetch(`/api/getSoloDecisionMakerByDb?id=${id}`, {
+                next: {tags: ["soloDecisionMaker"]},
+                cache: "force-cache",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    id: id
-                })
-            
             })
             if (!response.ok) {
                 getDecisionMaker()

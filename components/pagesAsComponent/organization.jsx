@@ -27,6 +27,7 @@ import { logout } from "@/app/login/actions"
 import X from "@mui/icons-material/X"
 import { Badge } from "../ui/badge"
 import CircularProgressComponent from "../nextui/circularProgress"
+import { revalidateIsFavorite } from "@/app/api/actions"
 
 function OrganizationPage() {
   const searchParams = useSearchParams()
@@ -34,7 +35,7 @@ function OrganizationPage() {
   const id = searchParams.get("id")
   const router = useRouter()
   const [loading, setLoading] = useState(true)
-  const [entity, setEntity] = useState({})
+  const [entity, setEntity] = useState()
   const [favorite, setFavorite] = useState(false)
   const [technologies, setTechnologies] = useState([])
 
@@ -44,7 +45,7 @@ function OrganizationPage() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ id: id})
+      body: JSON.stringify({ id: id })
     });
     if (!response.ok) {
       console.error(`Failed to fetch search results: ${response.statusText}`);
@@ -52,7 +53,10 @@ function OrganizationPage() {
   }
 
   async function postFavorites () {
-    const reponseUserId = await fetch("/api/getUserId")
+    const reponseUserId = await fetch("/api/getUserId", {
+      next: {tags: ["userId"]},
+      cache: "force-cache"
+    })
     const userId = await reponseUserId.json()
     const response = await fetch('/api/postFavorites', {
       method: 'POST',
@@ -67,32 +71,19 @@ function OrganizationPage() {
   }
 
   useEffect(() => {
-    async function getTechnologies () {
-      const response = await fetch('/api/getTechnologies', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ website: entity?.website_url})
-      });
-      if (!response.ok) {
-        console.error(`Failed to fetch search results: ${response.statusText}`);
-      }
-      const data = await response.json();
-      setTechnologies(data?.technologies);
-    }
     const getOrganization = async () => {
         if (!searchId) {
           // Si aucun searchId n'est fourni, rediriger ou gérer l'erreur
           router.push("/search")
           return;
         }
-        const response = await fetch('/api/getOrganization', {
-          method: 'POST',
+        const response = await fetch(`/api/getOrganization?searchId=${searchId}&id=${id}`, {
+          next: {tags: ["organization"]},
+          cache: "force-cache",
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ searchId: searchId, id: id})
         });
   
         if (!response.ok) {
@@ -108,12 +99,13 @@ function OrganizationPage() {
     }
     const enrichOrganization = async () => {
       const domain = await getOrganization()
-      const response = await fetch('/api/enrichOrganizationByDb', {
-        method: 'POST',
+      const response = await fetch(`/api/enrichOrganizationByDb?id=${id}`, {
+        cache: "force-cache",
+        next: {tags: ["enrichOrganization"]},
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: id})
+        }
       });
       if (!response.ok) {
         const response = await fetch('/api/enrichOrganization', {
@@ -134,13 +126,14 @@ function OrganizationPage() {
       }
       const data = await response.json();
       setEntity(data?.organization);
-      const techno = await getTechnologies()
-      const faouriteRes = await fetch('/api/isFavorite', {
-        method: 'POST',
+
+      const faouriteRes = await fetch(`/api/isFavorite?id=${id}`, {
+        cache: "force-cache",
+        next: {tags: ["isFavorite"]},
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: id})
+        }
       });
       if (!response.ok) {
         console.error(`Failed to fetch search results: ${response.statusText}`);
@@ -153,6 +146,31 @@ function OrganizationPage() {
     }
     enrichOrganization()
   }, [searchId, id, router, entity?.website_url])
+
+  useEffect(() => {
+    async function getTechnologies () {
+      const response = await fetch(`/api/getTechnologies?website=${entity?.website_url}`, {
+        cache: "force-cache",
+        next: {tags: ["technologies"]},
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!response.ok) {
+        console.error(`Failed to fetch search results: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setTechnologies(data?.technologies);
+    }
+    if (entity) {
+      const fetchTechnologies = async () => {
+        await getTechnologies();
+      };
+
+      fetchTechnologies();
+    }
+  }, [entity]);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -286,6 +304,8 @@ function OrganizationPage() {
               setFavorite(false)
             }}/> : <Star className="ml-5 cursor-pointer" onClick={() => {
               postFavorites()
+              //changer ce revalidateIsFavorite pour revalidate
+              revalidateIsFavorite()
               setFavorite(true)
             }}/>}
             </div>

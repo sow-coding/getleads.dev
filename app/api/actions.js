@@ -2,6 +2,7 @@
 
 import { supabase } from "@/utils/supabase/auth";
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 import { v4 as uuidv4 } from 'uuid';
 
 const supabase1 = createClient();
@@ -175,3 +176,21 @@ export async function saveSearchResults(searchId, organizations, searchFilters, 
         console.log('Résultats de recherche sauvegardés avec succès.');
     }
 }
+
+export async function revalidateFavorites () {
+    revalidatePath("favorites")
+}
+
+export async function revalidateUserDecisionMakers () {
+    revalidatePath("userDecisionMakers")
+}
+
+export async function revalidateUserSearches () {
+    revalidatePath("userSearches")
+}
+
+export async function revalidateIsFavorite () {
+    revalidatePath("isFavorite")
+}
+
+//Mettre tout les revalidate

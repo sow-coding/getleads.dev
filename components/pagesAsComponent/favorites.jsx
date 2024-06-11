@@ -74,16 +74,13 @@ export function Favorites({userId}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
+  //cache mais ondemend de ondemand car pas de modif
   async function getSearchId({organizationId}) {
-    const response = await fetch("/api/getSearchId", {
-      method: "POST",
+    const response = await fetch(`/api/getSearchId?userId=${userId}&organizationId=${organizationId}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: userId,
-        organizationId: organizationId
-      }),
+      }
     });
     if (response.ok) {
       const data = await response.json();
@@ -105,16 +102,13 @@ export function Favorites({userId}) {
 
   useEffect(() => {
     async function getFavorites () {
-      const response = await fetch("/api/getFavorites", {
-        method: "POST",
+      const response = await fetch(`/api/getFavorites?userId=${userId}`, {
+        next: {tags: ["favorites"]},
+        cache: "force-cache",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-        },
-        body: JSON.stringify(
-          {
-            userId: userId
-          }
-        ),
+        }
       })
       if (response.ok) {
         const data = await response.json()

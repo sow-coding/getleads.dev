@@ -72,7 +72,6 @@ function DecisionMakersPage () {
     const searchParams = useSearchParams()
     const id = searchParams.get("id")
     const name = searchParams.get("name")
-    const searchId = searchParams.get("searchId")
     const [loading, setLoading] = useState(true)
     const [decisionMakers, setDecisionMakers] = useState([])
     const router = useRouter()
@@ -86,7 +85,6 @@ function DecisionMakersPage () {
                 },
                 body: JSON.stringify({
                     id: id,
-                    searchId: searchId
                 })
             
             })
@@ -95,15 +93,13 @@ function DecisionMakersPage () {
             setLoading(false)
         }
         async function getDecisionMakersWithDb() {
-            const response = await fetch(`/api/getDecisionMakersWithDb`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    searchId: searchId
-                })
-            
+            const response = await fetch(`/api/getDecisionMakersWithDb?id=${id}`, {
+              cache: "force-cache",
+              next: {tags: ["decisionMakers"]},
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json"
+              }
             })
             const data = await response.json()
             if(!data.decisionMakers) {
@@ -114,9 +110,9 @@ function DecisionMakersPage () {
             setLoading(false)   
         }
         getDecisionMakersWithDb()
-    }, [id, searchId])
+    }, [id])
 
-return (
+  return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">

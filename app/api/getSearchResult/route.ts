@@ -1,8 +1,9 @@
 import { supabase } from "@/utils/supabase/auth";
 import { createClient } from "@/utils/supabase/server";
 
-export async function POST(request: Request) {
-    const { searchId } = await request.json();
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url)
+    const searchId = searchParams.get("searchId")
 
     const { data, error } = await supabase
         .from('searches')

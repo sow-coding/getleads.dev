@@ -1,20 +1,22 @@
 import { supabase } from "@/utils/supabase/auth";
 
-export async function POST(request: Request) {
-    const req = await request.json();
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url)
+    const userId = searchParams.get("userId")
+    const organizationId = searchParams.get("organizationId")
     
     // Récupérer les données des recherches pour l'utilisateur donné
     let { data: searches, error } = await supabase
         .from('searches')
         .select('searchId, organizations_searched')
-        .eq('user_id', req.userId);
+        .eq('user_id', userId);
 
     if (error) {
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 
     // Trouver le searchId pour l'id d'organisation spécifié dans la requête
-    const searchId = getSearchIdByOrganizationId(searches, req.organizationId);
+    const searchId = getSearchIdByOrganizationId(searches, organizationId);
 
     if (searchId) {
         return new Response(JSON.stringify({ searchId: searchId }), { status: 200 });

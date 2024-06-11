@@ -2,7 +2,7 @@ import OrganizationPage from "@/components/pagesAsComponent/organization"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
-export default async function Feedback() {
+export default async function Organization () {
   const supabase = createClient()
   
   const { data, error } = await supabase.auth.getUser()

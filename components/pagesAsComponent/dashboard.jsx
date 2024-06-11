@@ -36,7 +36,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
   Table,
@@ -49,6 +48,7 @@ import {
 import { useRouter } from "next/navigation"
 import { logout } from "@/app/login/actions"
 import { useEffect, useState } from "react"
+import { revalidateFavorites } from "@/app/api/actions"
 
 export function Dashboard({userId}) {
   const router = useRouter()
@@ -58,34 +58,37 @@ export function Dashboard({userId}) {
 
   useEffect(() => {
     async function fetchUserDecisionMakers() {
-      const res = await fetch(`/api/getUserDecisionMakers`, {
-        method: "POST",
+      const res = await fetch(`/api/getUserDecisionMakers?userId=${userId}`, {
+        next: {tags: ["userDecisionMakers"]},
+        cache: "force-cache",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: userId }),
       })
       const data = await res.json()
       setUserDecisionMakers(data)
     }
     async function fetchUserSearches() {
-      const res = await fetch(`/api/getUserSearches`, {
-        method: "POST",
+      const res = await fetch(`/api/getUserSearches?userId=${userId}`, {
+        next: {tags: ["userSearches"]},
+        cache: "force-cache",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: userId }),
       })
       const data = await res.json()
       setOrganizations(data)
     }
     async function getFavorites() {
-      const res = await fetch(`/api/getFavorites`, {
-        method: "POST",
+      const res = await fetch(`/api/getFavorites?userId=${userId}`, {
+        next: {tags: ["favorites"]},
+        cache: "force-cache",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: userId }),
       })
       const data = await res.json()
       setFavorites(data)
@@ -126,6 +129,9 @@ export function Dashboard({userId}) {
           </Link>
           <Link
             href="/favorites"
+            onClick={() => {
+              revalidateFavorites()
+            }}
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Favorites

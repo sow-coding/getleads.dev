@@ -1,12 +1,14 @@
 import { supabase } from "@/utils/supabase/auth";
 import { createClient } from "@/utils/supabase/server";
 
-export async function POST(request) {
-    const inputRequestBody = await request.json();
+export async function GET (request) {
+    const {searchParams} = new URL(request.url)
+    const id = searchParams.get("id")
+
     let { data: decisionMakers, error } = await supabase
-        .from('searches')
+        .from('organizationsEnrichment')
         .select('decisionMakers')
-        .eq('searchId', inputRequestBody.searchId)
+        .eq('id', id)
         .single();
 
     if (error) {
