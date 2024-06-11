@@ -69,13 +69,6 @@ export default function LandingPage() {
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const LPtheme = createTheme(getLPTheme(mode));
   const defaultTheme = createTheme({ palette: { mode } });
-  const searchParams = useSearchParams()
-  const code = searchParams.get('code')
-  const router = useRouter()
-  React.useEffect(() => {
-    code && router.push("/emailConfirmed")
-  }, [code, router])
-
   const toggleColorMode = () => {
     setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
