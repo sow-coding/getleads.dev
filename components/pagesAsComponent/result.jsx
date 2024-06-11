@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 import Link from "next/link"
-import { CircleUser, Menu, Package2, Search } from "lucide-react"
+import { CircleUser, Menu, Package2, Search, UserSearch } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -75,7 +75,7 @@ function ResultPage({truncated, userId, email}) {
             href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
-            <Package2 className="h-6 w-6" />
+            <UserSearch color="#0a55e1"/>
             <span className="sr-only">getleads.dev</span>
           </Link>
           <Link
@@ -127,7 +127,7 @@ function ResultPage({truncated, userId, email}) {
                 href="/dashboard"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
-                <Package2 className="h-6 w-6" />
+                <UserSearch color="#0a55e1"/>
                 <span className="sr-only">getleads.dev</span>
               </Link>
               <Link href="#" className="text-muted-foreground hover:text-foreground">

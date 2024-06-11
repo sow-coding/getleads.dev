@@ -11,6 +11,7 @@ import {
   Package2,
   Search,
   UserRound,
+  UserSearch,
   Users,
 } from "lucide-react"
 
@@ -48,7 +49,6 @@ import {
 import { useRouter } from "next/navigation"
 import { logout } from "@/app/login/actions"
 import { useEffect, useState } from "react"
-import { revalidateFavorites } from "@/app/api/actions"
 
 export function Dashboard({userId}) {
   const router = useRouter()
@@ -106,7 +106,7 @@ export function Dashboard({userId}) {
             href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
-            <Package2 className="h-6 w-6" />
+            <UserSearch color="#0a55e1"/>
             <span className="sr-only">getleads.dev</span>
           </Link>
           <Link
@@ -161,7 +161,7 @@ export function Dashboard({userId}) {
                 href="#"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
-                <Package2 className="h-6 w-6" />
+                <UserSearch />
                 <span className="sr-only">getleads.dev</span>
               </Link>
               <Link href="#" className="hover:text-foreground">

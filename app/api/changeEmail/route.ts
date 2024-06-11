@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server"
+import { revalidatePath } from "next/cache"
 
 export async function POST (request: Request) {
     const req = await request.json()
@@ -6,7 +7,7 @@ export async function POST (request: Request) {
     const { data, error } = await supabase.auth.updateUser({
         email: req.email
     })
-
+    revalidatePath("userEmail")
     if (error) {
         return new Response(JSON.stringify({ error: error.message }), { status: 400 })
     }

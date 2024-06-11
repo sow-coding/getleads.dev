@@ -162,7 +162,7 @@ export async function saveSearchResults(searchId, organizations, searchFilters, 
         console.error('Erreur lors de la récupération de l’utilisateur connecté', userError);
         return;
     }
-
+    
     const userId = userData.user.id;
     const { error } = await supabase1
         .from('searches')
@@ -175,22 +175,8 @@ export async function saveSearchResults(searchId, organizations, searchFilters, 
     } else {
         console.log('Résultats de recherche sauvegardés avec succès.');
     }
-}
 
-export async function revalidateFavorites () {
-    revalidatePath("favorites")
-}
-
-export async function revalidateUserDecisionMakers () {
-    revalidatePath("userDecisionMakers")
-}
-
-export async function revalidateUserSearches () {
     revalidatePath("userSearches")
+    revalidatePath("searchHistory")
 }
 
-export async function revalidateIsFavorite () {
-    revalidatePath("isFavorite")
-}
-
-//Mettre tout les revalidate

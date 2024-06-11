@@ -15,6 +15,7 @@ import {
     Search,
     Settings,
     ShoppingCart,
+    UserSearch,
     Users2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -166,7 +167,7 @@ function DecisionMakerPage ({ verifyRight }) {
             href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
-            <Package2 className="h-6 w-6" />
+            <UserSearch color="#0a55e1"/>
             <span className="sr-only">getleads.dev</span>
           </Link>
           <Link
@@ -218,7 +219,7 @@ function DecisionMakerPage ({ verifyRight }) {
                 href="#"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
-                <Package2 className="h-6 w-6" />
+                <UserSearch color="#0a55e1"/>
                 <span className="sr-only">getleads.dev</span>
               </Link>
               <Link href="#" className="hover:text-foreground">

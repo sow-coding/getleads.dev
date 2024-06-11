@@ -1,4 +1,5 @@
 import { supabase } from "@/utils/supabase/auth";
+import { revalidatePath } from "next/cache";
 
 export async function POST (request: Request) {
     const req = await request.json();
@@ -10,7 +11,8 @@ export async function POST (request: Request) {
     ])
     .select()
             
-
+    revalidatePath("favorites")
+    
     if (error) {
         console.error('Error fetching favorites:', error.message)
     }

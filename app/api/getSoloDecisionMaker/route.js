@@ -1,4 +1,5 @@
 import { supabase } from "@/utils/supabase/auth";
+import { revalidatePath } from "next/cache";
 
 export async function POST(request) {
     const inputRequestBody = await request.json();
@@ -21,6 +22,7 @@ export async function POST(request) {
     }
 
     const data = await response.json();
+    revalidatePath("userDecisionMakers")
 
     const { data: supabaseData, error } = await supabase
     .from('soloDecisionMaker')

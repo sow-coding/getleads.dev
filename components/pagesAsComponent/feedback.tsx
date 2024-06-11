@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { CircleUser, Menu, Package2, Search } from "lucide-react"
+import { CircleUser, Menu, Package2, Search, UserSearch } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -33,7 +33,7 @@ export default function FeedbackPage () {
             href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
-            <Package2 className="h-6 w-6" />
+            <UserSearch color="#0a55e1"/>
             <span className="sr-only">getleads.dev</span>
           </Link>
           <Link
@@ -91,7 +91,7 @@ export default function FeedbackPage () {
                 href="#"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
-                <Package2 className="h-6 w-6" />
+                <UserSearch color="#0a55e1"/>
                 <span className="sr-only">getleads.dev</span>
               </Link>
               <Link href="#" className="text-muted-foreground hover:text-foreground">

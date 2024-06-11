@@ -2,7 +2,7 @@
 import {  useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { CircleUser, Facebook, Linkedin, Menu, Package2, Search, Star, Twitter } from "lucide-react"
+import { CircleUser, Facebook, Linkedin, Menu, Package2, Search, Star, Twitter, UserSearch } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -27,7 +27,6 @@ import { logout } from "@/app/login/actions"
 import X from "@mui/icons-material/X"
 import { Badge } from "../ui/badge"
 import CircularProgressComponent from "../nextui/circularProgress"
-import { revalidateIsFavorite } from "@/app/api/actions"
 
 function OrganizationPage() {
   const searchParams = useSearchParams()
@@ -180,7 +179,7 @@ function OrganizationPage() {
             href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
-            <Package2 className="h-6 w-6" />
+            <UserSearch color="#0a55e1"/>
             <span className="sr-only">getleads.dev</span>
           </Link>
           <Link
@@ -232,7 +231,7 @@ function OrganizationPage() {
                 href="/dashboard"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
-                <Package2 className="h-6 w-6" />
+                <UserSearch color="#0a55e1"/>
                 <span className="sr-only">getleads.dev</span>
               </Link>
               <Link href="#" className="text-muted-foreground hover:text-foreground">
