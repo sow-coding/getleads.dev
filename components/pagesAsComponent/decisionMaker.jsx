@@ -222,7 +222,7 @@ function DecisionMakerPage ({ verifyRight }) {
                 <UserSearch color="#0a55e1"/>
                 <span className="sr-only">getleads.dev</span>
               </Link>
-              <Link href="#" className="hover:text-foreground">
+              <Link href="dashboard" className="hover:text-foreground">
                 Dashboard
               </Link>
               <Link

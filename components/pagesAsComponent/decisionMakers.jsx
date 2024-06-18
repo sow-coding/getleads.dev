@@ -131,7 +131,7 @@ function DecisionMakersPage () {
                   href="#"
                   className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
                 >
-                  <UserSearch />
+                  <UserSearch color="#0a55e1"/>
                   <span className="sr-only">getleads.dev</span>
                 </Link>
                 <Link

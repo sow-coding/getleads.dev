@@ -161,7 +161,7 @@ export function Dashboard({userId}) {
                 href="#"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
-                <UserSearch />
+                <UserSearch color="#0a55e1"/>
                 <span className="sr-only">getleads.dev</span>
               </Link>
               <Link href="#" className="hover:text-foreground">

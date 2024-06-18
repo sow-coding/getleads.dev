@@ -94,7 +94,7 @@ export default function FeedbackPage () {
                 <UserSearch color="#0a55e1"/>
                 <span className="sr-only">getleads.dev</span>
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-foreground">
+              <Link href="dashboard" className="text-muted-foreground hover:text-foreground">
                 Dashboard
               </Link>
               <Link
@@ -159,11 +159,15 @@ export default function FeedbackPage () {
               <CardHeader>
                 <CardTitle>Contact</CardTitle>
                 <CardDescription>
-                    {`Don't`} hesitate to leave me feedback and ask me for new features by contacting me at this email address:
+                    {`Don't`} hesitate to leave me feedback and ask me for new features by posting a feedback there:
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <h1 className="text-3xl font-semibold">saikou@getleads.dev</h1>
+                <a href="https://insigh.to/b/getleadsdev" target="_blank" className="text-3xl font-semibold">
+                  <Button>
+                    Leave a feedback!
+                  </Button>
+                </a>
               </CardContent>
             </Card>
           </div>

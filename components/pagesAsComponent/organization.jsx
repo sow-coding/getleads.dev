@@ -234,7 +234,7 @@ function OrganizationPage() {
                 <UserSearch color="#0a55e1"/>
                 <span className="sr-only">getleads.dev</span>
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-foreground">
+              <Link href="dashboard" className="text-muted-foreground hover:text-foreground">
                 Dashboard
               </Link>
               <Link
