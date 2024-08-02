@@ -17,7 +17,7 @@ export async function POST(request) {
     try {
         const req = await request.json();
         const normalizedFilters = normalizeFilters(req.filters);
-
+        console.log(normalizedFilters)
         let { data: searches, error } = await supabase
             .from('searches')
             .select('organizations_searched, decisionMakers')
