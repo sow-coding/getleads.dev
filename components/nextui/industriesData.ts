@@ -617,6 +617,10 @@ export const industriesData: Industry[] =
       value: 'elearning'
     },
     {
+      label: 'Software',
+      value: 'software'
+    },
+    {
       label: 'Many more industries from 05/21',
       value: 'Many more industries from 05/21'
     }
