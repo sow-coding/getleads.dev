@@ -316,7 +316,7 @@ function DecisionMakerPage ({ verifyRight }) {
                     </CardContent>
                     <CardFooter className="border-t px-6 py-4">
                     <Button onClick={() => {
-                        verifyRight ? emailVerificationByDb() : router.push("/onlyPremium")
+                         emailVerificationByDb()
                     }}>Verify</Button>
                     </CardFooter>
                 </Card>
